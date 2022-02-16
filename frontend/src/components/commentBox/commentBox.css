@@ -1,0 +1,80 @@
+.header-commentbox {
+  display: flex;
+  justify-content: flex-start;
+  color: rgb(221, 221, 221);
+}
+
+.total-comment,
+.total-view {
+  cursor: pointer;
+}
+
+.total-comment p,
+.total-view p {
+  padding: 0 40px 0 20px;
+  font-size: 14px;
+}
+
+.body-commentbox {
+  width: 100%;
+  margin-top: 2.2rem;
+}
+
+.enter-comment {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.highest-level {
+  margin-top: 20px;
+}
+
+.highest-level div:nth-child(3) {
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.detail-comment {
+  width: calc(100% - 60px);
+}
+
+.detail-comment div:first p {
+  border-radius: 10px;
+  padding: 0 10px 3px 10px;
+  font-weight: 500;
+}
+
+.detail-comment div p {
+  word-wrap: break-word;
+}
+
+.reply-icon,
+.cancel-icon {
+  font-size: 15px;
+  position: relative;
+  cursor: pointer;
+  margin-left: 20px;
+}
+
+.reply-icon .tooltiptext,
+.cancel-icon .tooltiptext {
+  opacity: 0;
+  transition: opacity 1s;
+  width: auto;
+  background-color: white;
+  color: #353535;
+  text-align: center;
+  border-radius: 6px;
+  padding: 3px 8px;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 105%;
+  font-size: 12px;
+}
+
+.reply-icon:hover .tooltiptext,
+.cancel-icon:hover .tooltiptext {
+  opacity: 1;
+}

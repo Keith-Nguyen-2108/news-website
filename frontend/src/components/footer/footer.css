@@ -1,0 +1,41 @@
+footer {
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)),
+    url("https://c8.alamy.com/comp/ERMBBT/blog-website-and-internet-concept-with-news-word-sign-on-cubes-with-ERMBBT.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  color: #fff;
+}
+
+.footer {
+  width: 1200px;
+  margin: 0 auto;
+}
+
+footer h6 {
+  font-size: 30px;
+  font-weight: 500;
+  font-family: Marcellus;
+}
+
+footer p {
+  font-size: 16px;
+  font-family: monospace;
+}
+
+footer a,
+footer a:hover {
+  text-decoration: none;
+  color: white;
+}
+
+footer hr {
+  color: rgb(199, 199, 199);
+  height: 2px !important;
+}
+
+@media screen and (max-width: 1199px) {
+  .footer {
+    width: 100vw;
+  }
+}

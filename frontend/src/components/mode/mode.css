@@ -1,0 +1,44 @@
+.btn-change-theme {
+  position: fixed;
+  top: 50%;
+  right: 15px;
+  padding: 0;
+  color: rgb(238, 28, 109);
+  background: white;
+  border: 0;
+  border-radius: 999px;
+  box-shadow: 10px 0 20px rgb(0 0 0 / 3%), 6px 0 6px rgb(0 0 0 / 5%),
+    -6px 0 6px rgb(0 0 0 / 5%);
+  cursor: pointer;
+  font-size: 1rem;
+  text-transform: uppercase;
+  overflow: hidden;
+  font-weight: 400;
+  transform: translateY(-50%);
+  z-index: 2;
+  transition: all 250ms ease-in-out;
+}
+
+.btn-change-theme span {
+  transform: rotate(0);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 18px 8px;
+  line-height: 1;
+  font-size: 16px;
+  font-weight: 500;
+  width: 100%;
+  writing-mode: vertical-lr;
+  transition: all 250ms ease-in-out;
+}
+
+.btn-change-theme span.active {
+  background: -webkit-linear-gradient(
+    135deg,
+    rgb(252, 140, 49),
+    rgb(238, 28, 109)
+  );
+  color: white;
+}

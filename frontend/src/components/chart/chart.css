@@ -1,0 +1,57 @@
+.combined-chart {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto 2%;
+  width: 85vw;
+}
+
+.line-chart,
+.bar-chart {
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+    rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+  padding: 10px;
+  height: 450px;
+}
+
+.line-chart {
+  width: 55vw;
+}
+
+.bar-chart {
+  width: 28vw;
+}
+
+@media screen and (max-width: 1440px) {
+  .combined-chart {
+    width: 90vw;
+  }
+
+  .line-chart {
+    width: 56vw;
+  }
+
+  .bar-chart {
+    width: 32vw;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .combined-chart {
+    display: block;
+  }
+
+  .line-chart,
+  .bar-chart {
+    width: 100%;
+    margin-bottom: 5%;
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .line-chart,
+  .bar-chart {
+    padding-left: 0;
+    padding-right: 10px;
+  }
+}

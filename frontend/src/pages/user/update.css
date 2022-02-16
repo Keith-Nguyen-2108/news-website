@@ -1,0 +1,47 @@
+.bg-update {
+  width: 80%;
+  margin: 5% auto;
+  padding: 3rem !important;
+  border-radius: 25px;
+  word-wrap: break-word;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+    rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+}
+
+.update-info {
+  font-size: 50px;
+  font-family: Marcellus;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+#frmUpdateInfo label {
+  margin-bottom: 5px;
+  font-size: 18px;
+  font-family: "Courier New", Courier, monospace;
+}
+
+input.form-control {
+  border: 0;
+  border-bottom: 1px solid gainsboro;
+}
+
+.image-account {
+  width: 12vw;
+  height: 7vw;
+  object-fit: cover;
+  margin-left: 20px;
+}
+
+@media screen and (max-width: 1200px) {
+  .bg-update {
+    width: 100% !important;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .image-account {
+    width: 50% !important;
+    height: auto;
+  }
+}

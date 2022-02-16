@@ -1,0 +1,128 @@
+.sidenav {
+  height: 100%;
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 0;
+  background-color: white;
+  overflow-x: hidden;
+  transition: all 0.6s ease;
+  padding-top: 60px;
+  border: 1px solid gainsboro;
+}
+
+.side {
+  width: 50vw;
+}
+
+.hide {
+  width: 0;
+}
+
+.header-sidebar {
+  top: 0;
+  position: absolute;
+  left: 0;
+  padding: 1em;
+  height: max-content;
+  background-color: black;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.sidenav div:first-child a {
+  color: white;
+}
+
+.sidenav h1 {
+  font-size: 50px;
+  font-weight: 900;
+  cursor: pointer;
+  text-transform: uppercase;
+  padding-top: 8px;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  background: -webkit-linear-gradient(
+    105deg,
+    rgb(28, 126, 238),
+    rgb(19, 218, 151)
+  );
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.sidenav a {
+  text-decoration: none;
+}
+
+.sidebar-item {
+  margin-top: 3em;
+  height: 75vh;
+}
+
+.sidebar-item ul {
+  margin-top: 70px;
+}
+
+.sidebar-item li {
+  padding: 20px 0 10px;
+}
+
+.sidebar-item a {
+  padding: 12px 20px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: rgb(73, 73, 73);
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 26px;
+  right: 15px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+#search-sidebar {
+  padding: 1.4em 1.2em;
+}
+
+#search-sidebar div:first-child {
+  justify-content: center;
+}
+
+div.txtSearch {
+  position: relative;
+}
+
+#search-sidebar input {
+  border: 1px solid gainsboro;
+  border-radius: 5px;
+  width: 280px;
+  height: 37px;
+  padding: 0 10px;
+}
+
+#search-sidebar button {
+  color: black;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+#search-sidebar div.btnSearch {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}
+
+@media screen and (max-width: 450px) {
+  .side {
+    width: 100vw;
+  }
+}

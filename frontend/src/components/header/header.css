@@ -1,0 +1,123 @@
+.big-header {
+  padding: 2em 0 0;
+  text-align: center;
+  max-width: 1200px;
+  margin: auto;
+  width: 85%;
+}
+
+.big-header .row {
+  -webkit-box-align: center;
+  align-items: center;
+}
+
+.big-header .row .col-3 {
+  padding-top: 0.75em;
+}
+
+.big-header h1 {
+  font-size: 90px;
+  font-weight: 900;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  background: -webkit-linear-gradient(
+    105deg,
+    rgb(252, 140, 49),
+    rgb(238, 28, 109)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.social-media,
+.right-bar {
+  display: flex;
+  list-style-type: none;
+  cursor: pointer;
+}
+
+.social-media li i:hover,
+.right-bar li i:hover {
+  color: white;
+}
+
+.social-media li i,
+.right-bar li i {
+  margin-right: 20px;
+  font-size: 1.4rem;
+  color: rgb(169, 173, 177);
+  vertical-align: middle;
+}
+
+.right-bar {
+  float: right;
+}
+
+.right-bar li i {
+  margin-top: 0.84rem;
+}
+
+.right-bar li i:last-child {
+  margin-right: 35px;
+}
+
+.header-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 30px;
+}
+
+.show-xs,
+.show-sm {
+  display: none;
+}
+
+.small-header {
+  padding: 2em 0;
+  width: 100%;
+}
+
+.small-header h1 {
+  font-size: 60px;
+  font-weight: 900;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  background: -webkit-linear-gradient(
+    105deg,
+    rgb(252, 140, 49),
+    rgb(238, 28, 109)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+#btnBar {
+  font-size: 25px;
+  color: white;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 1024px) {
+  .big-header {
+    width: 95%;
+  }
+
+  .big-header h1 {
+    font-size: 70px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .hidden-xs,
+  .hidden-sm {
+    display: none;
+  }
+
+  .show-xs,
+  .show-sm {
+    display: block;
+  }
+}

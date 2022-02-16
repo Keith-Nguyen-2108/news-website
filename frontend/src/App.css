@@ -1,0 +1,42 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  overflow: overlay;
+}
+
+.App {
+  overflow-x: hidden !important;
+  max-width: 100vw;
+}
+
+::selection {
+  background: rgb(19, 218, 151);
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  background: transparent !important;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: -webkit-linear-gradient(
+    45deg,
+    rgb(252, 140, 49),
+    rgb(238, 28, 109)
+  );
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-corner {
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}

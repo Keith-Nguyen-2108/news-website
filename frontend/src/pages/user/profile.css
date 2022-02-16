@@ -1,0 +1,124 @@
+.bg-profile {
+  width: 1200px;
+  margin: 5% auto;
+  padding: 3rem !important;
+}
+
+.bg-image {
+  background: -webkit-gradient(
+    linear,
+    left top,
+    right top,
+    from(rgb(252, 140, 49)),
+    to(rgb(238, 28, 109))
+  );
+  background: linear-gradient(to right, rgb(252, 140, 49), rgb(238, 28, 109));
+}
+
+.user-profile {
+  padding: 20px 0;
+}
+
+.card-block {
+  padding: 1.25rem;
+}
+
+.m-b-25 {
+  margin-bottom: 25px;
+}
+
+.img-radius {
+  border-radius: 50%;
+  width: 8em;
+  height: 8em;
+  object-fit: cover;
+}
+
+.username {
+  font-weight: 600;
+  font-size: 25px;
+}
+
+.profile-icon,
+.profile-icon,
+.profile-icon,
+.category-icon,
+.article-edit-icon,
+.article-delete-icon {
+  font-size: 20px;
+  position: relative;
+  cursor: pointer;
+}
+
+.profile-icon .tooltiptext,
+.profile-icon .tooltiptext,
+.profile-icon .tooltiptext,
+.category-icon .tooltiptext,
+.article-edit-icon .tooltiptext,
+.article-delete-icon .tooltiptext {
+  opacity: 0;
+  transition: opacity 1s;
+  width: max-content;
+  white-space: normal;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 3px 8px;
+  position: absolute;
+  z-index: 1;
+  bottom: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin-bottom: 5px;
+  font-size: 12px;
+}
+
+.profile-icon:hover .tooltiptext,
+.profile-icon:hover .tooltiptext,
+.profile-icon:hover .tooltiptext,
+.category-icon:hover .tooltiptext,
+.article-edit-icon:hover .tooltiptext,
+.article-delete-icon:hover .tooltiptext {
+  opacity: 1;
+}
+
+.m-b-20 {
+  margin-bottom: 20px;
+}
+
+.m-b-10 {
+  margin-bottom: 10px;
+}
+
+.p-b-5 {
+  padding-bottom: 5px !important;
+}
+
+.b-b-default {
+  border-bottom: 1px solid #f78456;
+}
+
+.f-w-600 {
+  font-weight: 600;
+}
+
+.m-t-40 {
+  margin-top: 40px;
+}
+
+@media screen and (max-width: 768px) {
+  .bg-profile {
+    width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .bg-profile {
+    width: 90% !important;
+    margin: 5em auto !important;
+    padding: 0 !important;
+  }
+}

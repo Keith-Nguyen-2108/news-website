@@ -1,0 +1,166 @@
+.list-total-card,
+.list-card {
+  width: 85vw;
+  margin: 5% auto 3%;
+}
+
+.list-card {
+  margin-top: 3%;
+}
+
+.card-total,
+.card-list {
+  display: flex;
+  justify-content: space-around;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+    rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+  padding: 2em;
+  border-radius: 10px;
+}
+
+.card-total {
+  width: 24%;
+}
+
+.card-list {
+  width: 32%;
+  padding: 0;
+}
+
+.card-list .card-header {
+  height: auto;
+  border-bottom: 1px solid rgb(224, 224, 224);
+}
+
+.card-list .card-header h4 {
+  padding-top: 0.5rem;
+  font-size: 18px;
+  font-family: Marcellus;
+}
+
+/* .card-total h1,
+.card-total span,
+.card-total i {
+  background: -webkit-linear-gradient(
+    45deg,
+    rgb(252, 140, 49),
+    rgb(238, 28, 109)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+} */
+
+.card-total h1 {
+  font-size: 2.5em;
+  font-family: Marcellus;
+}
+
+.card-total span {
+  text-transform: uppercase;
+  font-size: 1.2em;
+}
+
+.card-total i {
+  font-size: 2em;
+}
+
+.card-list .card-body {
+  padding: 2rem;
+}
+
+.list-item,
+.list-item-user {
+  list-style: none;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.list-item:before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  bottom: 0;
+  height: 89%;
+  left: 15px;
+  border-left: 1px solid #e0e9f1;
+}
+
+.list-item li,
+.list-item-user li {
+  position: relative;
+  margin-bottom: 23px;
+  padding-left: 55px;
+  align-items: center;
+  width: 100%;
+}
+
+.list-item-user li {
+  padding-left: 10px;
+}
+
+.list-item-icon {
+  position: absolute;
+  left: 9px;
+  top: 0;
+  border-radius: 50%;
+  width: 13px;
+  height: 13px;
+  z-index: 2;
+  padding: 2;
+  background-color: crimson;
+}
+
+.list-item li:first-child i.list-item-icon {
+  background-color: rgb(4, 206, 105);
+}
+
+.list-item li:nth-child(2) i.list-item-icon {
+  background-color: rgb(112, 125, 241);
+}
+
+.list-item h6,
+.list-item-user h6 {
+  font-weight: 500;
+  font-size: 16px;
+  font-family: Marcellus;
+}
+
+.list-item h6:last-child,
+.list-item-user div div h6:last-child {
+  font-family: "Courier New", Courier, monospace;
+  padding-top: 2px;
+}
+
+.list-item-user img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-left: 10px;
+}
+
+@media screen and (max-width: 1440px) {
+  .list-total-card,
+  .list-card {
+    width: 90vw;
+  }
+}
+
+@media (max-width: 1100px) {
+  .card-total,
+  .card-list {
+    width: 48%;
+    margin-bottom: 3em;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-total,
+  .card-list {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

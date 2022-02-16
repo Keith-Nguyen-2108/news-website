@@ -1,0 +1,48 @@
+.bg-createPost {
+  width: 80%;
+  margin: 5% auto;
+  padding: 3rem !important;
+  border-radius: 25px;
+  word-wrap: break-word;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+    rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+}
+
+#frmCreatePost {
+  margin: 5% 0;
+}
+
+.titlePage {
+  font-size: 50px;
+  font-family: Marcellus;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+#frmCreatePost label {
+  margin-bottom: 5px;
+  font-size: 18px;
+  font-family: "Courier New", Courier, monospace;
+}
+
+#slTopic {
+  width: 200px;
+}
+
+.ck-editor__editable,
+#txtContentPost {
+  height: 30vh;
+}
+
+.image-preview {
+  width: 250px;
+  height: auto;
+  object-fit: cover;
+  margin: auto;
+}
+
+@media screen and (max-width: 1200px) {
+  .bg-createPost {
+    width: 100%;
+  }
+}
