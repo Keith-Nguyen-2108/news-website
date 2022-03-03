@@ -122,16 +122,18 @@ const CreatePost = () => {
                                 } */}
             </select>
           </div>
-          <Input
-            label="Title post"
-            type="text"
-            id="txtTitlePost"
-            ref={titleRef}
-            placeholder="Enter title"
-            className="form-control border"
-            min={1}
-            required={true}
-          />
+          <div className="form-group mt-4">
+            <Input
+              label="Title post"
+              type="text"
+              id="txtTitlePost"
+              ref={titleRef}
+              placeholder="Enter title"
+              className="form-control border"
+              min={1}
+              required={true}
+            />
+          </div>
           <div className="form-group mt-4">
             <label htmlFor="txtShortDesc">Short description:</label>
             <textarea

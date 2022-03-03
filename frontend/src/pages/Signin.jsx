@@ -20,7 +20,7 @@ const Signin = () => {
   const handleLogin = async () => {
     try {
       const data = {
-        username: emailOrPhoneRef.current.value(),
+        email: emailOrPhoneRef.current.value(),
         password: passwordRef.current.value(),
       };
       const success = await dispatch(login(data));

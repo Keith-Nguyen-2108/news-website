@@ -3,16 +3,17 @@ import { refreshToken } from "../redux/slice/UserSlice";
 import jwt_decode from "jwt-decode";
 import store from "../redux/store/store";
 
-const instance = axios.create({
+// Custome axios for user
+const axiosUser = axios.create({
   baseURL: "http://localhost:8000/api",
 });
 
-export default instance;
+export default axiosUser;
 
-instance.interceptors.request.use(
+axiosUser.interceptors.request.use(
   async (config) => {
     const userStore = store.getState()?.user?.user;
-    console.log(userStore);
+    // console.log(userStore);
     let currentTime = new Date().getTime();
 
     if (userStore?.accessToken) {
@@ -33,3 +34,8 @@ instance.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
+// Custome axios for get data
+export const axiosGetData = axios.create({
+  baseURL: "http://localhost:8000/api",
+});
