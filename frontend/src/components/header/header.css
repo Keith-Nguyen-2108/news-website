@@ -37,10 +37,10 @@
   cursor: pointer;
 }
 
-.social-media li i:hover,
+/* .social-media li i:hover,
 .right-bar li i:hover {
   color: white;
-}
+} */
 
 .social-media li i,
 .right-bar li i {

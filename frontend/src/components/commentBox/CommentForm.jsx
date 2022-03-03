@@ -13,7 +13,7 @@ const CommentForm = ({
   // console.log(text);
   // const textRef = useRef();
   const handleKeypress = (e) => {
-    if (e.keyCode === 13) {
+    if (e.keyCode === 13 && text !== "") {
       handleSubmit(text);
       setText("");
     }

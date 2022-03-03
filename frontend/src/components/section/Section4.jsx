@@ -20,15 +20,19 @@ const Section4 = ({ category }) => {
 
   useEffect(() => {
     // const windowHeight = window.innerHeight + window.scrollY
-    const ul = document.querySelector(".section-4-header ul").offsetTop;
-    window.onscroll = () => {
-      const windowHeight = window.innerHeight + window.scrollY;
-      if (windowHeight - ul > 0 && windowHeight - ul < 100) {
-        randomEffect();
-      }
-    };
+    let time = setInterval(() => {
+      const ul = document.querySelector(".section-4-header ul").offsetTop;
+      window.onscroll = () => {
+        const windowHeight = window.innerHeight + window.scrollY;
+        if (windowHeight - ul > 0 && windowHeight - ul < 100) {
+          randomEffect();
+        } else {
+          window.removeEventListener("scroll", randomEffect, true);
+        }
+      };
+    }, 3000);
     return () => {
-      window.removeEventListener("scroll", randomEffect, true);
+      clearInterval(time);
     };
   }, []);
 

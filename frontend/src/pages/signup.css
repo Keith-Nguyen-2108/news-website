@@ -1,0 +1,33 @@
+.bg-signup {
+  width: 80%;
+  margin: 5% auto;
+  padding: 3rem !important;
+  border-radius: 25px;
+  word-wrap: break-word;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+    rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+}
+
+.signup {
+  font-size: 50px;
+  font-family: Marcellus;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+#frmSignup label {
+  font-size: 18px;
+  margin-bottom: 5px;
+  font-family: "Courier New", Courier, monospace;
+}
+
+#frmSignup i {
+  cursor: pointer;
+  font-size: 18px;
+}
+
+@media screen and (max-width: 1200px) {
+  .bg-signup {
+    width: 100%;
+  }
+}

@@ -10,6 +10,7 @@ import Footer from "./components/footer/Footer";
 
 import SinglePost from "./pages/SinglePost";
 import Signin from "./pages/Signin";
+import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
 import CreatePost from "./pages/user/CreatePost";
 import Profile from "./pages/user/Profile";
@@ -51,6 +52,9 @@ function App() {
             <Route path="/signin">
               <Signin />
             </Route>
+            <Route path="/signup">
+              <Signup />
+            </Route>
             <Route path="/create">
               <CreatePost />
             </Route>
@@ -69,7 +73,7 @@ function App() {
             <Route path="/articles-list">
               <ArticlesList />
             </Route>
-            <Route component={NotFound} />
+            <Route path="*" component={NotFound} />
           </Switch>
           <Footer />
         </BrowserRouter>

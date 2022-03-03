@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import instance from "../../components/axios";
+import axiosUser from "../../components/axios";
+import { axiosGetData } from "../../components/axios";
 
 const initialUser = {
   user: JSON.parse(localStorage?.getItem("user")) || null,
@@ -12,7 +13,7 @@ export const login = createAsyncThunk(
   async (payload, thunkAPI) => {
     // console.log("Login: " + payload);
     try {
-      const res = await instance.post("/login", payload);
+      const res = await axiosUser.post("/auth/login", payload);
       return res.data;
     } catch (error) {
       // console.log(error.response.data);
@@ -26,8 +27,8 @@ export const logout = createAsyncThunk(
   "user/logout",
   async (_, { getState }) => {
     const state = getState();
-    const res = await instance.post(
-      "/logout",
+    const res = await axiosUser.post(
+      "/auth/logout",
       {
         token: state.user.user.refreshToken,
       },
@@ -46,9 +47,12 @@ export const refreshToken = createAsyncThunk(
   "user/refreshToken",
   async (_, { getState }) => {
     const state = getState();
-    const res = await instance.post("/refresh", {
-      token: state.user?.user?.refreshToken,
-    });
+    const res = await axiosGetData.post(
+      "http://localhost:8000/api/auth/refresh",
+      {
+        token: state.user?.user?.refreshToken,
+      }
+    );
 
     const newUser = {
       ...state.user.user,
@@ -65,7 +69,7 @@ export const deleteUser = createAsyncThunk(
     // console.log(initialUser.user);
     const state = getState();
     console.log(state.user);
-    const res = await instance.delete(`/user/${payload}`, {
+    const res = await axiosUser.delete(`/user/${payload}`, {
       headers: {
         authorization: `Bearer ${state.user?.user.accessToken}`,
       },

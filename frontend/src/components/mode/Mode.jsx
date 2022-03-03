@@ -8,10 +8,10 @@ const Mode = () => {
   return (
     <button className="btn-change-theme" onClick={toggleTheme}>
       <span className={`${isDark === false && "active"}`}>
-        <i class="far fa-sun"></i>
+        <i className="far fa-sun"></i>
       </span>
       <span className={`${isDark === true && "active"}`}>
-        <i class="far fa-moon"></i>
+        <i className="far fa-moon"></i>
       </span>
     </button>
   );
