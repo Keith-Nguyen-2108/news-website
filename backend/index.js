@@ -9,6 +9,7 @@ const authRoute = require("./routes/auth");
 const categoryRoute = require("./routes/categories");
 const postRoute = require("./routes/post");
 const commentRoute = require("./routes/comments");
+const userRoute = require("./routes/users");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -37,6 +38,7 @@ app.use("/api/auth", authRoute);
 app.use("/api/category", categoryRoute);
 app.use("/api/post", postRoute);
 app.use("/api/comment", commentRoute);
+app.use("/api/user", userRoute);
 
 // const users = [
 //   {

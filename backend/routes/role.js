@@ -27,7 +27,36 @@ router.get("", async (_, res) => {
       res.status(500).json(err);
     });
 });
-module.exports = router;
+
+//Get single role
+router.get("/:id", async (req, res) => {
+  if (req.params.id) {
+    await Role.findById(req.params.id)
+      .then((role) => {
+        res.status(200).json(role);
+      })
+      .catch((err) => {
+        res.status(500).json(err);
+      });
+  }
+});
+
+//Update
+router.patch("/:id", async (req, res) => {
+  if (req.params.id) {
+    await Role.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true }
+    )
+      .then((role) => {
+        res.status(200).json(role);
+      })
+      .catch((err) => {
+        res.status(500).json(err);
+      });
+  }
+});
 
 // Delete
 router.delete("/:id", async (req, res) => {
@@ -41,3 +70,5 @@ router.delete("/:id", async (req, res) => {
       });
   }
 });
+
+module.exports = router;
