@@ -25,8 +25,17 @@ router.post("/create", async (req, res) => {
 });
 
 // Get all posts
-router.get("", async (_, res) => {
-  await Post.find()
+router.get("", async (req, res) => {
+  // const authorID = req.query.authorID;
+  // const categoriesID = req.query.categoriesID;
+  // if (authorID) {
+  //   posts = await Post.find({ authorID });
+  // } else if (categoriesID) {
+  //   posts = await Post.find({ categoriesID });
+  // } else {
+  //   posts =
+  // }
+  Post.find()
     .populate("categoriesID", "_id cateName parentID")
     .populate("authorID", "_id username avatar")
     .populate({
@@ -36,6 +45,40 @@ router.get("", async (_, res) => {
         select: "_id username avatar",
       },
     })
+    .then((post) => {
+      res.status(200).json(post);
+    })
+    .catch((err) => {
+      res.status(500).json(err);
+    });
+});
+
+// Sort articles by category
+router.get("/getPostsFollowCate", async (_, res) => {
+  await Post.aggregate([
+    {
+      $group: {
+        _id: "$categoriesID",
+        postID: { $first: "$_id" },
+        post: { $first: "$title" },
+      },
+    },
+    {
+      $lookup: {
+        from: "categories",
+        localField: "_id",
+        foreignField: "_id",
+        as: "cate_doc",
+      },
+    },
+    {
+      $project: {
+        cateName: "$cate_doc.cateName",
+        postID: "$postID",
+        posts: "$post",
+      },
+    },
+  ])
     .then((post) => {
       res.status(200).json(post);
     })

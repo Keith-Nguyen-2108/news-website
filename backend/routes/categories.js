@@ -17,6 +17,19 @@ router.post("/create", async (req, res) => {
     });
 });
 
+// Delete
+router.delete("/:id", async (req, res) => {
+  if (req.params.id) {
+    await Category.findByIdAndDelete(req.params.id)
+      .then(() => {
+        res.status(200).json("Category deleted");
+      })
+      .catch((err) => {
+        res.status(500).json(err);
+      });
+  }
+});
+
 // Get all category
 router.get("", async (_, res) => {
   await Category.find()
@@ -36,7 +49,7 @@ router.get("", async (_, res) => {
     });
 });
 
-router.get("/sort", async (_, res) => {
+router.get("/childFromParent", async (_, res) => {
   await Category.aggregate([
     {
       $graphLookup: {

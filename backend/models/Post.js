@@ -17,12 +17,10 @@ const PostSchema = new mongoose.Schema(
       require: true,
       default: "",
     },
-    categoriesID: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Category",
-      },
-    ],
+    categoriesID: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+    },
     avatar: {
       type: String,
       require: true,
@@ -35,6 +33,14 @@ const PostSchema = new mongoose.Schema(
     status: {
       type: String,
       default: "Not approved yet",
+    },
+    like: {
+      type: Number,
+      default: 0,
+    },
+    view: {
+      type: Number,
+      default: 0,
     },
     commentsID: [
       {

@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
+const nodemailer = require("nodemailer");
 
 // Get all users
 router.get("/", async (req, res) => {
@@ -97,4 +98,28 @@ router.post("/groupByYear", async (req, res) => {
     });
 });
 
+// Send email
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "mean.news.nienluan@gmail.com",
+    pass: "mean1234",
+  },
+});
+
+router.post("/sendMail", () => {
+  let mailOptions = {
+    from: "mean.news.nienluan@gmail.com",
+    to: "minhnhakeith@gmail.com",
+    subject: "Reset password",
+    text: "Your new password: 123456. Use this password to login and reset your new password",
+  };
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+});
 module.exports = router;

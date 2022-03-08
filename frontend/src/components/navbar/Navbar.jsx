@@ -1,5 +1,5 @@
-import React, { useContext, useEffect } from "react";
-import HotelDropDown from "../dropdown/HotelDropDown";
+import React, { useContext, useEffect, useState } from "react";
+import CategoryDropDown from "../dropdown/CategoryDropDown";
 import { Link } from "react-router-dom";
 import "./navbar.css";
 import { ThemeContext } from "../../context/Context";
@@ -7,7 +7,8 @@ import { axiosGetData } from "../axios";
 
 const Navbar = () => {
   const [{ currentComponentTheme }] = useContext(ThemeContext);
-  // const [data, setData] = useState([]);
+  const [parent, setParent] = useState([]);
+  const [child, setChild] = useState();
 
   const getHighestLevelCategory = (array) => {
     const highestLevelComment = array.filter((item) => item.childName !== "");
@@ -23,11 +24,11 @@ const Navbar = () => {
 
   useEffect(() => {
     const getCategory = async () => {
-      await axiosGetData.get("/category/sort").then((res) => {
-        let parent = getHighestLevelCategory(res.data);
-        console.log(parent);
-        let child = getChildCategories(parent);
-        console.log(child);
+      await axiosGetData.get("/category/childFromParent").then((res) => {
+        let parents = getHighestLevelCategory(res.data);
+        setParent(parents);
+        let childs = getChildCategories(parents);
+        setChild(childs);
       });
     };
     getCategory();
@@ -57,71 +58,22 @@ const Navbar = () => {
                 Home
               </Link>
             </li>
-            <li>
-              <Link
-                to="/article"
-                style={{
-                  color: currentComponentTheme.color,
-                }}
-              >
-                Home
-                <div className="dropdown-movie">
-                  <HotelDropDown />
-                </div>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/article"
-                style={{
-                  color: currentComponentTheme.color,
-                }}
-              >
-                Home
-                <div className="dropdown-movie">
-                  <HotelDropDown />
-                </div>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/article"
-                style={{
-                  color: currentComponentTheme.color,
-                }}
-              >
-                Home
-                <div className="dropdown-movie">
-                  <HotelDropDown />
-                </div>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/article"
-                style={{
-                  color: currentComponentTheme.color,
-                }}
-              >
-                Home
-                <div className="dropdown-movie">
-                  <HotelDropDown />
-                </div>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/article"
-                style={{
-                  color: currentComponentTheme.color,
-                }}
-              >
-                Home
-                <div className="dropdown-movie">
-                  <HotelDropDown />
-                </div>
-              </Link>
-            </li>
+            {parent &&
+              parent.map((item, index) => (
+                <li key={item._id}>
+                  <Link
+                    to="/article"
+                    style={{
+                      color: currentComponentTheme.color,
+                    }}
+                  >
+                    {item.cateName}
+                    <div className="dropdown-movie">
+                      <CategoryDropDown item={child} index={index} />
+                    </div>
+                  </Link>
+                </li>
+              ))}
           </ul>
         </div>
       </div>

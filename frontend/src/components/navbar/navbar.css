@@ -63,14 +63,17 @@
 
 .dropdown-movie {
   position: absolute;
+  top: 100%;
   left: 0;
   width: 100%;
   opacity: 0;
   visibility: hidden;
+  transform: scale(1, 0.9);
+  transform-origin: top left;
+  transition: all 0.5s ease;
 }
 
-.nav-cus a:hover .dropdown-movie {
+.nav-cus li:hover .dropdown-movie {
   visibility: visible;
   opacity: 1;
-  transition: all 0.5s ease;
 }
