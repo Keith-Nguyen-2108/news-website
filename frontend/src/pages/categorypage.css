@@ -1,0 +1,126 @@
+.category__container {
+  width: 1200px;
+  margin: 0 auto 5%;
+}
+
+.category__page__title {
+  text-align: center;
+  font-weight: 500;
+  font-size: 60px;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  letter-spacing: 3px;
+  text-transform: capitalize;
+}
+
+.category__page__title,
+.category__section1,
+.category__section2 {
+  margin-top: 65px;
+}
+
+.category__big_image,
+.category__small_image {
+  /* margin: 30px 0 0; */
+  position: relative;
+  cursor: pointer;
+}
+
+.category__big_image img {
+  width: 100%;
+  object-fit: cover;
+  height: 300px;
+}
+
+.category-page__category__post {
+  padding: 5px;
+  background-color: coral;
+  color: white;
+  font-size: 12px;
+  bottom: 20px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.category-page__short-desc {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  padding-left: 20px;
+  width: 100%;
+  background-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 1)
+  );
+  /* border-radius: 0 0 15px 15px; */
+}
+
+.category-page__title__post {
+  font-size: 20px;
+  word-break: break-word;
+  width: 80%;
+  margin-top: 7px;
+  color: white;
+  font-family: Marcellus, cursive;
+  letter-spacing: 1px;
+}
+
+.category__small_image {
+  width: 47.5%;
+}
+
+.category__small_image img {
+  width: 100%;
+  object-fit: cover;
+  height: 400px;
+}
+
+.category__section2__listpost {
+  position: relative;
+}
+
+.category__post__container {
+  margin: 0%;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  width: auto;
+}
+
+.category__avatar__post {
+  width: 400px;
+  height: 300px;
+  object-fit: cover;
+  filter: brightness(0.7);
+}
+
+.category__content__post {
+  margin-left: 7%;
+  overflow: hidden;
+  line-height: 1.4;
+}
+
+.category__title__post {
+  font-weight: 500;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  word-break: break-word;
+  font-size: 22px;
+}
+
+.category__post__cate-name {
+  color: rgb(185, 185, 185);
+  text-transform: uppercase;
+  font-family: "Courier New", Courier, monospace;
+}
+
+/* .description-listpost {
+  font-size: 14px;
+  color: rgb(175, 172, 172);
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+} */
+
+.category__post__created-date {
+  font-size: 16px;
+}

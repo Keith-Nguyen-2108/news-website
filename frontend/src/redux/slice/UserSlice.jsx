@@ -27,7 +27,7 @@ export const logout = createAsyncThunk(
   "user/logout",
   async (_, { getState }) => {
     const state = getState();
-    const res = await axiosUser.post(
+    const res = await axiosGetData.post(
       "/auth/logout",
       {
         token: state.user.user.refreshToken,

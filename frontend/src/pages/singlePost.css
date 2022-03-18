@@ -1,7 +1,7 @@
 .post {
   height: auto;
   border-radius: 25px;
-  margin: 5% auto;
+  margin: 0 auto;
   width: 700px;
 }
 
@@ -36,7 +36,7 @@
 
 .image-post {
   width: 100%;
-  height: 50vh;
+  height: 600px;
   object-fit: cover;
   /* mix-blend-mode: hard-light; */
 }
@@ -44,6 +44,11 @@
 .description-post {
   width: 100%;
   font-size: 16px;
+}
+
+.description-post img {
+  width: 100%;
+  object-fit: cover;
 }
 
 @media screen and (max-width: 768px) {

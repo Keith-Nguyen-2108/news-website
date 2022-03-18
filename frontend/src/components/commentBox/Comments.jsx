@@ -79,7 +79,7 @@ const Comments = () => {
           <CommentForm handleSubmit={addNewComment} submitLabel="Post" />
         </div>
       ) : (
-        <h6 className="text-white">Login to comment</h6>
+        <h6>Login to comment</h6>
       )}
       {highestLevelComment &&
         highestLevelComment.map((item) => (

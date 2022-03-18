@@ -1,37 +1,63 @@
-import React, { useRef, useState, useContext } from "react";
+import React, { useRef, useState, useContext, useEffect } from "react";
 import Input from "../../components/input/Input";
-// import axios from 'axios'
+// import axios from "axios";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 // import { Context } from '../../context/Context'
 import { ThemeContext } from "../../context/Context";
+import { axiosGetData } from "../../components/axios";
 import "./createpost.css";
+// import { useSelector } from "react-redux";
 
-const CreatePost = () => {
+const CreatePost = ({ user }) => {
   const [{ currentComponentTheme }] = useContext(ThemeContext);
+  // const user = useSelector((state) => state.user.user);
+  // console.log(user);
 
   const titleRef = useRef();
   const shortDescriptionRef = useRef();
-  const [content, setContentPost] = useState("");
-  const [categories, setCatePost] = useState([]);
+  const [category, setCategory] = useState("");
+  let [smallCategories, setSmallCategories] = useState([]);
+  const [bigCategories, setBigCategories] = useState([]);
+  // const [onWrite, setOnWrite] = useState(true);
+
+  // const [languages, setLanguages] = useState([]);
+  // const [from, setFrom] = useState("en");
+  // const [input, setInput] = useState("");
+  // const [output, setOutput] = useState("");
   // const [title, setTitlePost] = useState("");
   // const [shortDescription, setShortContentPost] = useState("");
-  // const [description, setContentPost] = useState("");
+  const [description, setContentPost] = useState("");
   const [avatar, setAvatar] = useState(null);
-  // const [category, setCategory] = useState([]);
 
-  // const getCategory = async() =>{
-  //         await axios.get("/categories")
-  //                     .then(res =>{
-  //                         const value = res.data
-  //                         setCategory(value)
-  //                     })
-  // }
+  const getCategories = async () => {
+    await axiosGetData.get("/category").then((res) => {
+      const value = res.data;
+      const bigCate = value.filter((item) => item.parentID === null);
+      setBigCategories(bigCate);
+      const smallCate = value.filter((item) => item.parentID !== null);
+      setSmallCategories(smallCate);
+    });
+  };
 
-  // useEffect(()=>{
+  useEffect(() => {
+    // axios.get("https://libretranslate.de/languages").then((res) => {
+    //   setLanguages(res.data);
+    // });
+    getCategories();
+  }, []);
 
-  //     getCategory()
-  // },[])
+  const handleChangeBigCategory = (e) => {
+    if (e.target.value) {
+      let arraySmallCate = [...smallCategories].splice(0, 14);
+      arraySmallCate = arraySmallCate.filter(
+        (cate) => cate.parentID.cateName === e.target.value
+      );
+      smallCategories = smallCategories.filter((cate) => !Array.isArray(cate));
+      let newArr = [...smallCategories, arraySmallCate];
+      setSmallCategories(newArr);
+    }
+  };
 
   // const hanldeChange = async(e) =>{
   //     if(e.target.files){
@@ -45,47 +71,83 @@ const CreatePost = () => {
   //     }
   // }
 
-  // const {user} = useContext(Context)
+  // const changeSelect = (e) => {
+  //   if (e.target.value !== "") {
+  //     setOnWrite(!onWrite);
+  //     console.log(e.target.value);
+  //     setFrom(e.target.value);
+  //   }
+  // };
 
-  const hadleSubmit = async (e) => {
-    // e.preventDefault();
+  // const translate = async () => {
+  //   let to = "en";
+  //   let params = {
+  //     q: input,
+  //     source: from,
+  //     target: to,
+  //     api_key: "xxxxxxxx--xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  //   };
+  //   await axios
+  //     .post("https://libretranslate.de/translate", params)
+  //     .then((res) => {
+  //       setOutput(res.data.translatedText);
+  //       console.log(output);
+  //     });
+  // };
+
+  const formatPost = async () => {
     const post = {
       title: titleRef.current.value(),
       shortDescription: shortDescriptionRef.current.value,
-      content,
-      // userId: user._id,
-      // categories,
+      description,
+      categoriesID: category,
+      authorID: user.id,
     };
-    console.log(post);
-    // if(photos){
-    //     const data = new FormData();
-    //     const d = new Date();
-    //     const moment = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear() + "-" + d.getHours() + "-"
-    //     let arrName = []
-    //     for (let i = 0; i < photos.length; i++) {
-    //         data.append("files", photos[i])
-    //         arrName.push( moment + photos[i].name)
-    //     }
-    //     post.photos = arrName
-    //     try{
-    // console.log(arrName)
-    // const res = await axios.post("/posts/create" , post)
-    // if(res){
-    //     await axios.post("/upload/post/avatar", data)
-    //     alert("Your article has been sent. Please, waiting for approval")
-    //     window.location.replace("/articlelist")
-    // }
-    // console.log(post)
-    //     }
-    //     catch(err){
-    //         alert("Change your title!")
-    //     }
-    // }
-    //}
-  };
-  // console.log("rerender-create post");
 
-  // console.log(avatarRef.current);
+    const data = new FormData();
+    const d = new Date();
+    const moment =
+      d.getDate() +
+      "-" +
+      (d.getMonth() + 1) +
+      "-" +
+      d.getFullYear() +
+      "-" +
+      d.getHours() +
+      "-";
+    // let arrName = []
+    // for (let i = 0; i < photos.length; i++) {
+    //     data.append("files", photos[i])
+    //     arrName.push( moment + photos[i].name)
+    // }
+    // post.photos = arrName
+    const filename = avatar.name;
+    data.append("name", filename);
+    data.append("file", avatar);
+    post.avatar = moment + filename;
+    console.log(post);
+    try {
+      const res = await axiosGetData.post("/post/create", post);
+      if (res) {
+        await axiosGetData.post("/upload/post/avatar", data);
+        alert("Your article has been sent. Please, waiting for approval");
+        window.location.replace("/profile");
+      }
+      // console.log(post);
+    } catch (err) {
+      alert(err);
+    }
+  };
+
+  const hadleSubmit = async (e) => {
+    e.preventDefault();
+    // translate();
+    if (avatar.length < 1) {
+      alert("You must upload an images for avatar of an article");
+    } else {
+      await formatPost();
+    }
+  };
 
   return (
     <div className="container">
@@ -97,6 +159,15 @@ const CreatePost = () => {
         }}
       >
         <p className="titlePage">Create new post</p>
+        {/* <p
+          className="note"
+          style={{
+            fontSize: "14px",
+            color: "red",
+          }}
+        >
+          Your article will be automatically translated into English
+        </p> */}
         <form
           name="frmCreatePost"
           id="frmCreatePost"
@@ -106,20 +177,38 @@ const CreatePost = () => {
           // onSubmit={(e) => hadleSubmit(e)}
         >
           <div className="form-group mt-4">
-            <label htmlFor="slTopic">Topic post:</label>
+            <label htmlFor="slTopic">Big topic post:</label>
             <select
               className="form-select"
-              onChange={(e) => setCatePost(e.target.value)}
+              onChange={(e) => handleChangeBigCategory(e)}
               defaultValue=""
             >
               <option key="" value="" disabled="disabled">
-                Choose a topic
+                Choose a big topic
               </option>
-              {/* {
-                                    category.map(item =>(
-                                            <option key={item._id} value={item.cateName}>{item.cateName}</option>
-                                    )) 
-                                } */}
+              {bigCategories.map((item) => (
+                <option key={item._id} value={item.cateName}>
+                  {item.cateName}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="form-group mt-4">
+            <label htmlFor="slTopic">Small topic post - Main topic:</label>
+            <select
+              className="form-select"
+              onChange={(e) => setCategory(e.target.value)}
+              defaultValue=""
+            >
+              <option key="" value="" disabled="disabled">
+                Choose a main topic
+              </option>
+              {Array.isArray(smallCategories[smallCategories.length - 1]) &&
+                smallCategories[smallCategories.length - 1].map((item) => (
+                  <option key={item._id} value={item._id}>
+                    {item.cateName}
+                  </option>
+                ))}
             </select>
           </div>
           <div className="form-group mt-4">
@@ -147,27 +236,49 @@ const CreatePost = () => {
             ></textarea>
           </div>
           <div className="form-group mt-4">
-            <label htmlFor="txtContentPost">Content post: </label>
+            <label htmlFor="txtContentPost">
+              Content post:
+              {/* <select
+                defaultValue={"default"}
+                className="select__language"
+                onChange={(e) => changeSelect(e)}
+              >
+                <option key="" value="default" disabled>
+                  Choose a language to change
+                </option>
+                {languages &&
+                  languages.map((lang) => (
+                    <option key={lang.code} value={lang.code}>
+                      {lang.name}
+                    </option>
+                  ))}
+              </select> */}
+            </label>
             <CKEditor
               id="txtContentPost"
               editor={ClassicEditor}
               placeholder="Enter content"
               enterMode="CKEDITOR.ENTER_P"
+              // disabled={onWrite}
               onChange={(event, editor) => {
                 const data = editor.getData();
-                console.log({ event, editor, data });
                 setContentPost(data);
               }}
               config={{
                 ckfinder: {
-                  uploadUrl: "/upload/post",
+                  uploadUrl: "http://localhost:5000/api/upload/post",
                 },
-                mediaEmbed: {
-                  previewsInData: true,
-                },
+                // mediaEmbed: {
+                //   previewsInData: true,
+                // },
+                // isReadOnly: onWrite,
               }}
             />
           </div>
+          {/* <div className="form-group mt-4">
+              
+          </div> */}
+
           <Input
             label="Avatar post"
             type="file"

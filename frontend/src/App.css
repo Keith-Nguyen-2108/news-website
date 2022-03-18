@@ -9,7 +9,7 @@ body {
 }
 
 .App {
-  overflow-x: hidden !important;
+  /* overflow-x: hidden !important; */
   max-width: 100vw;
 }
 
@@ -39,4 +39,10 @@ body {
 
 ::-webkit-scrollbar-track {
   background: transparent;
+}
+
+a,
+a:hover,
+a:focus {
+  color: inherit;
 }

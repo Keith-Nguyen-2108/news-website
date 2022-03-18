@@ -6,6 +6,7 @@ import Sidebar from "../sidebar/Sidebar";
 import "./header.css";
 import { logout } from "../../redux/slice/UserSlice";
 import { useDispatch } from "react-redux";
+import { linkAvt } from "../axios";
 
 function Header({ user }) {
   const history = useHistory();
@@ -62,7 +63,7 @@ function Header({ user }) {
                     <div className="d-flex">
                       <img
                         className="header-avatar"
-                        src="https://d2eohwa6gpdg50.cloudfront.net/wp-content/uploads/sites/6/2021/08/16115025/white-rabbit-2-2.jpeg"
+                        src={linkAvt + user.avatar}
                         alt=""
                         onClick={() => history.push("/profile")}
                       />

@@ -1,6 +1,6 @@
 import "./App.css";
 import React, { Suspense, useContext } from "react";
-import { Route, BrowserRouter, Switch } from "react-router-dom";
+import { Route, Switch, useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import store from "./redux/store/store";
 
@@ -19,6 +19,7 @@ import UpdateInfo from "./pages/user/UpdateInfo";
 import ArticlesList from "./pages/user/ArticlesList";
 import Mode from "./components/mode/Mode";
 import { ThemeContext } from "./context/Context";
+import CategoryPage from "./pages/CategoryPage";
 // import Home from "./pages/Home";
 
 const HomePage = React.lazy(() => {
@@ -29,6 +30,7 @@ const HomePage = React.lazy(() => {
 
 function App() {
   const user = useSelector((state) => state.user.user);
+  const history = useHistory();
 
   const [{ currentTheme }] = useContext(ThemeContext);
 
@@ -41,42 +43,43 @@ function App() {
       }}
     >
       <Suspense fallback={<Loading />}>
-        <BrowserRouter>
-          <Header user={user} />
-          <Mode />
-          <Switch>
-            <Route exact path="/" component={HomePage}></Route>
-            <Route user={user} path="/article">
-              <SinglePost />
-            </Route>
-            <Route path="/signin">
-              <Signin />
-            </Route>
-            <Route path="/signup">
-              <Signup />
-            </Route>
-            <Route path="/create">
-              <CreatePost />
-            </Route>
-            <Route path="/profile">
-              <Profile />
-            </Route>
-            <Route path="/dashboard">
-              <SystemAdministrator />
-            </Route>
-            <Route path="/create-article">
-              <CreatePost />
-            </Route>
-            <Route path="/update-profile">
-              <UpdateInfo user={user} />
-            </Route>
-            <Route path="/articles-list">
-              <ArticlesList />
-            </Route>
-            <Route path="*" component={NotFound} />
-          </Switch>
-          <Footer />
-        </BrowserRouter>
+        <Header user={user} />
+        <Mode />
+        <Switch>
+          <Route exact path="/" component={HomePage}></Route>
+          <Route path="/article/:id">
+            <SinglePost user={user} />
+          </Route>
+          <Route path="/category/:name">
+            <CategoryPage />
+          </Route>
+          <Route path="/signin">
+            <Signin />
+          </Route>
+          <Route path="/signup">
+            <Signup />
+          </Route>
+          <Route path="/create">
+            {user ? <CreatePost user={user} /> : history.push("/signin")}
+          </Route>
+          <Route path="/profile">
+            <Profile />
+          </Route>
+          <Route path="/dashboard">
+            <SystemAdministrator />
+          </Route>
+          <Route path="/create-article">
+            <CreatePost />
+          </Route>
+          <Route path="/update-profile">
+            <UpdateInfo />
+          </Route>
+          <Route path="/articles-list">
+            <ArticlesList />
+          </Route>
+          <Route path="*" component={NotFound} />
+        </Switch>
+        <Footer />
       </Suspense>
     </div>
   );

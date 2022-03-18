@@ -13,12 +13,11 @@
 }
 
 .sub-news {
+  overflow-x: hidden;
   width: 100%;
   height: auto;
   position: sticky;
-  top: 0;
-  overflow: hidden;
-  margin-top: 2.8rem;
+  top: 0px;
 }
 
 .rightbar {

@@ -2,21 +2,60 @@ import React, { useContext, useState, useRef } from "react";
 import Input from "../components/input/Input";
 import { ThemeContext } from "../context/Context";
 import "./signup.css";
-// import axios from 'axios'
+import { axiosGetData } from "../components/axios";
 
 const Signup = () => {
   const email = useRef();
-  const [username, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const [fullname, setFullName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [avatar, setAvatar] = useState(null);
+  const username = useRef();
+  const password = useRef();
+  const fullname = useRef();
+  const phone = useRef();
+  const [avatar, setAvatar] = useState("");
 
   const [{ currentComponentTheme }] = useContext(ThemeContext);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log(email.current.value());
+    if (phone.current.value().match(/[a-zA-Z]/g)) {
+      alert("Phone number can only enter the number!");
+    } else {
+      const user = {
+        email: email.current.value(),
+        username: username.current.value(),
+        password: password.current.value(),
+        fullname: fullname.current.value(),
+        phone: phone.current.value(),
+      };
+      if (avatar) {
+        const data = new FormData();
+        // console.log(data)
+        let d = new Date();
+        let moment =
+          d.getDate() +
+          "-" +
+          (d.getMonth() + 1) +
+          "-" +
+          d.getFullYear() +
+          "-" +
+          d.getHours() +
+          "-";
+        const filename = avatar.name;
+        data.append("name", filename);
+        data.append("file", avatar);
+        user.avatar = moment + filename;
+        try {
+          const res = await axiosGetData.post("/auth/register", user);
+          if (res) {
+            await axiosGetData.post("/upload/avatar", data);
+            window.location.replace("/signin");
+          }
+        } catch (err) {
+          alert(
+            "What you entered may already exist. Let's change something like username"
+          );
+        }
+      }
+    }
+
     // if(phone.match(/[a-zA-Z]/g)){
     //     alert("Phone number can only enter the number!")
     // }
@@ -67,11 +106,10 @@ const Signup = () => {
       >
         <h1 className="signup">Register</h1>
         <form
-          name="frmSignup"
           id="frmSignup"
           method="post"
           encType="multipart/form-data"
-          onSubmit={(e) => handleSubmit(e)}
+          onSubmit={(e) => e.preventDefault()}
         >
           <div className="form-group mt-4">
             <label htmlFor="slTopic">Want to become:</label>
@@ -84,46 +122,35 @@ const Signup = () => {
             </select>
           </div>
           <div className="form-group mt-4">
-            {/* <label htmlFor="txtEmail-Signup">Email address:</label>
-            <input
-              type="email"
-              className="form-control"
-              placeholder="Enter your email"
-              onChange={(e) => setEmail(e.target.value)}
-              id="txtEmail-Signup"
-              required
-            /> */}
             <Input
               label="Email address"
               type="email"
               id="txtEmail-Signup"
-              placeholder="Enter email"
+              placeholder="Enter your email"
               className="form-control"
               ref={email}
             />
           </div>
           <div className="form-group mt-4">
-            <label htmlFor="txtUsername-Signup">User name:</label>
-            <input
+            <Input
+              label="Username"
               type="text"
-              className="form-control"
-              placeholder="Enter your username"
-              onChange={(e) => setUserName(e.target.value)}
               id="txtUsername-Signup"
-              required
+              placeholder="Enter your username"
+              className="form-control"
+              ref={username}
             />
           </div>
           <div className="form-group mt-4">
             <label htmlFor="txtPwd-Signup">Password:</label>
             <div className="input-group">
-              <input
+              <Input
+                label=""
                 type={status ? "text" : "password"}
-                className="form-control"
-                placeholder="Enter your password"
-                min="6"
-                onChange={(e) => setPassword(e.target.value)}
                 id="txtPwd-Signup"
-                required
+                placeholder="Enter your password"
+                className="form-control"
+                ref={password}
               />
               <div className="input-group-prepend" onClick={togglePassword}>
                 <span className="input-group-text" style={{ height: "100%" }}>
@@ -136,25 +163,23 @@ const Signup = () => {
             </div>
           </div>
           <div className="form-group mt-4">
-            <label htmlFor="txtName-Signup">Full name:</label>
-            <input
+            <Input
+              label="Full name"
               type="text"
-              className="form-control"
-              placeholder="Enter your full name"
-              onChange={(e) => setFullName(e.target.value)}
               id="txtName-Signup"
-              required
+              placeholder="Enter your full name"
+              className="form-control"
+              ref={fullname}
             />
           </div>
           <div className="form-group mt-4">
-            <label htmlFor="txtPhone-Signup">Phone number:</label>
-            <input
-              type="number"
-              className="form-control"
-              placeholder="Enter your phone number"
-              onChange={(e) => setPhone(e.target.value)}
+            <Input
+              label="Phone number"
+              type="tel"
               id="txtPhone-Signup"
-              required
+              placeholder="Enter your phone number"
+              className="form-control"
+              ref={phone}
             />
           </div>
           <div className="form-group mt-4">
@@ -164,7 +189,6 @@ const Signup = () => {
             <input
               type="file"
               className="form-control"
-              name="file"
               id="txtImage-Signup"
               onChange={(e) => setAvatar(e.target.files[0])}
               required
@@ -184,7 +208,12 @@ const Signup = () => {
                         </label>
                     </div> */}
           <div className="d-flex justify-content-center mt-4">
-            <button type="submit" className="btn btn-primary" id="btnSignup">
+            <button
+              type="button"
+              className="btn btn-primary"
+              id="btnSignup"
+              onClick={() => handleSubmit()}
+            >
               Sign up
             </button>
           </div>

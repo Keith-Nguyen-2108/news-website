@@ -30,7 +30,7 @@ const Section4 = ({ category }) => {
           window.removeEventListener("scroll", randomEffect, true);
         }
       };
-    }, 3000);
+    }, 500);
     return () => {
       clearInterval(time);
     };

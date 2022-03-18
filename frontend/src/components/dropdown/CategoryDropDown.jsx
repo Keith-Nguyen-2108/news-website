@@ -1,23 +1,28 @@
 import React from "react";
+import { Link } from "react-router-dom";
 // import { category } from "../slider/sliderItem";
 import "./dropdown.css";
 
-const CategoryDropDown = ({ item, index }) => {
+const CategoryDropDown = ({ item }) => {
   return (
     <>
       <div className="bg-dropdown">
         <div className="d-flex justify-content-around">
           {item &&
-            item[index].map((cate, index) => (
-              <div className="item-dropdown" key={index}>
+            item.map((cate, _) => (
+              <Link
+                to={`/category/${cate.cateName.toLowerCase()}`}
+                className="item-dropdown"
+                key={cate._id}
+              >
                 <img
                   src="https://www.lux-review.com/wp-content/uploads/2019/09/turkish-hotel.jpg"
                   alt=""
                 />
                 <div className="item-dropdown-name">
-                  <p>{cate}</p>
+                  <p>{cate.cateName}</p>
                 </div>
-              </div>
+              </Link>
             ))}
         </div>
       </div>

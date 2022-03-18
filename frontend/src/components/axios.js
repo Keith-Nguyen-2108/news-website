@@ -39,3 +39,7 @@ axiosUser.interceptors.request.use(
 export const axiosGetData = axios.create({
   baseURL: "http://localhost:8000/api",
 });
+
+export const linkAvtPost = "http://localhost:8000/images/post/avatar/";
+
+export const linkAvt = "http://localhost:8000/images/avatar/";

@@ -30,12 +30,12 @@ const RightBar = () => {
     <div className="col-sm-12 col-md-12 col-lg-6 col-xl-3">
       <div
         className="sub-news"
-        style={{
-          backgroundColor: currentTheme.backgroundColor,
-          color: currentTheme.color,
-        }}
+        // style={{
+        //   backgroundColor: currentTheme.backgroundColor,
+        //   color: currentTheme.color,
+        // }}
       >
-        <div className="d-flex" key="nothing">
+        <div className="d-flex">
           <p className="decor">Recommend </p>
         </div>
         {category &&

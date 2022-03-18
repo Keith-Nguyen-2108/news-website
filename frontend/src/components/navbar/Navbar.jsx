@@ -8,27 +8,28 @@ import { axiosGetData } from "../axios";
 const Navbar = () => {
   const [{ currentComponentTheme }] = useContext(ThemeContext);
   const [parent, setParent] = useState([]);
-  const [child, setChild] = useState();
+
+  // const [child, setChild] = useState();
 
   const getHighestLevelCategory = (array) => {
-    const highestLevelComment = array.filter((item) => item.childName !== "");
+    const highestLevelComment = array.filter((item) => item.child.length > 0);
     return highestLevelComment;
   };
 
-  const getChildCategories = (array) => {
-    const child = array.map((item) =>
-      item.childName.split(",").filter((item) => item !== "")
-    );
-    return child;
-  };
+  // const getChildCategories = (array) => {
+  //   const child = array.filter((item) => item.child.length === 0);
+  //   return child;
+  // };
 
   useEffect(() => {
     const getCategory = async () => {
       await axiosGetData.get("/category/childFromParent").then((res) => {
         let parents = getHighestLevelCategory(res.data);
         setParent(parents);
-        let childs = getChildCategories(parents);
-        setChild(childs);
+        // console.log(parents);
+        // let childs = getChildCategories(parents.child);
+        // setChild(childs);
+        // console.log(childs);
       });
     };
     getCategory();
@@ -59,17 +60,17 @@ const Navbar = () => {
               </Link>
             </li>
             {parent &&
-              parent.map((item, index) => (
+              parent.map((item) => (
                 <li key={item._id}>
                   <Link
-                    to="/article"
+                    to={`/category/${item.cateName.toLowerCase()}`}
                     style={{
                       color: currentComponentTheme.color,
                     }}
                   >
                     {item.cateName}
                     <div className="dropdown-movie">
-                      <CategoryDropDown item={child} index={index} />
+                      <CategoryDropDown item={item.child} />
                     </div>
                   </Link>
                 </li>
