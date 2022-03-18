@@ -42,13 +42,13 @@ const PostSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    commentsID: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Comment",
-        default: null,
-      },
-    ],
+    // commentsID: [
+    //   {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "Comment",
+    //     default: null,
+    //   },
+    // ],
   },
   {
     timestamps: true,

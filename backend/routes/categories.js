@@ -63,15 +63,27 @@ router.get("/childFromParent", async (_, res) => {
     {
       $project: {
         cateName: "$cateName",
-        childName: {
-          $reduce: {
-            input: "$child",
-            initialValue: "",
-            in: {
-              $concat: ["$$value", ",", "$$this.cateName"],
-            },
-          },
-        },
+        child: "$child",
+        // childName: {
+        //   $reduce: {
+        //     input: "$child",
+        //     initialValue: {
+        //       $map: {
+        //         input: "$this.cate",
+        //         in: { $concatArrays: "$this.cate" },
+        //       },
+        //     },
+        //     in: {
+        //       cate: [
+        //         {
+        //           id: "$$this._id",
+        //           cateName: "$$this.cateName",
+        //         },
+        //         "$$value",
+        //       ],
+        //     },
+        //   },
+        //},
       },
     },
   ])

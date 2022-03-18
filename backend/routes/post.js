@@ -11,7 +11,6 @@ router.post("/create", async (req, res) => {
     avatar: req.body.avatar,
     authorID: req.body.authorID,
     status: req.body.status,
-    commentsID: req.body.commentsID,
   });
 
   await newPost
@@ -26,31 +25,48 @@ router.post("/create", async (req, res) => {
 
 // Get all posts
 router.get("", async (req, res) => {
-  // const authorID = req.query.authorID;
-  // const categoriesID = req.query.categoriesID;
-  // if (authorID) {
-  //   posts = await Post.find({ authorID });
-  // } else if (categoriesID) {
-  //   posts = await Post.find({ categoriesID });
-  // } else {
-  //   posts =
-  // }
-  Post.find()
-    .populate("categoriesID", "_id cateName parentID")
-    .populate("authorID", "_id username avatar")
-    .populate({
-      path: "commentsID",
-      populate: {
-        path: "authorID",
-        select: "_id username avatar",
-      },
-    })
-    .then((post) => {
-      res.status(200).json(post);
-    })
-    .catch((err) => {
-      res.status(500).json(err);
-    });
+  try {
+    const authorID = req.query.authorID;
+    const categoriesID = req.query.categoriesID;
+    let posts;
+    if (authorID) {
+      posts = await Post.find({ authorID })
+        .populate("categoriesID", "_id cateName")
+        .populate({
+          path: "categoriesID",
+          populate: {
+            path: "parentID",
+            select: "_id cateName parentID",
+          },
+        })
+        .populate("authorID", "_id username avatar");
+    } else if (categoriesID) {
+      posts = await Post.find({ categoriesID })
+        .populate("categoriesID", "_id cateName")
+        .populate({
+          path: "categoriesID",
+          populate: {
+            path: "parentID",
+            select: "_id cateName parentID",
+          },
+        })
+        .populate("authorID", "_id username avatar");
+    } else {
+      posts = await Post.find()
+        .populate("categoriesID", "_id cateName")
+        .populate({
+          path: "categoriesID",
+          populate: {
+            path: "parentID",
+            select: "_id cateName parentID",
+          },
+        })
+        .populate("authorID", "_id username avatar");
+    }
+    res.status(200).json(posts);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 // Sort articles by category
@@ -60,7 +76,6 @@ router.get("/getPostsFollowCate", async (_, res) => {
       $group: {
         _id: "$categoriesID",
         postID: { $first: "$_id" },
-        post: { $first: "$title" },
       },
     },
     {
@@ -75,7 +90,6 @@ router.get("/getPostsFollowCate", async (_, res) => {
       $project: {
         cateName: "$cate_doc.cateName",
         postID: "$postID",
-        posts: "$post",
       },
     },
   ])
@@ -85,6 +99,41 @@ router.get("/getPostsFollowCate", async (_, res) => {
     .catch((err) => {
       res.status(500).json(err);
     });
+});
+
+// Get single post
+router.get("/:id", async (req, res) => {
+  if (req.params.id) {
+    await Post.findById(req.params.id)
+      .populate("categoriesID", "_id cateName")
+      .populate({
+        path: "categoriesID",
+        populate: {
+          path: "parentID",
+          select: "_id cateName parentID",
+        },
+      })
+      .populate("authorID", "_id username avatar")
+      .then((post) => {
+        res.status(200).json(post);
+      })
+      .catch((err) => {
+        res.status(500).json(err);
+      });
+  }
+});
+
+//DELETE
+router.delete("/:id", async (req, res) => {
+  if (req.params.id) {
+    await Post.findByIdAndDelete(req.params.id)
+      .then(() => {
+        res.status(200).json("Post deleted");
+      })
+      .catch((err) => {
+        res.status(500).json(err);
+      });
+  }
 });
 
 module.exports = router;

@@ -20,4 +20,16 @@ router.post("/create", async (req, res) => {
     });
 });
 
+//Get all comments
+router.get("", async (_, res) => {
+  await Comment.find()
+    .populate("postID")
+    .then((cmt) => {
+      res.status(200).json(cmt);
+    })
+    .catch((err) => {
+      res.status(500).json(err);
+    });
+});
+
 module.exports = router;

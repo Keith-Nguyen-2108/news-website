@@ -98,6 +98,19 @@ router.post("/groupByYear", async (req, res) => {
     });
 });
 
+// Delete
+router.delete("/:id", async (req, res) => {
+  if (req.params.id) {
+    await User.findByIdAndDelete(req.params.id)
+      .then(() => {
+        res.status(200).json("User deleted");
+      })
+      .catch((err) => {
+        res.status(500).json(err);
+      });
+  }
+});
+
 // Send email
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -122,4 +135,5 @@ router.post("/sendMail", () => {
     }
   });
 });
+
 module.exports = router;
