@@ -4,7 +4,6 @@ import OwlCarousel from "react-owl-carousel";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
 import { category } from "./sliderItem";
-import { useEffect } from "react";
 
 const Slider = () => {
   const options = {
@@ -30,27 +29,27 @@ const Slider = () => {
     autoplayHoverPause: true,
   };
 
-  const checkInViewPort = () => {
-    console.log("In view port");
-  };
+  // const checkInViewPort = () => {
+  //   console.log("In view port");
+  // };
 
-  useEffect(() => {
-    let timer = setInterval(() => {
-      const bottom = document.getElementById("slider").offsetHeight;
-      window.onscroll = () => {
-        let distance = window.innerHeight + window.scrollY;
-        if (distance - bottom <= window.innerHeight) {
-          checkInViewPort();
-        } else {
-          window.removeEventListener("scroll", checkInViewPort, true);
-        }
-      };
-    }, 1000);
+  // useEffect(() => {
+  //   let timer = setInterval(() => {
+  //     const bottom = document.getElementById("slider").offsetHeight;
+  //     window.onscroll = () => {
+  //       let distance = window.innerHeight + window.scrollY;
+  //       if (distance - bottom <= window.innerHeight) {
+  //         checkInViewPort();
+  //       } else {
+  //         window.removeEventListener("scroll", checkInViewPort, true);
+  //       }
+  //     };
+  //   }, 1000);
 
-    return () => {
-      clearInterval(timer);
-    };
-  });
+  //   return () => {
+  //     clearInterval(timer);
+  //   };
+  // });
 
   return (
     <div className="slider" style={{ marginTop: "-5px" }} id="slider">

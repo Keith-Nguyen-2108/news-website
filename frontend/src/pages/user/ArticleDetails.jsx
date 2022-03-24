@@ -2,99 +2,112 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-// import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document'
+import { axiosGetData, linkAvtPost } from "../../components/axios";
 import "./articledetail.css";
 
-const ArticleDetails = () => {
-  const [categories, setCategories] = useState([]);
+const ArticleDetails = ({ user }) => {
   const [title, setTitle] = useState("");
   const [description, setDesc] = useState("");
   const [shortDescription, setShortContentPost] = useState("");
-  const [image, setImage] = useState([]);
-  const [review, setReview] = useState([]);
+  const [avatar, setAvatar] = useState("");
+  const [newAvatar, setNewAvatar] = useState(null);
   const [update, setUpdate] = useState(false);
+
   const location = useLocation();
   const path = location.pathname.split("/")[2];
-  const postImage = "http://localhost:5000/images/post/";
-  const [status, setStatus] = useState("");
-  const [category, setCategory] = useState([]);
-  const [reject, setReject] = useState(false);
-  // const getCategory = async() =>{
-  //         await axios.get("/categories")
-  //                     .then(res =>{
-  //                         const value = res.data
-  //                         setCategory(value)
-  //                     })
-  // }
 
-  // useEffect(()=>{
-  // getCategory()
-  // const getNew = async() =>{
-  //     const post = await axios.get("/posts/" + path)
-  //     setTitle(post.data.title)
-  //     setCategories(post.data.categories)
-  //     setDesc(post.data.description)
-  //     setImage(post.data.photos)
-  //     setStatus(post.data.status)
-  //     setShortContentPost(post.data.shortDescription)
-  // }
-  // getNew()
-  // console.log(path)
-  // },[path])
+  const [category, setCategory] = useState("");
+  let [smallCategories, setSmallCategories] = useState([]);
+  const [bigCategories, setBigCategories] = useState([]);
+
+  const [reject, setReject] = useState(false);
+
+  const getCategories = async () => {
+    await axiosGetData.get("/category").then((res) => {
+      const value = res.data;
+      const bigCate = value.filter((item) => item.parentID === null);
+      setBigCategories(bigCate);
+      const smallCate = value.filter((item) => item.parentID !== null);
+      setSmallCategories(smallCate);
+    });
+  };
+
+  useEffect(() => {
+    getCategories();
+    const getNew = async () => {
+      const post = await axiosGetData.get("/post/" + path);
+      setTitle(post.data.title);
+      setCategory(post.data.categoriesID.cateName);
+      setDesc(post.data.description);
+      setAvatar(post.data.avatar);
+      // setStatus(post.data.status)
+      setShortContentPost(post.data.shortDescription);
+    };
+    getNew();
+  }, [path]);
+
+  const handleChangeBigCategory = (e) => {
+    if (e.target.value) {
+      let arraySmallCate = [...smallCategories].splice(0, 14);
+      arraySmallCate = arraySmallCate.filter(
+        (cate) => cate.parentID.cateName === e.target.value
+      );
+      // console.log(arraySmallCate);
+      // arraySmallCate.unshift({
+      //   _id: "Nothing",
+      //   cateName: "",
+      // });
+      smallCategories = smallCategories.filter((cate) => !Array.isArray(cate));
+      let newArr = [...smallCategories, arraySmallCate];
+      setSmallCategories(newArr);
+    }
+  };
 
   const handleUpdate = () => {
     setUpdate(!update);
   };
 
-  const user = "Author";
-
-  const handleChange = (e) => {
-    // if(e.target.files){
-    //     let images = Array.from(e.target.files)
-    //     if(images.length !== 2){
-    //         alert("You must upload 2 images for an article")
-    //     }
-    //     else{
-    //         setReview(images)
-    //     }
-    // }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // const value = {
-    //     title,
-    //     shortDescription,
-    //     description,
-    //     userId: user._id,
-    //     categories,
-    //     status: "Updated"
+    const value = {
+      title,
+      shortDescription,
+      description,
+      categoriesID: category,
+      authorID: user.id,
+      status: "Updated",
+    };
+    console.log(value);
+    // if (newAvatar) {
+    //   const data = new FormData();
+    //   const d = new Date();
+    //   const moment =
+    //     d.getDate() +
+    //     "-" +
+    //     (d.getMonth() + 1) +
+    //     "-" +
+    //     d.getFullYear() +
+    //     "-" +
+    //     d.getHours() +
+    //     "-";
+    //   const filename = newAvatar.name;
+    //   data.append("name", filename);
+    //   data.append("file", newAvatar);
+    //   value.avatar = moment + filename;
+    //   try {
+    //     await axiosGetData.post("/upload/post/avatar", data);
+    //   } catch (err) {
+    //     console.error(err);
+    //   }
     // }
-    // // console.log(value)
-    // if(review.length>1){
-    //     const data = new FormData()
-    //     const d = new Date()
-    //     let arrName = []
-    //     const moment = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear() + "-" + d.getHours() + "-"
-    //     for(let i=0; i< review.length; i++){
-    //         data.append("files", review[i])
-    //         arrName.push(moment + review[i].name)
-    //     }
-    //     value.photos = arrName
-    //     try{
-    //         await axios.post("/upload/post", data)
-    //     }catch(err){
-    //         console.error(err)
-    //     }
+    // try {
+    //   await axiosGetData.patch("/post/" + path, value);
+    //   alert("Your article has been update");
+    //   window.location.replace("/articles-list");
+    //   console.log(value);
+    // } catch (err) {
+    //   console.error(err);
     // }
-    // try{
-    //     await axios.put("/posts/"+ path, value)
-    //     alert("Your article has been update")
-    //     window.location.replace("/articlelist")
-    // }catch(err){
-    //     console.error(err)
-    // }
-    // console.log(value)
   };
 
   const handleApprove = async (e) => {
@@ -142,36 +155,67 @@ const ArticleDetails = () => {
             id="frmArticleDetail"
             method="post"
             action=""
+            encType="multipart/form-data"
           >
-            {status === "Reject" && (
+            {/* {status === "Reject" && (
               <h6
                 className="text-left"
                 style={{ fontSize: "25px", color: "red" }}
               >
                 Bolded words need to be corrected
               </h6>
+            )} */}
+            {update ? (
+              <React.Fragment>
+                <div className="form-group mt-4">
+                  <label htmlFor="slTopic">Big topic post:</label>
+                  <select
+                    className="form-select"
+                    onChange={(e) => handleChangeBigCategory(e)}
+                    defaultValue=""
+                  >
+                    <option key="" value="" disabled="disabled">
+                      Choose a big topic
+                    </option>
+                    {bigCategories.map((item) => (
+                      <option key={item._id} value={item.cateName}>
+                        {item.cateName}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="form-group mt-4">
+                  <label htmlFor="slTopic">
+                    Small topic post - Main topic:
+                  </label>
+                  <select
+                    className="form-select"
+                    onChange={(e) => setCategory(e.target.value)}
+                    defaultValue=""
+                  >
+                    <option key="" value="" disabled="disabled">
+                      Choose a main topic
+                    </option>
+                    {Array.isArray(
+                      smallCategories[smallCategories.length - 1]
+                    ) &&
+                      smallCategories[smallCategories.length - 1].map(
+                        (item) => (
+                          <option key={item._id} value={item._id}>
+                            {item.cateName}
+                          </option>
+                        )
+                      )}
+                  </select>
+                </div>
+              </React.Fragment>
+            ) : (
+              <div className="form-group mt-4">
+                <label htmlFor="slTopic">Topic post:</label>
+                <p className="mt-2">{category}</p>
+              </div>
             )}
 
-            <div className="form-group mt-4">
-              <label htmlFor="slTopic">Topic post:</label>
-              {update || reject ? (
-                <select
-                  className="form-select"
-                  onChange={(e) => setCategories(e.target.value)}
-                >
-                  <option key="" value="" selected={true} disabled="disabled">
-                    Choose a topic
-                  </option>
-                  {category.map((item) => (
-                    <option key={item._id} value={item.cateName}>
-                      {item.cateName}
-                    </option>
-                  ))}
-                </select>
-              ) : (
-                <p className="mt-2">{categories}</p>
-              )}
-            </div>
             <div className="form-group mt-4">
               <label htmlFor="txtTitlePost">Title post:</label>
               {update || reject ? (
@@ -188,23 +232,17 @@ const ArticleDetails = () => {
             </div>
             <div className="mt-4">
               <label>Avatar:</label>
-              {!update
-                ? image.length > 0 && (
-                    <div>
-                      <img
-                        src={postImage + image}
-                        alt="preview"
-                        className="image-preview mt-3 mb-3"
-                        key={image}
-                        style={{
-                          width: "250px",
-                          height: "150px",
-                          objectFit: "cover",
-                        }}
-                      />
-                    </div>
-                  )
-                : null}
+              <img
+                src={linkAvtPost + avatar}
+                className="image-preview mt-3 mb-3"
+                alt={avatar}
+                style={{
+                  width: "250px",
+                  height: "150px",
+                  objectFit: "cover",
+                  marginLeft: "50px",
+                }}
+              />
             </div>
             <div className="form-group mt-4">
               <label htmlFor="txtContentPost">Short description:</label>
@@ -271,8 +309,8 @@ const ArticleDetails = () => {
                         marginLeft: "10px",
                       }}
                     >
-                      when you change images, the old images of your article
-                      will be replaced by the news
+                      When you change images, the old avatar of your article
+                      will be replaced by the new
                     </span>
                   </label>
                   <input
@@ -280,42 +318,39 @@ const ArticleDetails = () => {
                     className="form-control"
                     id="txtImagesPost"
                     name="txtImagesPost"
-                    onChange={handleChange}
-                    multiple
-                    required
+                    onChange={(e) => setNewAvatar(e.target.files[0])}
                     style={{ display: "none" }}
                   />
                 </div>
                 <div className="d-flex justify-content-around flex-wrap mt-4">
-                  {review &&
-                    review.map((item) => (
-                      <img
-                        src={URL.createObjectURL(item)}
-                        alt="preview"
-                        className="image-preview mb-3"
-                      />
-                    ))}
+                  {newAvatar && (
+                    <img
+                      src={URL.createObjectURL(newAvatar)}
+                      alt="preview"
+                      className="image-preview mb-3"
+                    />
+                  )}
                 </div>
               </>
             ) : null}
 
-            <div className="d-flex justify-content-around flex-wrap mt-4">
+            {/* <div className="d-flex justify-content-around flex-wrap mt-4">
               {!update
-                ? image.length > 1 &&
+                ? image.length > 0 &&
                   image
                     .slice(1)
                     .map((item) => (
                       <img
-                        src={postImage + item}
+                        src={linkAvtPost + item}
                         alt="preview"
                         className="image-preview mb-3"
                         key={item}
                       />
                     ))
                 : null}
-            </div>
+            </div> */}
             {user
-              ? user.role === "Author" && (
+              ? user.role?.roleName === "Author" && (
                   <div className="d-flex justify-content-evenly mt-4">
                     <button
                       type="button"
@@ -338,7 +373,7 @@ const ArticleDetails = () => {
               : null}
 
             {user
-              ? user.role === "Administrator" && (
+              ? user.role?.roleName === "Editor" && (
                   <div className="buttonList d-flex justify-content-evenly">
                     <button
                       type="button"

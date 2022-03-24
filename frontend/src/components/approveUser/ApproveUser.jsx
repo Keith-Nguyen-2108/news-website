@@ -44,7 +44,7 @@ const ApproveUser = ({ style }) => {
   };
 
   return (
-    <div className="row">
+    <div className="w-100">
       <div className="col-12">
         <div className="card card-table" style={style}>
           <div className="card-header">

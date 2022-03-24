@@ -3,7 +3,8 @@
   margin: 0 auto 5%;
 }
 
-.category__page__title {
+.category__page__title,
+.search__page__title {
   text-align: center;
   font-weight: 500;
   font-size: 60px;
@@ -31,7 +32,7 @@
   height: 300px;
 }
 
-.category-page__category__post {
+.category__post {
   padding: 5px;
   background-color: coral;
   color: white;
@@ -63,6 +64,12 @@
   color: white;
   font-family: Marcellus, cursive;
   letter-spacing: 1px;
+}
+
+.small-image__container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .category__small_image {
@@ -107,6 +114,21 @@
   font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
   word-break: break-word;
   font-size: 22px;
+  position: relative;
+  padding-left: 15px;
+  letter-spacing: 1px;
+  line-height: 1.5;
+}
+
+.category__title__post::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translate(0, -50%);
+  width: 2px;
+  height: 60%;
+  background-color: rgb(185, 185, 185);
 }
 
 .category__post__cate-name {
@@ -122,5 +144,65 @@
 } */
 
 .category__post__created-date {
-  font-size: 16px;
+  font-size: 14px;
+}
+
+@media screen and (max-width: 1200px) {
+  .category__container {
+    width: 90vw;
+  }
+
+  /* .category__section2__listpost {
+    margin-left: auto;
+    width: 90%;
+    margin-right: auto;
+  } */
+
+  .category__post__container {
+    padding: 10px 0px;
+  }
+
+  .category__big_image img {
+    height: 400px;
+  }
+
+  .small-image__container {
+    justify-content: space-evenly;
+  }
+
+  .category__small_image {
+    margin: 30px 0;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .category__container {
+    width: 92vw;
+  }
+
+  /* .category__section2__listpost {
+    width: 92vw;
+  } */
+
+  .category__avatar__post {
+    width: 100%;
+  }
+
+  .category__post__container,
+  .small-image__container {
+    display: block;
+    padding: 0px;
+  }
+
+  .category__post__container:not(:last-child) {
+    margin-bottom: 30px;
+  }
+
+  .category__small_image {
+    width: 100%;
+  }
+
+  .category__content__post {
+    margin: 10px 0px;
+  }
 }

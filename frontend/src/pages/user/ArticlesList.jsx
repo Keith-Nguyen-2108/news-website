@@ -1,23 +1,25 @@
-// import axios from 'axios';
 import React, { useEffect, useState, useContext } from "react";
 import { ThemeContext } from "../../context/Context";
 import "./articlelist.css";
+import { axiosGetData } from "../../components/axios";
+import { useHistory } from "react-router-dom";
 
-const ArticlesList = () => {
+const ArticlesList = ({ user }) => {
   const [{ currentComponentTheme }] = useContext(ThemeContext);
-  // const [ news, setNews ] = useState([])
+  const [news, setNews] = useState([]);
 
-  const news = 10;
+  // const news = 10;
 
-  // useEffect(() =>{
-  //     const getNewFollowUser = async() =>{
-  //         const value = await axios.get("/posts?userId=" + user._id)
-  //         setNews(value.data)
-  //     }
-  //     getNewFollowUser()
-  // },[user])
+  useEffect(() => {
+    const getNewFollowUser = async () => {
+      const value = await axiosGetData.get("/post?authorID=" + user.id);
+      // console.log(value);
+      setNews(value.data);
+    };
+    getNewFollowUser();
+  }, [user]);
 
-  // const history = useHistory()
+  const history = useHistory();
 
   // const handleDelete = async(id) =>{
   //     // console.log(id)
@@ -59,49 +61,55 @@ const ArticlesList = () => {
               </tr>
             </thead>
             <tbody>
-              {[...Array(news).keys()].map((item, index) => (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>Hotel</td>
-                  <td style={{ width: "35%", wordWrap: "break-word" }}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Curabitur gravida faucibus posuere.
-                  </td>
-                  <td>{new Date().toDateString()}</td>
-                  <td>Not approved yet</td>
-                  {/* {
+              {news &&
+                news.map((item, index) => (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{item.categoriesID?.cateName}</td>
+                    <td style={{ width: "35%", wordWrap: "break-word" }}>
+                      {item.title}
+                    </td>
+                    <td>{new Date(item.createdAt).toDateString()}</td>
+                    <td>{item.status}</td>
+                    {/* {
                                                     item.status === "Approved" ? (
                                                         <>
                                                             <td>Can't Fix</td>
                                                             <td>Can't delete</td>
                                                         </>
                                                     ):( */}
-                  {/* onClick={() => history.push(`/articleDetail/${item._id}`)} -  onClick={() =>handleDelete(item._id)}
+                    {/* onClick={() => history.push(`/articleDetail/${item._id}`)} -  onClick={() =>handleDelete(item._id)}
                                                         <> */}
-                  <td>
-                    <i
-                      className="fa fa-edit article-edit-icon"
-                      aria-hidden="true"
-                      style={{ color: "rgb(94, 245, 144)", cursor: "pointer" }}
-                    >
-                      <span className="tooltiptext">Edit</span>
-                    </i>
-                  </td>
-                  <td>
-                    <i
-                      className="fa fa-minus-circle article-delete-icon"
-                      aria-hidden="true"
-                      style={{ color: "rgb(255, 47, 95)", cursor: "pointer" }}
-                    >
-                      <span className="tooltiptext">Delete</span>
-                    </i>
-                  </td>
-                  {/* </>
+                    <td>
+                      <i
+                        className="fa fa-edit article-edit-icon"
+                        aria-hidden="true"
+                        style={{
+                          color: "rgb(94, 245, 144)",
+                          cursor: "pointer",
+                        }}
+                        onClick={() =>
+                          history.push(`/article-detail/${item._id}`)
+                        }
+                      >
+                        <span className="tooltiptext">Edit</span>
+                      </i>
+                    </td>
+                    <td>
+                      <i
+                        className="fa fa-minus-circle article-delete-icon"
+                        aria-hidden="true"
+                        style={{ color: "rgb(255, 47, 95)", cursor: "pointer" }}
+                      >
+                        <span className="tooltiptext">Delete</span>
+                      </i>
+                    </td>
+                    {/* </>
                                                     )
                                                 }
                                                  */}
-                </tr>
-              ))}
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>

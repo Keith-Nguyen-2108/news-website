@@ -5,7 +5,7 @@
   top: 0;
   left: 0;
   width: 0;
-  background-color: white;
+  /* background-color: white; */
   overflow-x: hidden;
   transition: all 0.6s ease;
   padding-top: 60px;
@@ -26,17 +26,17 @@
   left: 0;
   padding: 1em;
   height: max-content;
-  background-color: black;
+  /* background-color: black; */
   width: 100%;
   display: flex;
   justify-content: space-between;
 }
 
-.sidenav div:first-child a {
+/* .sidenav div:first-child a {
   color: white;
-}
+} */
 
-.sidenav h1 {
+/* .sidenav h1 {
   font-size: 50px;
   font-weight: 900;
   cursor: pointer;
@@ -50,35 +50,48 @@
   );
   background-clip: text;
   -webkit-text-fill-color: transparent;
-}
-
-.sidenav a {
-  text-decoration: none;
-}
+} */
 
 .sidebar-item {
-  margin-top: 3em;
-  height: 75vh;
+  margin-top: 54px;
+  height: 77.5vh;
+  overflow-y: scroll;
+  z-index: 1;
 }
 
-.sidebar-item ul {
-  margin-top: 70px;
+.sidebar-item ul:nth-child(1) {
+  margin-top: 20px;
+}
+
+.sidebar-item ul:nth-child(2) {
+  padding-left: 1em;
 }
 
 .sidebar-item li {
-  padding: 20px 0 10px;
+  padding-bottom: 10px;
 }
 
 .sidebar-item a {
   padding: 12px 20px;
   text-transform: uppercase;
   font-weight: 700;
-  color: rgb(73, 73, 73);
+  /* color: rgb(73, 73, 73); */
 }
 
-.sidenav a:hover {
-  color: #f1f1f1;
+.sidebar-item ul:nth-child(2) a {
+  padding: 0 20px;
 }
+
+.sidebar-item a span:nth-child(2) {
+  position: absolute;
+  right: 1.5em;
+  visibility: visible;
+  transition: visibility 500ms;
+}
+
+/* .sidenav a:hover {
+  color: #f1f1f1;
+} */
 
 .sidenav .closebtn {
   position: absolute;
@@ -117,8 +130,10 @@ div.txtSearch {
 
 #search-sidebar div.btnSearch {
   position: absolute;
-  top: 5px;
-  right: 10px;
+  font-size: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 15px;
 }
 
 @media screen and (max-width: 450px) {

@@ -62,17 +62,17 @@ const Navbar = () => {
             {parent &&
               parent.map((item) => (
                 <li key={item._id}>
-                  <Link
-                    to={`/category/${item.cateName.toLowerCase()}`}
+                  <div
                     style={{
                       color: currentComponentTheme.color,
                     }}
+                    className="navbar-item"
                   >
                     {item.cateName}
                     <div className="dropdown-movie">
                       <CategoryDropDown item={item.child} />
                     </div>
-                  </Link>
+                  </div>
                 </li>
               ))}
           </ul>

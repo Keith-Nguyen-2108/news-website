@@ -15,79 +15,41 @@ const Signup = () => {
   const [{ currentComponentTheme }] = useContext(ThemeContext);
 
   const handleSubmit = async (e) => {
-    if (phone.current.value().match(/[a-zA-Z]/g)) {
-      alert("Phone number can only enter the number!");
-    } else {
-      const user = {
-        email: email.current.value(),
-        username: username.current.value(),
-        password: password.current.value(),
-        fullname: fullname.current.value(),
-        phone: phone.current.value(),
-      };
-      if (avatar) {
-        const data = new FormData();
-        // console.log(data)
-        let d = new Date();
-        let moment =
-          d.getDate() +
-          "-" +
-          (d.getMonth() + 1) +
-          "-" +
-          d.getFullYear() +
-          "-" +
-          d.getHours() +
-          "-";
-        const filename = avatar.name;
-        data.append("name", filename);
-        data.append("file", avatar);
-        user.avatar = moment + filename;
-        try {
-          const res = await axiosGetData.post("/auth/register", user);
-          if (res) {
-            await axiosGetData.post("/upload/avatar", data);
-            window.location.replace("/signin");
-          }
-        } catch (err) {
-          alert(
-            "What you entered may already exist. Let's change something like username"
-          );
+    e.preventDefault();
+    const user = {
+      email: email.current.value(),
+      username: username.current.value(),
+      password: password.current.value(),
+      fullname: fullname.current.value(),
+      phone: phone.current.value(),
+    };
+    if (avatar) {
+      const data = new FormData();
+      // console.log(data)
+      let d = new Date();
+      let moment =
+        d.getDate() +
+        "-" +
+        (d.getMonth() + 1) +
+        "-" +
+        d.getFullYear() +
+        "-" +
+        d.getHours() +
+        "-";
+      const filename = avatar.name;
+      data.append("name", filename);
+      data.append("file", avatar);
+      user.avatar = moment + filename;
+      try {
+        const res = await axiosGetData.post("/auth/register", user);
+        if (res) {
+          await axiosGetData.post("/upload/avatar", data);
+          window.location.replace("/signin");
         }
+      } catch (err) {
+        alert(err);
       }
     }
-
-    // if(phone.match(/[a-zA-Z]/g)){
-    //     alert("Phone number can only enter the number!")
-    // }
-    // else{
-    //     const value = {
-    //         username,
-    //         email,
-    //         password,
-    //         fullname,
-    //         phone,
-    //     }
-    //     if(avatar){
-    //         const data =new FormData()
-    //         // console.log(data)
-    //         let d = new Date();
-    //         let moment = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear() + "-" + d.getHours() + "-"
-    //         const filename = avatar.name
-    //         data.append("name", filename)
-    //         data.append("file", avatar)
-    //         value.avatar = moment + filename
-    //         try{
-    //             const res = await axios.post("/auth/register" , value)
-    //             if(res){
-    //                 await axios.post("/upload/avatar", data)
-    //                 window.location.replace("/signin")
-    //             }
-    //         }
-    //         catch(err){
-    //             alert("What you entered may already exist. Let's change something like username")
-    //         }
-    //     }
-    // }
   };
 
   const [status, setStatus] = useState(false);
@@ -107,20 +69,10 @@ const Signup = () => {
         <h1 className="signup">Register</h1>
         <form
           id="frmSignup"
-          method="post"
+          // method="post"
           encType="multipart/form-data"
-          onSubmit={(e) => e.preventDefault()}
+          onSubmit={(e) => handleSubmit(e)}
         >
-          <div className="form-group mt-4">
-            <label htmlFor="slTopic">Want to become:</label>
-            <select className="form-select" defaultValue="">
-              <option value="" disabled="disabled">
-                Choose a option
-              </option>
-              <option value="Reader">Reader</option>
-              <option value="Author">Author</option>
-            </select>
-          </div>
           <div className="form-group mt-4">
             <Input
               label="Email address"
@@ -129,6 +81,7 @@ const Signup = () => {
               placeholder="Enter your email"
               className="form-control"
               ref={email}
+              required={true}
             />
           </div>
           <div className="form-group mt-4">
@@ -139,6 +92,7 @@ const Signup = () => {
               placeholder="Enter your username"
               className="form-control"
               ref={username}
+              required={true}
             />
           </div>
           <div className="form-group mt-4">
@@ -151,13 +105,11 @@ const Signup = () => {
                 placeholder="Enter your password"
                 className="form-control"
                 ref={password}
+                required={true}
               />
               <div className="input-group-prepend" onClick={togglePassword}>
                 <span className="input-group-text" style={{ height: "100%" }}>
-                  <i
-                    className={status ? "fa fa-eye" : "fa fa-eye-slash"}
-                    aria-hidden="true"
-                  ></i>
+                  <i className={status ? "fa fa-eye" : "fa fa-eye-slash"}></i>
                 </span>
               </div>
             </div>
@@ -170,6 +122,7 @@ const Signup = () => {
               placeholder="Enter your full name"
               className="form-control"
               ref={fullname}
+              required={true}
             />
           </div>
           <div className="form-group mt-4">
@@ -180,11 +133,13 @@ const Signup = () => {
               placeholder="Enter your phone number"
               className="form-control"
               ref={phone}
+              required={true}
+              pattern="0[0-9]{9}"
             />
           </div>
           <div className="form-group mt-4">
             <label htmlFor="txtImage-Signup">
-              Images: <i class="fa fa-paperclip" aria-hidden="true"></i>
+              Images: <i class="fa fa-paperclip"></i>
             </label>
             <input
               type="file"
@@ -209,10 +164,10 @@ const Signup = () => {
                     </div> */}
           <div className="d-flex justify-content-center mt-4">
             <button
-              type="button"
+              type="submit"
               className="btn btn-primary"
               id="btnSignup"
-              onClick={() => handleSubmit()}
+              // onClick={() => handleSubmit()}
             >
               Sign up
             </button>

@@ -29,3 +29,9 @@
   font-weight: bold;
   color: black;
 }
+
+@media screen and (max-width: 1200px) {
+  .bg-dropdown {
+    width: 100vw;
+  }
+}

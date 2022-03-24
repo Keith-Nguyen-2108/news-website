@@ -40,7 +40,7 @@ const SinglePost = ({ user }) => {
           ></img>
           <div className="container">
             <div className="row d-flex justify-content-between mt-5">
-              <div className="col-sm-12 col-md-12 col-lg-12 col-xl-9">
+              <div className="col-sm-12 col-xl-9">
                 <div className="post">
                   <p className="categories-post">
                     {news.categoriesID.cateName}

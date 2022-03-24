@@ -32,7 +32,8 @@
   padding-top: 1em;
 }
 
-.nav-cus a {
+.nav-cus a,
+.navbar-item {
   text-decoration: none;
   /* color: white; */
   font-size: 22px;
@@ -64,11 +65,11 @@
 .dropdown-movie {
   position: absolute;
   top: 100%;
-  left: 0;
-  width: 100%;
+  left: 50%;
+  width: 1200px;
   opacity: 0;
   visibility: hidden;
-  transform: scale(1, 0.9);
+  transform: scale(1, 0.9) translateX(-50%);
   transform-origin: top left;
   transition: all 0.5s ease;
 }
@@ -76,4 +77,14 @@
 .nav-cus li:hover .dropdown-movie {
   visibility: visible;
   opacity: 1;
+}
+
+@media screen and (max-width: 1200px) {
+  .nav-cus {
+    width: 90%;
+  }
+
+  .dropdown-movie {
+    width: 100vw;
+  }
 }

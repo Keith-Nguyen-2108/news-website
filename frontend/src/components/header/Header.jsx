@@ -10,6 +10,7 @@ import { linkAvt } from "../axios";
 
 function Header({ user }) {
   const history = useHistory();
+  // console.log(user);
 
   const dispatch = useDispatch();
 
@@ -47,7 +48,7 @@ function Header({ user }) {
               </ul>
             </div>
             <div className="col-6">
-              <h1>Mean</h1>
+              <h1>Mee-an</h1>
             </div>
             <div className="col-3">
               <ul className="right-bar">
@@ -88,6 +89,7 @@ function Header({ user }) {
         <SearchPopup
           clickToOpenSearch={clickToOpenSearch}
           isShowSearch={show.isShowSearch}
+          setShow={setShow}
         />
       </div>
       {/* Tab, Mobile header */}

@@ -36,6 +36,7 @@
 .ck-editor__editable,
 #txtContentPost {
   height: 30vh;
+  color: black;
 }
 
 .image-preview {

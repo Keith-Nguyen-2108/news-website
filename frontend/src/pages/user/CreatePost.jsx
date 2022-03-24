@@ -7,11 +7,9 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { ThemeContext } from "../../context/Context";
 import { axiosGetData } from "../../components/axios";
 import "./createpost.css";
-// import { useSelector } from "react-redux";
 
 const CreatePost = ({ user }) => {
   const [{ currentComponentTheme }] = useContext(ThemeContext);
-  // const user = useSelector((state) => state.user.user);
   // console.log(user);
 
   const titleRef = useRef();
@@ -27,6 +25,7 @@ const CreatePost = ({ user }) => {
   // const [output, setOutput] = useState("");
   // const [title, setTitlePost] = useState("");
   // const [shortDescription, setShortContentPost] = useState("");
+
   const [description, setContentPost] = useState("");
   const [avatar, setAvatar] = useState(null);
 
@@ -155,7 +154,7 @@ const CreatePost = ({ user }) => {
         className="bg-createPost"
         style={{
           backgroundColor: currentComponentTheme.backgroundColor,
-          color: currentComponentTheme.color,
+          // color: currentComponentTheme.color,
         }}
       >
         <p className="titlePage">Create new post</p>
@@ -266,12 +265,15 @@ const CreatePost = ({ user }) => {
               }}
               config={{
                 ckfinder: {
-                  uploadUrl: "http://localhost:5000/api/upload/post",
+                  uploadUrl: "http://localhost:8000/api/upload/post",
                 },
                 // mediaEmbed: {
                 //   previewsInData: true,
                 // },
                 // isReadOnly: onWrite,
+              }}
+              style={{
+                color: "black",
               }}
             />
           </div>

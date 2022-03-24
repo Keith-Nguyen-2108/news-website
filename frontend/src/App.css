@@ -8,9 +8,13 @@ body {
   overflow: overlay;
 }
 
+body,
+html {
+  width: 100%;
+}
+
 .App {
-  /* overflow-x: hidden !important; */
-  max-width: 100vw;
+  width: 100vw;
 }
 
 ::selection {
@@ -45,4 +49,11 @@ a,
 a:hover,
 a:focus {
   color: inherit;
+  text-decoration: none;
+}
+
+@media screen and (max-width: 1199px) {
+  .App {
+    overflow-x: hidden !important;
+  }
 }

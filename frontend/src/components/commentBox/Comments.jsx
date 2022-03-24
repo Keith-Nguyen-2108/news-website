@@ -3,6 +3,7 @@ import Comment from "./Comment";
 import CommentForm from "./CommentForm";
 import { comments } from "./listComments";
 import { useSelector } from "react-redux";
+import { linkAvt } from "../axios";
 
 const Comments = () => {
   const user = useSelector((state) => state.user.user);
@@ -66,7 +67,7 @@ const Comments = () => {
       {user ? (
         <div className="enter-comment">
           <img
-            src="https://d2eohwa6gpdg50.cloudfront.net/wp-content/uploads/sites/6/2021/08/16115025/white-rabbit-2-2.jpeg"
+            src={linkAvt + user.avatar}
             alt=""
             style={{
               width: "40px",
@@ -74,6 +75,7 @@ const Comments = () => {
               objectFit: "cover",
               marginRight: "20px",
               borderRadius: "50%",
+              objectPosition: "left",
             }}
           />
           <CommentForm handleSubmit={addNewComment} submitLabel="Post" />
