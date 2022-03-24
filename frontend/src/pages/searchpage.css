@@ -1,0 +1,82 @@
+.search__container {
+  width: 1200px;
+  margin: 80px auto;
+}
+
+.search__page__section2 {
+  margin-top: 80px;
+}
+
+.row__search__post {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.row__search__post:not(:last-child)::after {
+  content: "";
+  padding-bottom: 50px;
+  width: 100%;
+  border-bottom: 1px solid #b6b6b6;
+}
+
+.row__search__post:not(:first-child) {
+  margin-top: 50px;
+}
+
+.search__post__result {
+  width: 48%;
+}
+
+.search__title__post {
+  font-family: "Font Awesome 5 Brands";
+  word-break: break-word;
+  font-size: 25px;
+  position: relative;
+  line-height: 1.3;
+  height: 120px;
+  align-items: center;
+  justify-content: space-between;
+  display: flex;
+  padding-left: 20px;
+}
+
+.search__title__post span:first-child {
+  width: 300px;
+}
+
+.search__title__post span:last-child {
+  width: 80px;
+  height: 100%;
+  position: relative;
+}
+
+.search__title__post span:last-child i {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 12px;
+}
+
+.search__title__post span:last-child:hover {
+  background-color: #353535;
+  color: white;
+}
+
+@media screen and (max-width: 1200px) {
+  .search__container {
+    width: 90vw;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .search__container {
+    width: 92vw;
+  }
+
+  .search__post__result {
+    width: 100%;
+  }
+}
