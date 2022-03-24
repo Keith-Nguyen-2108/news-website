@@ -41,9 +41,11 @@ let listRefreshToken = [];
 
 // Login
 router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+  const { emailOrphone, password } = req.body;
   try {
-    const user = await User.findOne({ email: email }).populate("role");
+    const user =
+      (await User.findOne({ email: emailOrphone }).populate("role")) ||
+      (await User.findOne({ phone: emailOrphone }).populate("role"));
     await bcrypt.compare(password, user.password);
 
     const accessToken = generateAccessToken(user);

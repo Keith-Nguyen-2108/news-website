@@ -117,7 +117,7 @@ app.post("/api/upload/post", middleWare, (req, res) => {
       else {
         res.status(200).json({
           uploaded: true,
-          url: `http://localhost:5000/images/post/content/${
+          url: `http://localhost:8000/images/post/content/${
             moment + req.files.upload.name
           }`,
         });

@@ -6,6 +6,7 @@ const nodemailer = require("nodemailer");
 // Get all users
 router.get("/", async (req, res) => {
   await User.find()
+    .populate("role")
     .then((user) => {
       res.status(200).json(user);
     })
@@ -18,6 +19,7 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   if (req.params.id) {
     await User.findById(req.params.id)
+      .populate("role")
       .then((user) => {
         res.send(user);
       })
@@ -39,6 +41,7 @@ router.patch("/:id", async (req, res) => {
       { $set: req.body },
       { new: true }
     )
+      .populate("role")
       .then((user) => {
         res.status(200).json(user);
       })
