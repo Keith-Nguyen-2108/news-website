@@ -215,12 +215,6 @@
   cursor: pointer;
 }
 
-.section-3-left-item:first-child img {
-  width: 100%;
-  height: 580px;
-  object-fit: cover;
-}
-
 .section-2-below-item p,
 .section-3-left-item:first-child p,
 .section-3-left-item:last-child p,
@@ -246,6 +240,12 @@
   word-wrap: break-word;
   margin-top: -10px;
   /* color: white; */
+}
+
+.section-3-left-item:first-child img {
+  width: 100%;
+  height: 580px;
+  object-fit: cover;
 }
 
 .section-3-left-item:last-child img {

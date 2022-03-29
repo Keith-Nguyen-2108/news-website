@@ -30,12 +30,13 @@ const Section = () => {
 
   const topThreePostsForSection1 = posts && posts.slice(0, 3);
   const nextSixPostsForSection2 = posts && posts.slice(3, 9);
+  const nextFourPostsForSection3 = posts && posts.slice(9, 13);
 
   return (
     <div>
       <Section1 posts={topThreePostsForSection1} />
       <Section2 posts={nextSixPostsForSection2} />
-      <Section3 category={category} />
+      <Section3 posts={nextFourPostsForSection3} />
       <Section4 category={category} />
       <Section5 category={category} />
       <SectionPost category={category} />
