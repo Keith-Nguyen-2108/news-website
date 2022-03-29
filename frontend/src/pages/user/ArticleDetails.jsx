@@ -6,6 +6,7 @@ import { axiosGetData, linkAvtPost } from "../../components/axios";
 import "./articledetail.css";
 
 const ArticleDetails = ({ user }) => {
+  // Post elements
   const [title, setTitle] = useState("");
   const [description, setDesc] = useState("");
   const [shortDescription, setShortContentPost] = useState("");
@@ -13,10 +14,12 @@ const ArticleDetails = ({ user }) => {
   const [newAvatar, setNewAvatar] = useState(null);
   const [update, setUpdate] = useState(false);
 
+  // Get post id in url
   const location = useLocation();
   const path = location.pathname.split("/")[2];
 
-  const [category, setCategory] = useState("");
+  // Seperate category
+  const [category, setCategory] = useState({} || null);
   let [smallCategories, setSmallCategories] = useState([]);
   const [bigCategories, setBigCategories] = useState([]);
 
@@ -37,7 +40,7 @@ const ArticleDetails = ({ user }) => {
     const getNew = async () => {
       const post = await axiosGetData.get("/post/" + path);
       setTitle(post.data.title);
-      setCategory(post.data.categoriesID.cateName);
+      setCategory(post.data.categoriesID);
       setDesc(post.data.description);
       setAvatar(post.data.avatar);
       // setStatus(post.data.status)
@@ -46,6 +49,8 @@ const ArticleDetails = ({ user }) => {
     getNew();
   }, [path]);
 
+  const [index, setIndex] = useState(0);
+
   const handleChangeBigCategory = (e) => {
     if (e.target.value) {
       let arraySmallCate = [...smallCategories].splice(0, 14);
@@ -53,10 +58,12 @@ const ArticleDetails = ({ user }) => {
         (cate) => cate.parentID.cateName === e.target.value
       );
       // console.log(arraySmallCate);
-      // arraySmallCate.unshift({
-      //   _id: "Nothing",
-      //   cateName: "",
-      // });
+      arraySmallCate.unshift({
+        _id: "Invalid",
+        cateName: "Choose a main topic",
+      });
+      setIndex(1);
+      setCategory("");
       smallCategories = smallCategories.filter((cate) => !Array.isArray(cate));
       let newArr = [...smallCategories, arraySmallCate];
       setSmallCategories(newArr);
@@ -69,59 +76,68 @@ const ArticleDetails = ({ user }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const value = {
-      title,
-      shortDescription,
-      description,
-      categoriesID: category,
-      authorID: user.id,
-      status: "Updated",
-    };
-    console.log(value);
-    // if (newAvatar) {
-    //   const data = new FormData();
-    //   const d = new Date();
-    //   const moment =
-    //     d.getDate() +
-    //     "-" +
-    //     (d.getMonth() + 1) +
-    //     "-" +
-    //     d.getFullYear() +
-    //     "-" +
-    //     d.getHours() +
-    //     "-";
-    //   const filename = newAvatar.name;
-    //   data.append("name", filename);
-    //   data.append("file", newAvatar);
-    //   value.avatar = moment + filename;
-    //   try {
-    //     await axiosGetData.post("/upload/post/avatar", data);
-    //   } catch (err) {
-    //     console.error(err);
-    //   }
-    // }
-    // try {
-    //   await axiosGetData.patch("/post/" + path, value);
-    //   alert("Your article has been update");
-    //   window.location.replace("/articles-list");
-    //   console.log(value);
-    // } catch (err) {
-    //   console.error(err);
-    // }
+    let checkCate = category._id ? category._id : category;
+    if (checkCate.length < 1) {
+      alert("Please choose an main option again");
+    } else {
+      const value = {
+        title,
+        shortDescription,
+        description,
+        categoriesID: checkCate,
+        authorID: user.id,
+        status: "Updated",
+      };
+      if (newAvatar) {
+        let deleteOldAvatar = await axiosGetData.delete(
+          "/delete/post/avatar?imgName=" + avatar
+        );
+        if (deleteOldAvatar) {
+          const data = new FormData();
+          const d = new Date();
+          const moment =
+            d.getDate() +
+            "-" +
+            (d.getMonth() + 1) +
+            "-" +
+            d.getFullYear() +
+            "-" +
+            d.getHours() +
+            "-";
+          const filename = newAvatar.name;
+          data.append("name", filename);
+          data.append("file", newAvatar);
+          value.avatar = moment + filename;
+          try {
+            await axiosGetData.post("/upload/post/avatar", data);
+          } catch (err) {
+            console.error(err);
+          }
+        }
+      }
+      try {
+        await axiosGetData.patch("/post/" + path, value);
+        alert("Your article has been update");
+        window.location.replace("/articles-list");
+        console.log(value);
+      } catch (err) {
+        console.error(err);
+      }
+    }
   };
 
   const handleApprove = async (e) => {
-    // let value = {
-    //     status: "Approved",
-    //     // rejectReason:""
-    // }
-    // await axios.put("/posts/"+path, value)
-    //             .then(()=>{
-    //                 window.location.replace("/profile")
-    //             })
-    //             .catch(err=>{
-    //                 console.log(err)
-    //             })
+    let value = {
+      status: "Approved",
+    };
+    await axiosGetData
+      .patch("/post/" + path, value)
+      .then(() => {
+        window.location.replace("/profile");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleReject = (e) => {
@@ -129,20 +145,20 @@ const ArticleDetails = ({ user }) => {
   };
 
   const handleSave = async (e) => {
-    // let value = {
-    //     title,
-    //     shortDescription,
-    //     description,
-    //     categories,
-    //     status:"Reject",
-    // }
-    // await axios.put("/posts/"+path, value)
-    //             .then(()=>{
-    //                 window.location.replace("/profile")
-    //             })
-    //             .catch(err=>{
-    //                 console.log(err)
-    //             })
+    let value = {
+      title,
+      shortDescription,
+      description,
+      status: "Reject",
+    };
+    await axiosGetData
+      .patch("/post/" + path, value)
+      .then(() => {
+        window.location.replace("/profile");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -191,17 +207,25 @@ const ArticleDetails = ({ user }) => {
                   <select
                     className="form-select"
                     onChange={(e) => setCategory(e.target.value)}
-                    defaultValue=""
+                    defaultValue={category}
                   >
-                    <option key="" value="" disabled="disabled">
-                      Choose a main topic
-                    </option>
+                    {index === 0 && (
+                      <option key="" value="" disabled="disabled">
+                        Choose a main topic
+                      </option>
+                    )}
+
                     {Array.isArray(
                       smallCategories[smallCategories.length - 1]
                     ) &&
                       smallCategories[smallCategories.length - 1].map(
                         (item) => (
-                          <option key={item._id} value={item._id}>
+                          <option
+                            key={item._id}
+                            value={`${item._id === "Invalid" ? "" : item._id}`}
+                            // disabled={item._id === "Invalid" ? true : false}
+                            // selected={item._id === "Invalid" ? true : false}
+                          >
                             {item.cateName}
                           </option>
                         )
@@ -212,7 +236,7 @@ const ArticleDetails = ({ user }) => {
             ) : (
               <div className="form-group mt-4">
                 <label htmlFor="slTopic">Topic post:</label>
-                <p className="mt-2">{category}</p>
+                <p className="mt-2">{category.cateName}</p>
               </div>
             )}
 
@@ -278,11 +302,13 @@ const ArticleDetails = ({ user }) => {
                     console.log({ event, editor, data });
                     setDesc(data);
                   }}
-                  config={{
-                    mediaEmbed: {
-                      previewsInData: true,
-                    },
-                  }}
+                  config={
+                    {
+                      // ckfinder: {
+                      //   uploadUrl: "http://localhost:8000/api/upload/post",
+                      // },
+                    }
+                  }
                 />
               ) : (
                 <div
@@ -333,22 +359,6 @@ const ArticleDetails = ({ user }) => {
                 </div>
               </>
             ) : null}
-
-            {/* <div className="d-flex justify-content-around flex-wrap mt-4">
-              {!update
-                ? image.length > 0 &&
-                  image
-                    .slice(1)
-                    .map((item) => (
-                      <img
-                        src={linkAvtPost + item}
-                        alt="preview"
-                        className="image-preview mb-3"
-                        key={item}
-                      />
-                    ))
-                : null}
-            </div> */}
             {user
               ? user.role?.roleName === "Author" && (
                   <div className="d-flex justify-content-evenly mt-4">
@@ -374,7 +384,7 @@ const ArticleDetails = ({ user }) => {
 
             {user
               ? user.role?.roleName === "Editor" && (
-                  <div className="buttonList d-flex justify-content-evenly">
+                  <div className="buttonList d-flex justify-content-evenly mt-4">
                     <button
                       type="button"
                       className="btn btn-primary btnApprove"

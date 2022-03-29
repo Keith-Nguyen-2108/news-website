@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { axiosGetData, linkAvtPost } from "../components/axios";
 import RightBar from "../components/rightSide/RightBar";
 import "./categorypage.css";
@@ -57,13 +57,17 @@ const CategoryPage = () => {
               }}
             >
               {listPost &&
-                listPost.map((post) => (
+                listPost.slice(0, 2).map((post) => (
                   <div className="category__small_image" key={post._id}>
-                    <img src={linkAvtPost + post.avatar} alt="small-img" />
-                    <div className="category-page__short-desc">
-                      <span className="category__post">{path}</span>
-                      <p className="category-page__title__post">{post.title}</p>
-                    </div>
+                    <Link to={`/article/${post._id}`}>
+                      <img src={linkAvtPost + post.avatar} alt="small-img" />
+                      <div className="category-page__short-desc">
+                        <span className="category__post">{path}</span>
+                        <p className="category-page__title__post">
+                          {post.title}
+                        </p>
+                      </div>
+                    </Link>
                   </div>
                 ))}
 

@@ -32,12 +32,13 @@
   width: 8em;
   height: 8em;
   object-fit: cover;
-  object-position: left;
+  /* object-position: left; */
 }
 
 .username {
   font-weight: 600;
   font-size: 25px;
+  word-wrap: break-word;
 }
 
 .profile-icon,

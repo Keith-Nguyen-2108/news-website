@@ -1,44 +1,40 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { linkAvtPost } from "../axios";
 
-const Section2 = ({ category }) => {
-  const data = category.slice(0, 2);
-
+const Section2 = ({ posts }) => {
   return (
     <div className="mt-1">
       <div className="section-2">
         <h1>FEATURED NEWS</h1>
         <div className="section-2-header">
-          {data &&
-            data.map((item) => (
+          {posts &&
+            posts.slice(0, 2).map((item, index) => (
               <div
                 className="section-2-header-item"
                 data-aos-delay="500"
-                data-aos={`${item.id % 2 === 0 ? "flip-left" : "flip-right"}`}
-                key={item.id}
+                data-aos={`${index % 2 === 0 ? "flip-left" : "flip-right"}`}
+                key={item._id}
               >
-                <img src={item.src} alt="" />
-                <div className="section-2-header-item-desc">
-                  <p>{item.name}</p>
-                  <h6>
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry
-                  </h6>
-                </div>
+                <Link to={`/article/${item._id}`}>
+                  <img src={linkAvtPost + item.avatar} alt="" />
+                  <div className="section-2-header-item-desc">
+                    <p>{item.categoriesID.cateName}</p>
+                    <h6>{item.title}</h6>
+                  </div>
+                </Link>
               </div>
             ))}
         </div>
         <div className="section-2-below">
           <ul className="list-unstyled">
-            {category &&
-              category.map((item) => (
-                <li className="section-2-below-item" key={item.id}>
-                  {/* <a href="#!"> */}
-                  <p>{item.name}</p>
-                  <h6>
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry
-                  </h6>
-                  {/* </a> */}
+            {posts &&
+              posts.slice(2, 6).map((item) => (
+                <li className="section-2-below-item" key={item._id}>
+                  <Link to={`/article/${item._id}`}>
+                    <p>{item.categoriesID.cateName}</p>
+                    <h6>{item.title}</h6>
+                  </Link>
                 </li>
               ))}
           </ul>

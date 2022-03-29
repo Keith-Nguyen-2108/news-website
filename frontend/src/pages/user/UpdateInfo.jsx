@@ -1,33 +1,33 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 // import axios from "axios";
 import "./update.css";
 import Input from "../../components/input/Input";
 import { ThemeContext } from "../../context/Context";
-import { linkAvt } from "../../components/axios";
+import { axiosGetData, linkAvt } from "../../components/axios";
+import useGetUser from "../../components/useGetUser";
 
 const UpdateInfo = ({ user }) => {
+  const { userInfo } = useGetUser(user.id);
+  // console.log(userInfo);
+
   const [{ currentComponentTheme }] = useContext(ThemeContext);
   const [isShow, setShow] = useState(false);
 
-  const [email, setEmail] = useState(user?.email);
-  const [username, setUserName] = useState(user?.username);
+  const [email, setEmail] = useState();
+  const [username, setUserName] = useState();
   const [password, setPassword] = useState();
-  const [fullname, setFullName] = useState(user?.fullname);
-  const [phone, setPhone] = useState(user?.phone);
+  const [fullname, setFullName] = useState();
+  const [phone, setPhone] = useState();
   const [newAvatar, setNewAvatar] = useState(null);
 
-  // const d = new Date();
-  // const moment =
-  //   d.getDate() +
-  //   "-" +
-  //   (d.getMonth() + 1) +
-  //   "-" +
-  //   d.getFullYear() +
-  //   "-" +
-  //   d.getHours() +
-  //   "-";
+  useEffect(() => {
+    setEmail(userInfo.email);
+    setUserName(userInfo.username);
+    setFullName(userInfo.fullname);
+    setPhone(userInfo.phone);
+  }, [userInfo]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     let value;
     if (password !== "") {
@@ -46,31 +46,49 @@ const UpdateInfo = ({ user }) => {
         phone,
       };
     }
-    console.log(value);
-    // if(avatar){
-    //     const data = new FormData()
-    //     data.append("name", avatar.name)
-    //     data.append("file", avatar)
-    //     value.avatar = moment + avatar.name
-    //     try{
-    //         await axios.post("/upload/avatar", data)
-    //     }
-    //     catch(err){}
-    // }
-    // try{
-    //     const res = await axios.put("/users/" + user._id, value)
-    //     dispatch({type: "UPDATE_SUCCESS", payload: res.data})
-    //     alert("Your information has been updated")
-    // }
-    // catch(err){
-    //     dispatch({type: "UPDATE_FAILURE"})
-    //     // console.log(err)
-    // }
+    // console.log(value);
+    if (newAvatar) {
+      let deleteOldAvatar = await axiosGetData.delete(
+        "/delete/user/avatar?imgName=" + userInfo.avatar
+      );
+      if (deleteOldAvatar) {
+        const data = new FormData();
+        // console.log(data)
+        let d = new Date();
+        let moment =
+          d.getDate() +
+          "-" +
+          (d.getMonth() + 1) +
+          "-" +
+          d.getFullYear() +
+          "-" +
+          d.getHours() +
+          "-";
+        const filename = newAvatar.name;
+        data.append("name", filename);
+        data.append("file", newAvatar);
+        value.avatar = moment + filename;
+        try {
+          await axiosGetData.post("/upload/avatar", data);
+        } catch (err) {
+          alert(err);
+        }
+      }
+    }
+    await axiosGetData
+      .patch("/user/" + userInfo._id, value)
+      .then(() => {
+        alert("Your information has been updated");
+        window.location.replace("/profile");
+      })
+      .catch((err) => {
+        alert(err);
+      });
   };
 
   return (
     <div className="container">
-      {user && (
+      {userInfo && (
         <div
           className="bg-update"
           style={{
@@ -89,7 +107,7 @@ const UpdateInfo = ({ user }) => {
               <label>Avatar:</label>
               <img
                 className="image-account"
-                src={linkAvt + user?.avatar}
+                src={linkAvt + userInfo?.avatar}
                 alt=""
               ></img>
             </div>
@@ -125,7 +143,7 @@ const UpdateInfo = ({ user }) => {
                 <Input
                   type={`${isShow === false ? "password" : "text"}`}
                   id="txtPwd-Update"
-                  placeholder="Enter user name"
+                  placeholder="Enter password"
                   className="form-control"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}

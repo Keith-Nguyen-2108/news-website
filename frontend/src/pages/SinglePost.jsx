@@ -39,7 +39,7 @@ const SinglePost = ({ user }) => {
             alt="image1"
           ></img>
           <div className="container">
-            <div className="row d-flex justify-content-between mt-5">
+            <div className="row d-flex justify-content-between my-5">
               <div className="col-sm-12 col-xl-9">
                 <div className="post">
                   <p className="categories-post">
@@ -72,7 +72,14 @@ const SinglePost = ({ user }) => {
                   <CommentBox />
                 </div>
               </div>
-              <RightBar></RightBar>
+              <div className="col-sm-12 col-xl-3">
+                <RightBar
+                  line={true}
+                  quantity={4}
+                  leftOrder={1}
+                  rightOrder={2}
+                />
+              </div>
             </div>
           </div>
         </React.Fragment>

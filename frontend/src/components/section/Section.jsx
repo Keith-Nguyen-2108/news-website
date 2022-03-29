@@ -19,7 +19,7 @@ const Section = () => {
     const getPosts = async () => {
       await axiosGetData.get("/post/").then((res) => {
         let data = Object.values(res.data).filter(
-          (item) => item.status === "Not approved yet"
+          (item) => item.status === "Approved"
         );
         // console.log(data);
         setPosts(data);
@@ -28,12 +28,13 @@ const Section = () => {
     getPosts();
   }, []);
 
-  const topThree = posts && posts.slice(0, 3);
+  const topThreePostsForSection1 = posts && posts.slice(0, 3);
+  const nextSixPostsForSection2 = posts && posts.slice(3, 9);
 
   return (
     <div>
-      <Section1 posts={topThree} />
-      <Section2 category={category} />
+      <Section1 posts={topThreePostsForSection1} />
+      <Section2 posts={nextSixPostsForSection2} />
       <Section3 category={category} />
       <Section4 category={category} />
       <Section5 category={category} />

@@ -1,12 +1,13 @@
 import "./App.css";
-import React, { Suspense, useContext, useEffect, useState } from "react";
-import { Route, Switch, useHistory } from "react-router-dom";
+import React, { Suspense, useContext } from "react";
+import { Route, Switch } from "react-router-dom";
 import { useSelector } from "react-redux";
-// import store from "./redux/store/store";
+import { ThemeContext } from "./context/Context";
 
 import Loading from "./components/loading/Loading";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
+import Mode from "./components/mode/Mode";
 
 import SinglePost from "./pages/SinglePost";
 import Signin from "./pages/Signin";
@@ -17,10 +18,7 @@ import Profile from "./pages/user/Profile";
 import SystemAdministrator from "./pages/systemAdministrator/SystemAdministrator";
 import UpdateInfo from "./pages/user/UpdateInfo";
 import ArticlesList from "./pages/user/ArticlesList";
-import Mode from "./components/mode/Mode";
-import { ThemeContext } from "./context/Context";
 import CategoryPage from "./pages/CategoryPage";
-import { axiosGetData } from "./components/axios";
 import Search from "./pages/Search";
 import ArticleDetails from "./pages/user/ArticleDetails";
 // import Home from "./pages/Home";
@@ -33,20 +31,8 @@ const HomePage = React.lazy(() => {
 
 function App() {
   const user = useSelector((state) => state.user.user);
-  const history = useHistory();
-
+  // const history = useHistory();
   const [{ currentTheme }] = useContext(ThemeContext);
-
-  const [userInfo, setUserInfo] = useState({});
-
-  useEffect(() => {
-    const getUserInfor = async () => {
-      await axiosGetData.get("/user/" + user?.id).then((res) => {
-        setUserInfo(res.data);
-      });
-    };
-    getUserInfor();
-  }, [user]);
 
   return (
     <div
@@ -77,22 +63,22 @@ function App() {
             <Search />
           </Route>
           <Route path="/profile">
-            {user ? <Profile user={userInfo} /> : history.push("/signin")}
+            {user ? <Profile user={user} /> : <Signin />}
           </Route>
           <Route path="/dashboard">
             <SystemAdministrator />
           </Route>
           <Route path="/create-article">
-            {user ? <CreatePost user={user} /> : history.push("/signin")}
+            {user ? <CreatePost user={user} /> : <Signin />}
           </Route>
           <Route path="/update-profile">
-            {user ? <UpdateInfo user={userInfo} /> : history.push("/signin")}
+            {user ? <UpdateInfo user={user} /> : <Signin />}
           </Route>
           <Route path="/articles-list">
-            <ArticlesList user={user} />
+            {user ? <ArticlesList user={user} /> : <Signin />}
           </Route>
           <Route path="/article-detail/:id">
-            {user ? <ArticleDetails user={user} /> : history.push("/signin")}
+            {user ? <ArticleDetails user={user} /> : <Signin />}
           </Route>
           <Route path="*" component={NotFound} />
         </Switch>

@@ -1,13 +1,16 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { linkAvt } from "../../components/axios";
+import ApproveArticles from "../../components/approveArticle/ApproveArticles";
 import "./profile.css";
+import useGetUser from "../../components/useGetUser";
 
 const Profile = ({ user }) => {
   // console.log(user);
 
   const history = useHistory();
-  // const [userInfo, setUserInfo] = useState({});
+  const { userInfo } = useGetUser(user.id);
+  // console.log(userInfo);
 
   // useEffect(() => {
   //   const getUserInfor = async () => {
@@ -21,19 +24,20 @@ const Profile = ({ user }) => {
   //     history.push('/category')
   // }
 
-  // const element = () =>{
-  //     switch(user.role){
-  //         case "Administrator":
-  //             return <ApproveArticles></ApproveArticles>
-  //         case "System Administrator":
-  //             return <ApproveUser></ApproveUser>
-  //         default: return null
-  //     }
-  // }
+  const element = () => {
+    switch (userInfo.role?.roleName) {
+      case "Editor":
+        return <ApproveArticles></ApproveArticles>;
+      // case "Administrator":
+      //     return <ApproveUser></ApproveUser>
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="container-fluid">
-      {user && (
+      {userInfo && (
         <div className="bg-profile">
           <div className="row d-flex justify-content-center">
             <div className="card mb-3">
@@ -42,17 +46,17 @@ const Profile = ({ user }) => {
                   <div className="card-block text-center text-white card-img">
                     <div className="m-b-25">
                       <img
-                        src={linkAvt + user.avatar}
+                        src={linkAvt + userInfo?.avatar}
                         className="img-radius"
                         alt="User-Profile-Img"
                       />
                     </div>
-                    <h6 className="username">{user.username}</h6>
+                    <h6 className="username">{userInfo?.username}</h6>
                     <p className="mt-3 position" style={{ fontSize: "18px" }}>
-                      {user.role?.roleName}
+                      {userInfo.role?.roleName}
                     </p>
                     <div className="d-flex justify-content-evenly mt-4">
-                      {user.role?.roleName !== "Editor" ? (
+                      {userInfo.role?.roleName !== "Editor" ? (
                         <i
                           className="fa fa-plus-square profile-icon"
                           aria-hidden="true"
@@ -69,7 +73,7 @@ const Profile = ({ user }) => {
                       >
                         <span className="tooltiptext">Update profile</span>
                       </i>
-                      {user.role?.roleName !== "Editor" ? (
+                      {userInfo.role?.roleName !== "Editor" ? (
                         <i
                           className="fas fa-newspaper profile-icon"
                           aria-hidden="true"
@@ -99,11 +103,15 @@ const Profile = ({ user }) => {
                     <div className="row text-center">
                       <div className="col-md-6 ">
                         <p className="m-b-10 f-w-600 text-dark">Email</p>
-                        <h6 className="text-muted f-w-400">{user.email}</h6>
+                        <h6 className="text-muted f-w-400">
+                          {userInfo?.email}
+                        </h6>
                       </div>
                       <div className="col-md-6">
                         <p className="m-b-10 f-w-600 text-dark">Phone</p>
-                        <h6 className="text-muted f-w-400">{user.phone}</h6>
+                        <h6 className="text-muted f-w-400">
+                          {userInfo?.phone}
+                        </h6>
                       </div>
                     </div>
                     <div className="m-b-20 m-t-40 p-b-5 f-w-600">
@@ -111,7 +119,7 @@ const Profile = ({ user }) => {
                         <div className="col-md-6">
                           <p className="m-b-10 f-w-600 text-dark">Fullname</p>
                           <h6 className="text-muted f-w-400">
-                            {user.fullname}
+                            {userInfo?.fullname}
                           </h6>
                         </div>
                         <div className="col-md-6">
@@ -119,7 +127,7 @@ const Profile = ({ user }) => {
                             Create Date
                           </p>
                           <h6 className="text-muted f-w-400">
-                            {new Date(user.createdAt).toDateString()}
+                            {new Date(userInfo?.createdAt).toDateString()}
                           </h6>
                         </div>
                       </div>
@@ -129,6 +137,7 @@ const Profile = ({ user }) => {
               </div>
             </div>
           </div>
+          <div className="row mt-4">{element()}</div>
         </div>
       )}
     </div>

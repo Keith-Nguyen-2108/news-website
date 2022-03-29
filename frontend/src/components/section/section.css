@@ -146,7 +146,7 @@
   padding: 5px 0px;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   letter-spacing: 2px;
-  width: 400px;
+  width: 450px;
 }
 
 .section-2-below {
@@ -468,6 +468,10 @@
 }
 
 @media screen and (max-width: 1024px) {
+  .section-2-header-item-desc h6 {
+    width: 420px;
+  }
+
   .section-3-left {
     padding: 0;
   }

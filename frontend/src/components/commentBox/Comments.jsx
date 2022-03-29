@@ -75,7 +75,6 @@ const Comments = () => {
               objectFit: "cover",
               marginRight: "20px",
               borderRadius: "50%",
-              objectPosition: "left",
             }}
           />
           <CommentForm handleSubmit={addNewComment} submitLabel="Post" />

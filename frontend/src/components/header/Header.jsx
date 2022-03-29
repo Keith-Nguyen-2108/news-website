@@ -7,10 +7,11 @@ import "./header.css";
 import { logout } from "../../redux/slice/UserSlice";
 import { useDispatch } from "react-redux";
 import { linkAvt } from "../axios";
+import useGetUser from "../useGetUser";
 
 function Header({ user }) {
   const history = useHistory();
-  // console.log(user);
+  const { userInfo } = useGetUser(user?.id);
 
   const dispatch = useDispatch();
 
@@ -60,11 +61,11 @@ function Header({ user }) {
                   ></i>
                 </li>
                 <li>
-                  {user ? (
+                  {user && Object.keys(userInfo).length > 0 ? (
                     <div className="d-flex">
                       <img
                         className="header-avatar"
-                        src={linkAvt + user.avatar}
+                        src={linkAvt + userInfo?.avatar}
                         alt=""
                         onClick={() => history.push("/profile")}
                       />

@@ -14,7 +14,7 @@ const CreatePost = ({ user }) => {
 
   const titleRef = useRef();
   const shortDescriptionRef = useRef();
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState({} || null);
   let [smallCategories, setSmallCategories] = useState([]);
   const [bigCategories, setBigCategories] = useState([]);
   // const [onWrite, setOnWrite] = useState(true);
@@ -46,12 +46,21 @@ const CreatePost = ({ user }) => {
     getCategories();
   }, []);
 
+  const [index, setIndex] = useState(0);
+
   const handleChangeBigCategory = (e) => {
     if (e.target.value) {
       let arraySmallCate = [...smallCategories].splice(0, 14);
       arraySmallCate = arraySmallCate.filter(
         (cate) => cate.parentID.cateName === e.target.value
       );
+      // console.log(arraySmallCate);
+      arraySmallCate.unshift({
+        _id: "Invalid",
+        cateName: "Choose a main topic",
+      });
+      setIndex(1);
+      setCategory("");
       smallCategories = smallCategories.filter((cate) => !Array.isArray(cate));
       let newArr = [...smallCategories, arraySmallCate];
       setSmallCategories(newArr);
@@ -95,53 +104,51 @@ const CreatePost = ({ user }) => {
   // };
 
   const formatPost = async () => {
-    const post = {
-      title: titleRef.current.value(),
-      shortDescription: shortDescriptionRef.current.value,
-      description,
-      categoriesID: category,
-      authorID: user.id,
-    };
-
-    const data = new FormData();
-    const d = new Date();
-    const moment =
-      d.getDate() +
-      "-" +
-      (d.getMonth() + 1) +
-      "-" +
-      d.getFullYear() +
-      "-" +
-      d.getHours() +
-      "-";
-    // let arrName = []
-    // for (let i = 0; i < photos.length; i++) {
-    //     data.append("files", photos[i])
-    //     arrName.push( moment + photos[i].name)
-    // }
-    // post.photos = arrName
-    const filename = avatar.name;
-    data.append("name", filename);
-    data.append("file", avatar);
-    post.avatar = moment + filename;
-    console.log(post);
-    try {
-      const res = await axiosGetData.post("/post/create", post);
-      if (res) {
-        await axiosGetData.post("/upload/post/avatar", data);
-        alert("Your article has been sent. Please, waiting for approval");
-        window.location.replace("/profile");
+    let checkCate = category._id ? category._id : category;
+    if (checkCate.length < 1) {
+      alert("Please choose an main option again");
+    } else {
+      const post = {
+        title: titleRef.current.value(),
+        shortDescription: shortDescriptionRef.current.value,
+        description,
+        categoriesID: category,
+        authorID: user.id,
+      };
+      const data = new FormData();
+      const d = new Date();
+      const moment =
+        d.getDate() +
+        "-" +
+        (d.getMonth() + 1) +
+        "-" +
+        d.getFullYear() +
+        "-" +
+        d.getHours() +
+        "-";
+      const filename = avatar.name;
+      data.append("name", filename);
+      data.append("file", avatar);
+      post.avatar = moment + filename;
+      console.log(post);
+      try {
+        const res = await axiosGetData.post("/post/create", post);
+        if (res) {
+          await axiosGetData.post("/upload/post/avatar", data);
+          alert("Your article has been sent. Please, waiting for approval");
+          window.location.replace("/profile");
+        }
+        // console.log(post);
+      } catch (err) {
+        alert(err);
       }
-      // console.log(post);
-    } catch (err) {
-      alert(err);
     }
   };
 
   const hadleSubmit = async (e) => {
     e.preventDefault();
     // translate();
-    if (avatar.length < 1) {
+    if (!avatar) {
       alert("You must upload an images for avatar of an article");
     } else {
       await formatPost();
@@ -197,14 +204,22 @@ const CreatePost = ({ user }) => {
             <select
               className="form-select"
               onChange={(e) => setCategory(e.target.value)}
-              defaultValue=""
+              defaultValue={category}
             >
-              <option key="" value="" disabled="disabled">
-                Choose a main topic
-              </option>
+              {index === 0 && (
+                <option key="" value="" disabled="disabled">
+                  Choose a main topic
+                </option>
+              )}
+
               {Array.isArray(smallCategories[smallCategories.length - 1]) &&
                 smallCategories[smallCategories.length - 1].map((item) => (
-                  <option key={item._id} value={item._id}>
+                  <option
+                    key={item._id}
+                    value={`${item._id === "Invalid" ? "" : item._id}`}
+                    // disabled={item._id === "Invalid" ? true : false}
+                    // selected={item._id === "Invalid" ? true : false}
+                  >
                     {item.cateName}
                   </option>
                 ))}
