@@ -30,6 +30,7 @@ router.get("", async (req, res) => {
         .populate("authorID", "_id username avatar");
     } else {
       posts = await Post.find()
+        .sort({ createdAt: -1 })
         .populate("categoriesID", "_id cateName")
         .populate({
           path: "categoriesID",

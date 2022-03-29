@@ -69,6 +69,21 @@ app.post("/api/upload/avatar", uploadAvatar.single("file"), (req, res) => {
   res.status(200).json("File has been uploaded");
 });
 
+// Delete old post avatar
+app.delete("/api/delete/user/avatar", (req, res) => {
+  if (req.query.imgName) {
+    // console.log(req.query.imgName);
+    try {
+      let img = "images/avatar" + "/" + req.query.imgName;
+      // console.log(img);
+      fs.unlinkSync(img);
+      res.status(200).json("File has been deleted");
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  }
+});
+
 // ############################# POST #################################
 
 //Folder image for post
@@ -135,6 +150,21 @@ app.post(
     res.status(200).json("File has been uploaded");
   }
 );
+
+// Delete old post avatar
+app.delete("/api/delete/post/avatar", (req, res) => {
+  if (req.query.imgName) {
+    // console.log(req.query.imgName);
+    try {
+      let img = "images/post/avatar" + "/" + req.query.imgName;
+      // console.log(img);
+      fs.unlinkSync(img);
+      res.status(200).json("File has been deleted");
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  }
+});
 
 app.listen(port, () => {
   console.log(`App is listening at http://localhost:${port}`);
