@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { linkAvtPost } from "../axios";
 
 const Section3 = ({ posts }) => {
@@ -18,7 +19,7 @@ const Section3 = ({ posts }) => {
     addAnotherId(posts);
   }, [posts]);
 
-  listPosts && console.log(listPosts);
+  // listPosts && console.log(listPosts);
 
   return (
     <div className="section-3">
@@ -42,9 +43,11 @@ const Section3 = ({ posts }) => {
                   data-aos-delay="300"
                   id={item.id}
                 >
-                  <img src={linkAvtPost + item.avatar} alt="" />
-                  <p>{item.categoriesID.cateName}</p>
-                  <h6>{item.title}</h6>
+                  <Link to={`/article/${item._id}`}>
+                    <img src={linkAvtPost + item.avatar} alt="" />
+                    <p>{item.categoriesID.cateName}</p>
+                    <h6>{item.title}</h6>
+                  </Link>
                 </div>
               ))}
             </div>

@@ -69,7 +69,11 @@ const SinglePost = ({ user }) => {
                                                             </div>
                                                     } */}
                   </div>
-                  <CommentBox />
+                  <CommentBox
+                    postId={news._id}
+                    like={news.like}
+                    view={news.view}
+                  />
                 </div>
               </div>
               <div className="col-sm-12 col-xl-3">

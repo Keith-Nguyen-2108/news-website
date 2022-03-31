@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { axiosGetData } from "./axios";
+import axiosUser from "./axios";
 
 const useGetUser = (userID) => {
   const [userInfo, setUserInfo] = useState({});
 
   useEffect(() => {
     const getUserInfor = async () => {
-      await axiosGetData.get("/user/" + userID).then((res) => {
+      await axiosUser.get("/user/" + userID).then((res) => {
         setUserInfo(res.data);
       });
     };

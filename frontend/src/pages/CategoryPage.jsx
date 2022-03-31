@@ -30,6 +30,7 @@ const CategoryPage = () => {
           <div
             className="col-sm-12 col-xl-6"
             style={{ display: "flex", flexDirection: "column" }}
+            key={index}
           >
             <div
               className="category__big_image"

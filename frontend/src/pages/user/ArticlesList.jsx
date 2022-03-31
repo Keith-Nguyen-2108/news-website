@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { ThemeContext } from "../../context/Context";
 import "./articlelist.css";
-import { axiosGetData } from "../../components/axios";
+import axiosUser from "../../components/axios";
 import { useHistory } from "react-router-dom";
 
 const ArticlesList = ({ user }) => {
@@ -12,7 +12,7 @@ const ArticlesList = ({ user }) => {
 
   useEffect(() => {
     const getNewFollowUser = async () => {
-      const value = await axiosGetData.get("/post?authorID=" + user.id);
+      const value = await axiosUser.get("/post?authorID=" + user.id);
       // console.log(value);
       setNews(value.data);
     };
@@ -21,15 +21,14 @@ const ArticlesList = ({ user }) => {
 
   const history = useHistory();
 
-  // const handleDelete = async(id) =>{
-  //     // console.log(id)
-
-  //     await axios.delete("/posts/"+id)
-  //                 .then(()=>{
-  //                     window.location.reload()
-  //                 })
-  //                 .catch(err=>{})
-  // }
+  const handleDelete = async (id) => {
+    await axiosUser
+      .delete("/post/" + id)
+      .then(() => {
+        window.location.reload();
+      })
+      .catch((err) => {});
+  };
 
   return (
     <div className="container">
@@ -63,7 +62,7 @@ const ArticlesList = ({ user }) => {
               </thead>
               <tbody>
                 {news &&
-                  news.map((item, index) => (
+                  news.reverse().map((item, index) => (
                     <tr key={index}>
                       <td>{index + 1}</td>
                       <td>{item.categoriesID?.cateName}</td>
@@ -102,6 +101,7 @@ const ArticlesList = ({ user }) => {
                                 color: "rgb(255, 47, 95)",
                                 cursor: "pointer",
                               }}
+                              onClick={() => handleDelete(item._id)}
                             >
                               <span className="tooltiptext">Delete</span>
                             </i>

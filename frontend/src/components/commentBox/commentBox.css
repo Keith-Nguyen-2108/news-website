@@ -4,13 +4,14 @@
   color: rgb(221, 221, 221);
 }
 
-.total-comment,
-.total-view {
+.total-comment i,
+.total-view i,
+.total-like i{
   cursor: pointer;
 }
 
 .total-comment p,
-.total-view p {
+.total-view p, .total-like p {
   padding: 0 40px 0 20px;
   font-size: 14px;
 }

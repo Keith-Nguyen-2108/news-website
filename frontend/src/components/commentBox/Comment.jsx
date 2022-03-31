@@ -1,5 +1,6 @@
 import React from "react";
 import CommentForm from "./CommentForm";
+import { linkAvt } from "../axios";
 
 const Comment = ({
   comment,
@@ -8,19 +9,19 @@ const Comment = ({
   addNewComment,
   replies,
   calculateDate,
-  parentId = null,
+  parentID = null,
 }) => {
   const isReply =
     activeComment !== null &&
-    activeComment.id === comment.id &&
+    activeComment.id === comment._id &&
     activeComment.type === "reply";
-  const replyId = parentId ? parentId : comment.id;
+  const replyId = parentID ? parentID : comment._id;
 
   return (
-    <div key={comment.id} className="highest-level">
+    <div key={comment._id} className="highest-level">
       <div className="enter-comment">
         <img
-          src="https://d2eohwa6gpdg50.cloudfront.net/wp-content/uploads/sites/6/2021/08/16115025/white-rabbit-2-2.jpeg"
+          src={linkAvt + comment?.authorID.avatar}
           alt=""
           style={{
             width: "40px",
@@ -32,14 +33,14 @@ const Comment = ({
         />
         <div className="detail-comment">
           <div className="d-flex">
-            <p>Nguyen Minh Nha</p>
+            <p>{comment?.authorID.username}</p>
             <span
               style={{
                 marginLeft: "20px",
                 color: "rgb(206, 206, 206)",
               }}
             >
-              {calculateDate(new Date(comment.createAt))}
+              {calculateDate(new Date(comment.createdAt))}
             </span>
           </div>
           <div className="content-comment">
@@ -48,7 +49,7 @@ const Comment = ({
               <i
                 className="fas fa-reply reply-icon"
                 onClick={() =>
-                  setActiveComment({ id: comment.id, type: "reply" })
+                  setActiveComment({ id: comment._id, type: "reply" })
                 }
               >
                 <span className="tooltiptext">Reply</span>
@@ -65,14 +66,14 @@ const Comment = ({
           {replies &&
             replies.map((reply) => (
               <Comment
-                key={reply.id}
+                key={reply._id}
                 comment={reply}
                 activeComment={activeComment}
                 setActiveComment={setActiveComment}
                 addNewComment={addNewComment}
                 replies={[]}
                 calculateDate={calculateDate}
-                parentId={comment.id}
+                parentID={comment._id}
               />
             ))}
         </div>

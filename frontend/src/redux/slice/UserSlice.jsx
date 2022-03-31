@@ -13,7 +13,7 @@ export const login = createAsyncThunk(
   async (payload, thunkAPI) => {
     // console.log("Login: " + payload);
     try {
-      const res = await axiosUser.post("/auth/login", payload);
+      const res = await axiosGetData.post("/auth/login", payload);
       return res.data;
     } catch (error) {
       // console.log(error.response.data);
@@ -98,7 +98,7 @@ const userSlice = createSlice({
       .addCase(refreshToken.fulfilled, (state, action) => {
         localStorage.setItem("user", JSON.stringify(action.payload));
         state.user = action.payload;
-        console.log(state.user);
+        // console.log(state.user);
       })
       .addCase(deleteUser.fulfilled, (state) => {
         state.error = false;

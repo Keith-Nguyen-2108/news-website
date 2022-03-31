@@ -20,11 +20,11 @@ axiosUser.interceptors.request.use(
       const decodeToken = jwt_decode(userStore?.accessToken);
       if (decodeToken.exp * 1000 < currentTime) {
         const newUserStore = await store.dispatch(refreshToken());
-        console.log(newUserStore);
+        // console.log(newUserStore);
         if (config?.headers) {
           config.headers["authorization"] =
             "Bearer " + newUserStore?.payload.accessToken;
-          console.log("Bearer " + newUserStore?.payload.accessToken);
+          // console.log("Bearer " + newUserStore?.payload.accessToken);
         }
       }
     }
