@@ -42,12 +42,12 @@ let listRefreshToken = [];
 // Login
 router.post("/login", async (req, res) => {
   const { emailOrphone, password } = req.body;
-  try {
-    const user =
-      (await User.findOne({ email: emailOrphone }).populate("role")) ||
-      (await User.findOne({ phone: emailOrphone }).populate("role"));
-    await bcrypt.compare(password, user.password);
 
+  const user =
+    (await User.findOne({ email: emailOrphone }).populate("role")) ||
+    (await User.findOne({ phone: emailOrphone }).populate("role"));
+  const checkPass = await bcrypt.compare(password, user.password);
+  if (user && checkPass) {
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
     listRefreshToken.push(refreshToken);
@@ -59,7 +59,7 @@ router.post("/login", async (req, res) => {
       accessToken,
       refreshToken,
     });
-  } catch (err) {
+  } else {
     res.status(400).json("User name or password is invalid");
   }
 });

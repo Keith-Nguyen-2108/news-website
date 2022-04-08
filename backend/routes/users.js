@@ -15,6 +15,113 @@ router.get("/", async (req, res) => {
     });
 });
 
+// Count data
+router.get("/amountOfUsers", async (_, res) => {
+  try {
+    let totalCount = await User.count();
+    // console.log(totalCount);
+    res.status(200).json(totalCount);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// Get users follow month
+router.get("/groupByMonth", async (req, res) => {
+  const yearQuery = req.query.year;
+  if (yearQuery) {
+    await User.aggregate([
+      {
+        $project: {
+          month: {
+            month: { $month: "$createdAt" },
+          },
+          year: {
+            year: { $year: "$createdAt" },
+          },
+        },
+      },
+      {
+        $match: {
+          year: { year: Number(yearQuery) },
+        },
+      },
+      {
+        $group: {
+          _id: {
+            year: "$year",
+            month: "$month",
+          },
+          total_users_month: { $sum: 1 },
+        },
+      },
+      {
+        $sort: { _id: 1 },
+      },
+    ])
+      .then((user) => {
+        res.status(200).json(user);
+      })
+      .catch((err) => {
+        res.status(500).json(err);
+      });
+  }
+});
+
+// Get users follow year
+router.get("/groupByWeek", async (req, res) => {
+  const yearQuery = req.query.year;
+  const weekQuery = req.query.week;
+  if (yearQuery && weekQuery) {
+    await User.aggregate([
+      {
+        $project: {
+          year: {
+            year: { $year: "$createdAt" },
+          },
+          month: {
+            month: { $month: "$createdAt" },
+          },
+          date: {
+            date: { $dayOfMonth: "$createdAt" },
+          },
+          dayOfWeek: {
+            dayOfWeek: { $dayOfWeek: "$createdAt" },
+          },
+          weekOfYear: {
+            $week: "$createdAt",
+            // $floor: { $divide: [{ $dayOfMonth: "$createdAt" }, 7] },
+          },
+        },
+      },
+      {
+        $match: {
+          year: { year: Number(yearQuery) },
+          weekOfYear: Number(weekQuery),
+        },
+      },
+      {
+        $group: {
+          _id: {
+            // year: "$year",
+            // month: "$month",
+            date: "$date",
+            dayOfWeek: "$dayOfWeek",
+            weekOfYear: "$weekOfYear",
+          },
+          total_users_week: { $sum: 1 },
+        },
+      },
+    ])
+      .then((user) => {
+        res.status(200).json(user);
+      })
+      .catch((err) => {
+        res.status(500).json(err);
+      });
+  }
+});
+
 // Get single user
 router.get("/:id", async (req, res) => {
   if (req.params.id) {
@@ -49,56 +156,6 @@ router.patch("/:id", async (req, res) => {
         res.status(500).json(err);
       });
   }
-});
-
-// Get users follow month
-router.post("/groupByMonth", async (req, res) => {
-  await User.aggregate([
-    {
-      $project: {
-        month: {
-          month: { $month: "$createdAt" },
-        },
-      },
-    },
-    {
-      $group: {
-        _id: "$month",
-        total_users_month: { $sum: 1 },
-      },
-    },
-  ])
-    .then((user) => {
-      res.status(200).json(user);
-    })
-    .catch((err) => {
-      res.status(500).json(err);
-    });
-});
-
-// Get users follow year
-router.post("/groupByYear", async (req, res) => {
-  await User.aggregate([
-    {
-      $project: {
-        year: {
-          year: { $year: "$createdAt" },
-        },
-      },
-    },
-    {
-      $group: {
-        _id: "$year",
-        total_users_year: { $sum: 1 },
-      },
-    },
-  ])
-    .then((user) => {
-      res.status(200).json(user);
-    })
-    .catch((err) => {
-      res.status(500).json(err);
-    });
 });
 
 // Delete
