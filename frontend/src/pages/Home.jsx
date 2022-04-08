@@ -4,10 +4,10 @@ import Slider from "../components/slider/Slider";
 
 const Home = () => {
   return (
-    <React.Fragment>
+    <div className="home" style={{ overflow: "hidden" }}>
       <Slider />
       <Section />
-    </React.Fragment>
+    </div>
   );
 };
 

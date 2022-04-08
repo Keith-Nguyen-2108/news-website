@@ -1,21 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
-import { axiosGetData } from "../axios";
+import { useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { ThemeContext } from "../../context/Context";
+import useFetch from "../useFetch";
 
 const ApproveArticles = () => {
   const history = useHistory();
-  const [news, setNews] = useState([]);
   const [{ currentTheme }] = useContext(ThemeContext);
 
-  const getNews = async () => {
-    const value = await axiosGetData.get("/post");
-    setNews(value.data);
-  };
-
-  useEffect(() => {
-    getNews();
-  }, []);
+  const [posts] = useFetch("/post");
 
   return (
     <div className="container-fluid">
@@ -33,31 +25,32 @@ const ApproveArticles = () => {
             </tr>
           </thead>
           <tbody>
-            {news.map(
-              (item, index) =>
-                item.status !== "Approved" && (
-                  <tr key={index} className="align-middle">
-                    <td>{index + 1}</td>
-                    <td>{item.categoriesID.cateName}</td>
-                    <td style={{ width: "35%", wordWrap: "break-word" }}>
-                      {item.title}
-                    </td>
-                    <td>{new Date(item.createdAt).toDateString()}</td>
-                    <td>{item.status}</td>
-                    <td
-                      onClick={() =>
-                        history.push(`/article-detail/${item._id}`)
-                      }
-                    >
-                      <i
-                        className="fa fa-edit"
-                        aria-hidden="true"
-                        style={{ color: "#5bef5b", cursor: "pointer" }}
-                      ></i>
-                    </td>
-                  </tr>
-                )
-            )}
+            {posts &&
+              posts.map(
+                (item, index) =>
+                  item.status !== "Approved" && (
+                    <tr key={index} className="align-middle">
+                      <td>{index + 1}</td>
+                      <td>{item.categoriesID.cateName}</td>
+                      <td style={{ width: "35%", wordWrap: "break-word" }}>
+                        {item.title}
+                      </td>
+                      <td>{new Date(item.createdAt).toDateString()}</td>
+                      <td>{item.status}</td>
+                      <td
+                        onClick={() =>
+                          history.push(`/article-detail/${item._id}`)
+                        }
+                      >
+                        <i
+                          className="fa fa-edit"
+                          aria-hidden="true"
+                          style={{ color: "#5bef5b", cursor: "pointer" }}
+                        ></i>
+                      </td>
+                    </tr>
+                  )
+              )}
           </tbody>
         </table>
       </div>

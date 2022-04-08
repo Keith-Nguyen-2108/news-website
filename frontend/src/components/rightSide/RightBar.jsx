@@ -1,27 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { category } from "../slider/sliderItem";
 import "./rightbar.css";
+import { axiosGetData, linkAvtPost } from "../axios";
 
 const RightBar = ({ line, quantity, leftOrder, rightOrder }) => {
   const [posts, setPosts] = useState([]);
   // const pf = "http://localhost:5000/images/post/"
 
-  // const getArticals = async() =>{
-  //         await axios
-  //             .get("/posts" )
-  //             .then(res=>{
-  //                 let value= res.data
-  //                 value = value.reverse().sort(() => 0.5 - Math.random()).slice(0,5)
-  //                 setRightNews(value)
-
-  //             })
-  //     }
-
   useEffect(() => {
-    let value = category.slice(0, quantity);
-    // console.log(value);
-    setPosts(value);
-    // getArticals()
+    const getArticals = async () => {
+      await axiosGetData.get("/post").then((res) => {
+        let value = res.data;
+        value = value.sort(() => 0.5 - Math.random()).slice(0, quantity);
+        setPosts(value);
+      });
+    };
+
+    getArticals();
   }, [quantity]);
 
   // let history = useHistory() - onClick={ () => history.push(`/news/${item._id}`)}
@@ -44,14 +38,14 @@ const RightBar = ({ line, quantity, leftOrder, rightOrder }) => {
       {posts &&
         posts.map((item) => (
           <div
-            className="d-flex rightbar"
-            key={item.id}
+            className="d-flex rightbar pb-3"
+            key={item._id}
             style={{ cursor: "pointer" }}
           >
             <img
               className="image-rightbar"
-              src={item.src}
-              alt={item.src}
+              src={linkAvtPost + item.avatar}
+              alt=""
               style={{ order: leftOrder }}
             />
             <p
@@ -61,7 +55,7 @@ const RightBar = ({ line, quantity, leftOrder, rightOrder }) => {
                 margin: rightOrder === 2 ? "0 0 0 20px" : "0 20px 0 0",
               }}
             >
-              Mauris eget velit porttitor, sollicitudin turpis id, viverra leo
+              {item.title.substring(0, 60) + "..."}
             </p>
           </div>
         ))}

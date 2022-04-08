@@ -17,17 +17,30 @@ const Signin = () => {
 
   const dispatch = useDispatch();
 
-  const handleLogin = async () => {
-    try {
-      const data = {
-        emailOrphone: emailOrPhoneRef.current.value(),
-        password: passwordRef.current.value(),
-      };
-      const success = await dispatch(login(data));
-      unwrapResult(success); // unwrapResult: WHEN HAVE ANY ERROR IN ACTION, WE CAN CATCH IT AND SHOW IN UI
-      history.push("/");
-    } catch (err) {
-      alert(err);
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    if (
+      emailOrPhoneRef.current
+        .value()
+        .match(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        ) ||
+      emailOrPhoneRef.current.value().match(/^\d+$/)
+    ) {
+      try {
+        const data = {
+          emailOrphone: emailOrPhoneRef.current.value(),
+          password: passwordRef.current.value(),
+        };
+        // console.log(data);
+        const success = await dispatch(login(data));
+        unwrapResult(success); // unwrapResult: WHEN HAVE ANY ERROR IN ACTION, WE CAN CATCH IT AND SHOW IN UI
+        history.push("/");
+      } catch (err) {
+        alert("User name or password is invalid");
+      }
+    } else {
+      alert("User name or password is invalid");
     }
   };
 
@@ -38,7 +51,7 @@ const Signin = () => {
         name="frmLogin"
         id="frmLogin"
         method="post"
-        onSubmit={(e) => e.preventDefault()}
+        onSubmit={(e) => handleLogin(e)}
       >
         <div className="row justify-content-center">
           <div className="col-md-12 col-lg-10 col-xl-8 bg-signin">
@@ -96,7 +109,7 @@ const Signin = () => {
                         id="txtPassword-Signin"
                         ref={passwordRef}
                         placeholder="Password"
-                        min={6}
+                        minLength={6}
                         className="form-control border"
                         required={true}
                       />
@@ -105,10 +118,10 @@ const Signin = () => {
                   <div className="row mt-4">
                     <div className="col text-center">
                       <button
-                        type="button"
+                        type="submit"
                         className="btn btnLogin px-4"
                         name="btnLogin"
-                        onClick={handleLogin}
+                        // onClick={handleLogin}
                       >
                         Sign In
                       </button>

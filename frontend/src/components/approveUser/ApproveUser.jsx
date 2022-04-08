@@ -107,6 +107,8 @@ const ApproveUser = ({ style }) => {
                             className="far fa-edit"
                             style={{ cursor: "pointer" }}
                           ></i>
+                        </td>
+                        <td>
                           <i
                             className="far fa-trash-alt"
                             style={{ cursor: "pointer" }}

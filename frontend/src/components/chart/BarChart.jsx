@@ -2,7 +2,7 @@ import React from "react";
 import { Bar } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 Chart.register(...registerables);
-const BarChart = ({ style }) => {
+const BarChart = ({ style, posts, users }) => {
   return (
     <div className="bar-chart" style={style}>
       <Bar
@@ -10,14 +10,14 @@ const BarChart = ({ style }) => {
           labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
           datasets: [
             {
-              label: "test",
-              data: [2, 4, 10, 8, 5, 7, 15],
+              label: "Post",
+              data: posts,
               borderColor: "rgb(238, 28, 109)",
               backgroundColor: "rgba(238, 28, 109, 1)",
             },
             {
-              label: "test1",
-              data: [5, 1, 8, 12, 7, 10, 9],
+              label: "User",
+              data: users,
               borderColor: "rgb(252, 140, 49)",
               backgroundColor: "rgba(252, 140, 49, 1)",
             },

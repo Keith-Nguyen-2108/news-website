@@ -145,6 +145,7 @@ const ArticleDetails = ({ user }) => {
   };
 
   const handleSave = async (e) => {
+    e.preventDefault();
     let value = {
       title,
       shortDescription,
@@ -189,6 +190,7 @@ const ArticleDetails = ({ user }) => {
                     className="form-select"
                     onChange={(e) => handleChangeBigCategory(e)}
                     defaultValue=""
+                    required
                   >
                     <option key="" value="" disabled="disabled">
                       Choose a big topic
@@ -208,6 +210,7 @@ const ArticleDetails = ({ user }) => {
                     className="form-select"
                     onChange={(e) => setCategory(e.target.value)}
                     defaultValue={category}
+                    required
                   >
                     {index === 0 && (
                       <option key="" value="" disabled="disabled">
@@ -249,6 +252,7 @@ const ArticleDetails = ({ user }) => {
                   id="txtTitlePost"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
+                  required={true}
                 />
               ) : (
                 <p className="mt-2">{title}</p>
@@ -273,6 +277,7 @@ const ArticleDetails = ({ user }) => {
               {update || reject ? (
                 // <textarea className="form-control" id="txtContentPost" value={shortDescription} rows="10" type="text" onChange={(e) => setShortContentPost(e.target.value)}></textarea>
                 <CKEditor
+                  required={true}
                   editor={ClassicEditor}
                   data={shortDescription}
                   enterMode="CKEDITOR.ENTER_P"
@@ -294,6 +299,7 @@ const ArticleDetails = ({ user }) => {
               {update || reject ? (
                 //<textarea className="form-control" id="txtContentPost" value={description} rows="10" type="text" onChange={(e) => setDesc(e.target.value)}></textarea>
                 <CKEditor
+                  required={true}
                   editor={ClassicEditor}
                   data={description}
                   enterMode="CKEDITOR.ENTER_P"
@@ -394,9 +400,9 @@ const ArticleDetails = ({ user }) => {
                     </button>
                     {reject ? (
                       <button
-                        type="button"
+                        type="submit"
                         className="btn btn-success btnSave"
-                        onClick={handleSave}
+                        onClick={(e) => handleSave(e)}
                       >
                         Save
                       </button>

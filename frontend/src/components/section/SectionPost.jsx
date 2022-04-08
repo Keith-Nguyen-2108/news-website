@@ -1,29 +1,28 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { linkAvtPost } from "../axios";
 
-const SectionPost = ({ category }) => {
+const SectionPost = ({ posts }) => {
   return (
     <div className="section-post">
       <div className="section-post-header">
         <h1>Latest news</h1>
         <ul className="list-unstyled">
-          {category &&
-            category.map((item) => (
+          {posts &&
+            posts.map((item) => (
               <li
                 className="section-post-header-item"
-                key={item.id}
+                key={item._id}
                 data-aos="fade-up"
                 data-aos-delay="300"
               >
-                {/* <a href="#!"> */}
-                <img src={item.src} alt="" />
-                <div className="section-post-header-content">
-                  <p>{item.name}</p>
-                  <h6>
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry
-                  </h6>
-                </div>
-                {/* </a> */}
+                <Link to={`/article/${item._id}`}>
+                  <img src={linkAvtPost + item.avatar} alt="" />
+                  <div className="section-post-header-content">
+                    <p>{item?.categoriesID.cateName}</p>
+                    <h6>{item.title}</h6>
+                  </div>
+                </Link>
               </li>
             ))}
         </ul>

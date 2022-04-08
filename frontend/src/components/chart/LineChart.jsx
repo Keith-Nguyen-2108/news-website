@@ -3,47 +3,37 @@ import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 Chart.register(...registerables);
 
-// const state = {
-//   labels: ["January", "February", "March", "April", "May"],
-//   datasets: [
-//     {
-//       label: "Rainfall",
-//       backgroundColor: "rgba(75,192,192,1)",
-//       borderColor: "rgba(0,0,0,1)",
-//       borderWidth: 2,
-//       data: [65, 59, 80, 81, 56],
-//     },
-//   ],
-// };
-const LineChart = ({ style }) => {
+const LineChart = ({ style, posts, users }) => {
+  const label = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "June",
+    "July",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
   return (
     <div className="line-chart" style={style}>
       <Line
         data={{
-          labels: [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "June",
-            "July",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-          ],
+          labels: label,
           datasets: [
             {
-              label: "test",
-              data: [2, 4, 10, 8, 5, 7, 15, 3, 12, 19, 13, 9],
+              label: "Post",
+              data: posts,
               borderColor: "rgb(238, 28, 109)",
               pointBackgroundColor: "rgb(255,255,255)",
             },
             {
-              label: "test1",
-              data: [5, 2, 8, 15, 7, 10, 9, 4, 12, 3, 16, 6],
+              label: "User",
+              data: users,
               borderColor: "rgb(252, 140, 49)",
               backgroundColor: "rgba(252, 140, 49, 0.3)",
               pointBackgroundColor: "rgb(255,255,255)",

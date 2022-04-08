@@ -8,7 +8,6 @@ import Section3 from "./Section3";
 import SectionPost from "./SectionPost";
 import Section4 from "./Section4";
 import Section5 from "./Section5";
-import { category } from "../slider/sliderItem";
 import { axiosGetData } from "../axios";
 
 const Section = () => {
@@ -31,16 +30,19 @@ const Section = () => {
   const topThreePostsForSection1 = posts && posts.slice(0, 3);
   const nextSixPostsForSection2 = posts && posts.slice(3, 9);
   const nextFourPostsForSection3 = posts && posts.slice(9, 13);
+  const nextFourPostsForSection4 = posts && posts.slice(13, 17);
+  const nextFourPostsForSection5 = posts && posts.slice(17, 21);
+  const takeAllRemainingPosts = posts && posts.slice(21, posts.length - 1);
 
   return (
-    <div>
+    <React.Fragment>
       <Section1 posts={topThreePostsForSection1} />
       <Section2 posts={nextSixPostsForSection2} />
       <Section3 posts={nextFourPostsForSection3} />
-      <Section4 category={category} />
-      <Section5 category={category} />
-      <SectionPost category={category} />
-    </div>
+      <Section4 posts={nextFourPostsForSection4} />
+      <Section5 posts={nextFourPostsForSection5} />
+      <SectionPost posts={takeAllRemainingPosts} />
+    </React.Fragment>
   );
 };
 

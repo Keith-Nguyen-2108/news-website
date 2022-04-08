@@ -1,6 +1,10 @@
 import React, { useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import { linkAvtPost } from "../axios";
 
-const Section4 = ({ category }) => {
+const Section4 = ({ posts }) => {
+  const history = useHistory();
+
   const randomEffect = () => {
     let items = document.querySelectorAll(".section-4-header-item p");
     let time = 3000;
@@ -62,7 +66,7 @@ const Section4 = ({ category }) => {
           </li>
           <li className="section-4-header-item">
             {/* <a href="#!"> */}
-            <p data-val="21">00</p>
+            <p data-val="20">00</p>
             <h6>Hotel</h6>
             <span>
               Lorem Ipsum is simply dummy text of the printing and typesetting
@@ -72,7 +76,7 @@ const Section4 = ({ category }) => {
           </li>
           <li className="section-4-header-item">
             {/* <a href="#!"> */}
-            <p data-val="08">00</p>
+            <p data-val="22">00</p>
             <h6>Hotel</h6>
             <span>
               Lorem Ipsum is simply dummy text of the printing and typesetting
@@ -84,32 +88,30 @@ const Section4 = ({ category }) => {
       </div>
       <div className="section-4-below pt-5">
         <ul className="list-unstyled">
-          {category &&
-            [...category].reverse().map((item) => (
-              <li className="section-4-below-item" key={item.id}>
+          {posts &&
+            posts.map((item, index) => (
+              <li
+                className="section-4-below-item"
+                key={item._id}
+                onClick={() => history.push("/article/" + item._id)}
+                style={{ cursor: "pointer" }}
+              >
                 {/* <a href="#!"> */}
                 <img
-                  src={item.src}
+                  src={linkAvtPost + item.avatar}
                   alt=""
-                  className={`${item.id % 2 === 0 ? "right" : ""}`}
-                  data-aos={`${item.id % 2 === 0 ? "fade-left" : "fade-right"}`}
+                  className={`${index % 2 === 0 ? "right" : ""}`}
+                  data-aos={`${index % 2 === 0 ? "fade-left" : "fade-right"}`}
                   data-aos-delay="300"
                 />
                 <div
                   className="section-4-below-item-content"
-                  data-aos={`${item.id % 2 !== 0 ? "fade-left" : "fade-right"}`}
+                  data-aos={`${index % 2 !== 0 ? "fade-left" : "fade-right"}`}
                   data-aos-delay="500"
                 >
-                  <p>{item.name}</p>
-                  <h6>
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry
-                  </h6>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Suspendisse maximus, massa sit amet tempus euismod, leo orci
-                    vestibulum justo, sed pharetra mi lectus sit amet enim.....
-                  </p>
+                  <p>{item?.categoriesID.cateName}</p>
+                  <h6>{item.title}</h6>
+                  <p>{item.shortDescription}</p>
                 </div>
                 {/* </a> */}
               </li>

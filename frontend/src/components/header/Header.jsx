@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import Navbar from "../navbar/Navbar";
 import SearchPopup from "../search/SearchPopup";
@@ -12,6 +12,7 @@ import useGetUser from "../useGetUser";
 function Header({ user }) {
   const history = useHistory();
   const { userInfo } = useGetUser(user?.id);
+  const [avatar, setAvatar] = useState("");
 
   const dispatch = useDispatch();
 
@@ -29,11 +30,15 @@ function Header({ user }) {
     }));
   };
 
+  useEffect(() => {
+    setAvatar(userInfo?.avatar);
+  }, [userInfo]);
+
   return (
     <React.Fragment>
       {/* Lap, PC header */}
       <div className=" hidden-xs hidden-sm">
-        <div className="big-header">
+        <div className="big-header" id="big-header">
           <div className="row">
             <div className="col-3">
               <ul className="social-media">
@@ -65,7 +70,7 @@ function Header({ user }) {
                     <div className="d-flex">
                       <img
                         className="header-avatar"
-                        src={linkAvt + userInfo?.avatar}
+                        src={linkAvt + avatar}
                         alt=""
                         onClick={() => history.push("/profile")}
                       />
@@ -113,6 +118,7 @@ function Header({ user }) {
         <Sidebar
           clickToOpenSide={clickToOpenSide}
           isShowSide={show.isShowSide}
+          setShow={setShow}
         />
       </div>
     </React.Fragment>

@@ -5,7 +5,7 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 // import { Context } from '../../context/Context'
 import { ThemeContext } from "../../context/Context";
-import { axiosGetData } from "../../components/axios";
+import axiosUser, { axiosGetData } from "../../components/axios";
 import "./createpost.css";
 
 const CreatePost = ({ user }) => {
@@ -132,9 +132,9 @@ const CreatePost = ({ user }) => {
       post.avatar = moment + filename;
       console.log(post);
       try {
-        const res = await axiosGetData.post("/post/create", post);
+        const res = await axiosUser.post("/post/create", post);
         if (res) {
-          await axiosGetData.post("/upload/post/avatar", data);
+          await axiosUser.post("/upload/post/avatar", data);
           alert("Your article has been sent. Please, waiting for approval");
           window.location.replace("/profile");
         }
@@ -180,7 +180,7 @@ const CreatePost = ({ user }) => {
           method="post"
           action=""
           encType="multipart/form-data"
-          // onSubmit={(e) => hadleSubmit(e)}
+          onSubmit={(e) => hadleSubmit(e)}
         >
           <div className="form-group mt-4">
             <label htmlFor="slTopic">Big topic post:</label>
@@ -188,6 +188,7 @@ const CreatePost = ({ user }) => {
               className="form-select"
               onChange={(e) => handleChangeBigCategory(e)}
               defaultValue=""
+              required
             >
               <option key="" value="" disabled="disabled">
                 Choose a big topic
@@ -205,6 +206,7 @@ const CreatePost = ({ user }) => {
               className="form-select"
               onChange={(e) => setCategory(e.target.value)}
               defaultValue={category}
+              required
             >
               {index === 0 && (
                 <option key="" value="" disabled="disabled">
@@ -290,6 +292,7 @@ const CreatePost = ({ user }) => {
               style={{
                 color: "black",
               }}
+              required
             />
           </div>
           {/* <div className="form-group mt-4">
@@ -316,10 +319,10 @@ const CreatePost = ({ user }) => {
 
           <div className="d-flex justify-content-center mt-4">
             <button
-              type="button"
+              type="submit"
               className="btn btn-success"
               id="btnCreatePost"
-              onClick={(e) => hadleSubmit(e)}
+              // onClick={(e) => hadleSubmit(e)}
             >
               Create
             </button>

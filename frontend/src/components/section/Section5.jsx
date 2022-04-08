@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
+import { Link } from "react-router-dom";
 
-const Section5 = ({ category }) => {
+const Section5 = ({ posts }) => {
   const cardRef = useRef();
 
   const handleHover = (index) => {
@@ -18,31 +19,32 @@ const Section5 = ({ category }) => {
       ref={cardRef}
       id="section5"
     >
-      {category.slice(0, 4).map((item, index) => (
+      {posts.slice(0, 4).map((item, index) => (
         <div
           className={`card card-header ${index === 0 && "active"}`}
-          key={item.id}
+          key={item._id}
           style={{ cursor: "pointer" }}
           onMouseOver={() => handleHover(index)}
         >
-          <p className="card-text card-categories">{item.name}</p>
-          <div className="card-body">
-            <h5 className="card-title card-item-title">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry
-            </h5>
-            <h5
-              className="card-description"
-              // dangerouslySetInnerHTML={{
-              //   __html: item.description.substr(0, 80) + "....",
-              // }}
-            >
-              Aenean vel massa semper, congue lorem fermentum, ornare eros.
-              Quisque non lacinia dolor, eget tempus augue. Integer arcu justo,
-              pharetra in erat eu, rhoncus tincidunt nibh.
-            </h5>
-            <h5 className="card-date">{new Date().toDateString()}</h5>
-          </div>
+          <Link to={`/article/${item._id}`}>
+            <p className="card-text card-categories">
+              {item?.categoriesID.cateName}
+            </p>
+            <div className="card-body">
+              <h5 className="card-title card-item-title">{item?.title}</h5>
+              <h5
+                className="card-description"
+                // dangerouslySetInnerHTML={{
+                //   __html: item.description.substr(0, 80) + "....",
+                // }}
+              >
+                {item.shortDescription}
+              </h5>
+              <h5 className="card-date">
+                {new Date(item.createdAt).toDateString()}
+              </h5>
+            </div>
+          </Link>
         </div>
       ))}
     </div>

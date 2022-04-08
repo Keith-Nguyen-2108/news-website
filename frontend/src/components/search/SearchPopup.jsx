@@ -1,35 +1,58 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import "./search.css";
 import { ThemeContext } from "../../context/Context";
 import { Link, useHistory } from "react-router-dom";
 import RightBar from "../rightSide/RightBar";
+import { axiosGetData, linkAvtPost } from "../axios";
 
 const SearchPopup = ({ clickToOpenSearch, isShowSearch = false, setShow }) => {
   const [{ currentComponentTheme }] = useContext(ThemeContext);
 
-  const [search, setSearch] = useState("");
+  const [top4Topic, setTop4Topic] = useState([]);
+  const [top3NewestPost, setTop3NewestPost] = useState([]);
 
-  const d = new Date("Sun Mar 20 2022 20:19:05 GMT+0700 ");
-  const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-  let month = months[d.getMonth()];
-  let date = d.getDate();
-  let year = d.getFullYear();
-  const datePost = month + " " + date + ", " + year;
+  useEffect(() => {
+    const getTop4Topic = async () => {
+      await axiosGetData.get("/post/groupByCategory").then((res) => {
+        let value = res.data;
+        setTop4Topic(value.slice(0, 4));
+      });
+    };
+
+    const getTop3Posts = async () => {
+      await axiosGetData.get("/post/").then((res) => {
+        let value = res.data;
+        setTop3NewestPost(value.slice(0, 3));
+      });
+    };
+
+    getTop4Topic();
+    getTop3Posts();
+  }, []);
 
   const history = useHistory();
+
+  const [search, setSearch] = useState("");
+  const [postsAjax, setPostsAjax] = useState([]);
+  const searchRef = useRef(null);
+  const handleSearch = (e) => {
+    let value = e.target.value;
+    setSearch(value);
+
+    if (searchRef.current) {
+      clearTimeout(searchRef.current);
+    }
+
+    searchRef.current = setTimeout(() => {
+      const ajaxPost = async () => {
+        await axiosGetData.post("/post/search/?s=" + search).then((res) => {
+          setPostsAjax(res.data);
+        });
+      };
+      ajaxPost();
+    }, 500);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setShow(isShowSearch);
@@ -60,9 +83,10 @@ const SearchPopup = ({ clickToOpenSearch, isShowSearch = false, setShow }) => {
           >
             <input
               type="text"
-              placeholder="Search.."
+              placeholder="Search follow category, title post or author name"
               name="search"
-              onChange={(e) => setSearch(e.target.value)}
+              value={search}
+              onChange={(e) => handleSearch(e)}
               required
             />
             <button className="btnSearch" type="submit">
@@ -71,109 +95,118 @@ const SearchPopup = ({ clickToOpenSearch, isShowSearch = false, setShow }) => {
           </form>
           <div className="search-below-item">
             <div className="popular-post">
-              <p>popular post</p>
+              <p>newest post</p>
               <ul className="list-unstyled">
-                <li className="popular-post-item">
-                  <h6>
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry
-                  </h6>
-                </li>
-                <li className="popular-post-item">
-                  <h6>
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry
-                  </h6>
-                </li>
-                <li className="popular-post-item">
-                  <h6>
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry
-                  </h6>
-                </li>
+                {top3NewestPost &&
+                  top3NewestPost.map((post) => (
+                    <li
+                      className="popular-post-item"
+                      key={post._id}
+                      onClick={() => {
+                        clickToOpenSearch();
+                        history.push("/article/" + post._id);
+                      }}
+                    >
+                      <h6>{post.title}</h6>
+                    </li>
+                  ))}
               </ul>
             </div>
             <div className="popular-category">
               <p>popular categories</p>
               <ul className="list-unstyled">
-                <li className="popular-category-item">
-                  <a href="#!">Hotel</a>
-                </li>
-                <li className="popular-category-item">
-                  <a href="#!">Restaurant</a>
-                </li>
-                <li className="popular-category-item">
-                  <a href="#!">Food</a>
-                </li>
-                <li className="popular-category-item">
-                  <a href="#!">Check-in</a>
-                </li>
+                {top4Topic &&
+                  top4Topic.map((topic) => (
+                    <li
+                      className="popular-category-item"
+                      key={topic._id}
+                      onClick={clickToOpenSearch}
+                    >
+                      <Link to={`/category/${topic.cateName[0].toLowerCase()}`}>
+                        {topic.cateName[0]}
+                      </Link>
+                    </li>
+                  ))}
               </ul>
             </div>
           </div>
         </div>
-        <div
-          className={`search-popup__search-results ${
-            search.length > 0 && "active"
-          }`}
-        >
-          <div style={{ opacity: 1 }}>
-            <div
-              className={`search-popup__search-results-content ${
-                search.length > 0 && "active"
-              }`}
-            >
-              <div className="search-popup__bg-big-post">
-                <div className="search-popup__big-post">
-                  <Link to="/">
+        {postsAjax.length > 0 && (
+          <div
+            className={`search-popup__search-results ${
+              search.length > 0 && "active"
+            }`}
+          >
+            <div style={{ opacity: 1 }}>
+              <div
+                className={`search-popup__search-results-content ${
+                  search.length > 0 && "active"
+                }`}
+              >
+                <div
+                  className="search-popup__bg-big-post"
+                  onClick={() => {
+                    clickToOpenSearch();
+                    history.push("/article/" + postsAjax[0]?._id);
+                  }}
+                  style={{ cursor: "pointer" }}
+                >
+                  <div className="search-popup__big-post">
                     <img
-                      src="https://static.boredpanda.com/blog/wp-content/uuuploads/unbelievable-places/unbelievable-places-8.jpg"
+                      src={linkAvtPost + postsAjax[0]?.avatar}
                       alt=""
                       width={800}
                       height={400}
                     />
-                  </Link>
-                </div>
-                <div className="search-popup__big-post-container">
-                  <Link
-                    to="/"
-                    className="position-relative"
-                    style={{ width: "90%" }}
-                  >
-                    <span className="category__post">Travel</span>
-                    <h3 className="big-post__title__post mt-3">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    </h3>
-                    <span className="big-post__date">{datePost}</span>
-                  </Link>
-                </div>
-              </div>
-              <div className="search-popup__bg-list-post">
-                <div className="list-post__left-side">
-                  <div className="left-side__post">
-                    <img
-                      src="https://static.boredpanda.com/blog/wp-content/uuuploads/unbelievable-places/unbelievable-places-8.jpg"
-                      alt=""
-                      width={800}
-                      height={400}
-                    />
-                    <h3 className="left-side__post-title mt-3">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    </h3>
+                  </div>
+                  <div className="search-popup__big-post-container">
+                    <div className="position-relative" style={{ width: "90%" }}>
+                      <span className="category__post">
+                        {postsAjax[0]?.categoriesID[0]?.cateName}
+                      </span>
+                      <h3 className="big-post__title__post mt-3">
+                        {postsAjax[0]?.title.substring(0, 60) + "..."}
+                      </h3>
+                      <span className="big-post__date">
+                        {new Date(postsAjax[0]?.createdAt).toUTCString()}
+                      </span>
+                    </div>
                   </div>
                 </div>
-                <div className="list-post__right-side">
-                  <RightBar
-                    line={false}
-                    quantity={3}
-                    leftOrder={2}
-                    rightOrder={1}
-                  />
+                <div className="search-popup__bg-list-post">
+                  <div className="list-post__left-side">
+                    <div
+                      className="left-side__post"
+                      onClick={() => {
+                        clickToOpenSearch();
+                        history.push("/article/" + postsAjax[1]?._id);
+                      }}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <img
+                        src={linkAvtPost + postsAjax[1]?.avatar}
+                        alt=""
+                        width={800}
+                        height={400}
+                      />
+                      <h3 className="left-side__post-title mt-3">
+                        {postsAjax[1]?.title.substring(0, 60) + "..."}
+                      </h3>
+                    </div>
+                  </div>
+                  <div className="list-post__right-side">
+                    <RightBar
+                      line={false}
+                      quantity={3}
+                      leftOrder={2}
+                      rightOrder={1}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
       {/* <div className="search-below">
         <div>

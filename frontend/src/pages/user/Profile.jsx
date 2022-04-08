@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { linkAvt } from "../../components/axios";
 import ApproveArticles from "../../components/approveArticle/ApproveArticles";
@@ -9,8 +9,12 @@ const Profile = ({ user }) => {
   // console.log(user);
 
   const history = useHistory();
-  const { userInfo } = useGetUser(user.id);
-  // console.log(userInfo);
+  const { userInfo } = useGetUser(user?.id);
+  const [avatar, setAvatar] = useState("");
+
+  useEffect(() => {
+    setAvatar(userInfo?.avatar);
+  }, [userInfo]);
 
   // useEffect(() => {
   //   const getUserInfor = async () => {
@@ -27,9 +31,7 @@ const Profile = ({ user }) => {
   const element = () => {
     switch (userInfo.role?.roleName) {
       case "Editor":
-        return <ApproveArticles></ApproveArticles>;
-      // case "Administrator":
-      //     return <ApproveUser></ApproveUser>
+        return <ApproveArticles />;
       default:
         return null;
     }
@@ -46,7 +48,7 @@ const Profile = ({ user }) => {
                   <div className="card-block text-center text-white card-img">
                     <div className="m-b-25">
                       <img
-                        src={linkAvt + userInfo?.avatar}
+                        src={linkAvt + avatar}
                         className="img-radius"
                         alt="User-Profile-Img"
                       />
@@ -82,13 +84,15 @@ const Profile = ({ user }) => {
                           <span className="tooltiptext">Articles list</span>
                         </i>
                       ) : null}
-                      {/* {
-                                            user ? user.role === "Administrator" && (
-                                                <i className="fa fa-list-ul category-icon" aria-hidden="true" onClick={clickCategoryIcon}>
-                                                    <span className="tooltiptext">Category</span>
-                                                </i>
-                                            ):(null)
-                                        } */}
+                      {userInfo.role?.roleName === "Administrator" && (
+                        <i
+                          className="fas fa-coins profile-icon"
+                          aria-hidden="true"
+                          onClick={() => history.push("/dashboard")}
+                        >
+                          <span className="tooltiptext">dashboard</span>
+                        </i>
+                      )}
                     </div>
                   </div>
                 </div>

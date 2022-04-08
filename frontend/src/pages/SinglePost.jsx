@@ -49,7 +49,7 @@ const SinglePost = ({ user }) => {
                   <p className="date-post">
                     <strong>Author: {news.authorID.username}</strong>
                     <span style={{ marginLeft: "20px" }}>
-                      Date: {news.createdAt}
+                      Date: {new Date(news.createdAt).toDateString()}
                     </span>
                   </p>
                   <hr
@@ -64,16 +64,8 @@ const SinglePost = ({ user }) => {
                       className="description-post"
                       dangerouslySetInnerHTML={{ __html: news.description }}
                     ></div>
-                    {/* 
-                                                            <div className="description-post" dangerouslySetInnerHTML={{__html: news.description}}>
-                                                            </div>
-                                                    } */}
                   </div>
-                  <CommentBox
-                    postId={news._id}
-                    like={news.like}
-                    view={news.view}
-                  />
+                  <CommentBox postId={news._id} like={news.like} />
                 </div>
               </div>
               <div className="col-sm-12 col-xl-3">

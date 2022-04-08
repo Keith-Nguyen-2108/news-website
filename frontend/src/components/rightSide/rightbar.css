@@ -20,6 +20,10 @@
   top: 15px;
 }
 
+.sub-news::-webkit-scrollbar {
+  display: none;
+}
+
 .rightbar {
   margin-bottom: 5%;
 }

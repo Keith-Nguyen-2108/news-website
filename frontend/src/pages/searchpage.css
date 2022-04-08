@@ -27,6 +27,7 @@
 
 .search__post__result {
   width: 48%;
+  cursor: pointer;
 }
 
 .search__title__post {
@@ -44,6 +45,7 @@
 
 .search__title__post span:first-child {
   width: 300px;
+  
 }
 
 .search__title__post span:last-child {

@@ -40,7 +40,7 @@ const Comments = ({ postId }) => {
     const currentDate = new Date(formatDate);
     const countDate =
       (currentDate.getTime() - oldDate.getTime()) / (1000 * 60 * 60 * 24);
-    return countDate >= 1 ? countDate + " days ago" : "Today";
+    return countDate >= 1 ? Math.floor(countDate) + " days ago" : "Today";
   };
 
   // const createComment = (text, parentID = null) => {

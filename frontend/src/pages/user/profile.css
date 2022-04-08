@@ -42,8 +42,6 @@
 }
 
 .profile-icon,
-.profile-icon,
-.profile-icon,
 .category-icon,
 .article-edit-icon,
 .article-delete-icon {
@@ -52,12 +50,8 @@
   cursor: pointer;
 }
 
-.profile-icon .tooltiptext,
-.profile-icon .tooltiptext,
-.profile-icon .tooltiptext,
-.category-icon .tooltiptext,
-.article-edit-icon .tooltiptext,
-.article-delete-icon .tooltiptext {
+.profile-icon .tooltiptext, .article-edit-icon .tooltiptext,
+.article-delete-icon .tooltiptext{
   opacity: 0;
   transition: opacity 1s;
   width: max-content;
@@ -76,11 +70,12 @@
   font-size: 12px;
 }
 
-.profile-icon:hover .tooltiptext,
-.profile-icon:hover .tooltiptext,
-.profile-icon:hover .tooltiptext,
-.category-icon:hover .tooltiptext,
-.article-edit-icon:hover .tooltiptext,
+.profile-icon .tooltiptext::first-letter, .article-edit-icon .tooltiptext::first-letter,
+.article-delete-icon .tooltiptext::first-letter{
+  text-transform: uppercase;
+}
+
+.profile-icon:hover .tooltiptext, .article-edit-icon:hover .tooltiptext,
 .article-delete-icon:hover .tooltiptext {
   opacity: 1;
 }

@@ -1,10 +1,11 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import "./sidebar.css";
 import { ThemeContext } from "../../context/Context";
 import { axiosGetData } from "../axios";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import Input from "../input/Input";
 
-const Sidebar = ({ clickToOpenSide, isShowSide }) => {
+const Sidebar = ({ clickToOpenSide, isShowSide = false, setShow }) => {
   const [{ currentComponentTheme }] = useContext(ThemeContext);
   const [parent, setParent] = useState([]);
 
@@ -25,6 +26,20 @@ const Sidebar = ({ clickToOpenSide, isShowSide }) => {
     };
     getCategory();
   }, []);
+
+  const history = useHistory();
+
+  const handleClick = (name) => {
+    setShow(isShowSide);
+    history.push("/category/" + name.toLowerCase());
+  };
+
+  const searchRef = useRef(null);
+  const handleSearch = () => {
+    let search = searchRef.current.value();
+    setShow(isShowSide);
+    history.push("/search/?s=" + search);
+  };
 
   return (
     <div
@@ -75,10 +90,11 @@ const Sidebar = ({ clickToOpenSide, isShowSide }) => {
                 <ul className="list-unstyled collapse" id={item.cateName}>
                   {item.child &&
                     item.child.map((childItem) => (
-                      <li key={childItem._id}>
-                        <Link to="/">
-                          <span>{childItem.cateName}</span>
-                        </Link>
+                      <li
+                        key={childItem._id}
+                        onClick={() => handleClick(childItem.cateName)}
+                      >
+                        <span>{childItem.cateName}</span>
                       </li>
                     ))}
                 </ul>
@@ -91,13 +107,25 @@ const Sidebar = ({ clickToOpenSide, isShowSide }) => {
           borderTop: "1px solid gainsboro",
         }}
       >
-        <form id="search-sidebar" method="post" encType="multipart/form-data">
+        <form
+          id="search-sidebar"
+          method="post"
+          onSubmit={(e) => e.preventDefault()}
+        >
           <div className="d-flex">
             <div className="txtSearch">
-              <input type="text" placeholder="Search.." name="search" />
+              {/* <input type="text" placeholder="Search.." name="search" /> */}
+              <Input
+                type="text"
+                ref={searchRef}
+                placeholder="Search.."
+                className="form-control border"
+                min={1}
+                required={true}
+              />
 
               <div className="btnSearch">
-                <button type="submit">
+                <button type="submit" onClick={handleSearch}>
                   <i className="fa fa-search"></i>
                 </button>
               </div>

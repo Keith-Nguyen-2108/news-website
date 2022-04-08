@@ -44,12 +44,12 @@
   justify-content: space-around;
 } */
 
-.table-user table tbody tr td i:first-child {
+.table-user table tbody tr td:nth-last-child(2) i {
   color: rgb(4, 206, 105);
 }
 
-.table-user table tbody tr td i:last-child {
-  margin-left: 20px;
+.table-user table tbody tr td:last-child i {
+  
   color: crimson;
 }
 
