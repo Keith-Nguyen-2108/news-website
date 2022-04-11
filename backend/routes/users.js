@@ -180,20 +180,30 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-router.post("/sendMail", () => {
+router.post("/sendMail", async (req, res) => {
+  const email = req.query.email;
   let mailOptions = {
     from: "mean.news.nienluan@gmail.com",
-    to: "minhnhakeith@gmail.com",
+    to: email,
     subject: "Reset password",
     text: "Your new password: 123456. Use this password to login and reset your new password",
   };
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log("Email sent: " + info.response);
-    }
-  });
+
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash("123456", salt);
+  const user = await User.findOneAndUpdate(
+    { email },
+    { $set: { password: hashedPassword } }
+  );
+  if (user) {
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        res.status(500).json(error);
+      } else {
+        res.status(200).json("Email sent: " + info.response);
+      }
+    });
+  }
 });
 
 module.exports = router;
