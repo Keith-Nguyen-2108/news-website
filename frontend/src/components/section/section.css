@@ -163,7 +163,7 @@
 
 .section-post-header ul{
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
 }
 
 .section-2-below-item,
@@ -247,25 +247,25 @@
 }
 
 .section-3-left-item:first-child img {
-  
+  width: 100%;
   height: 580px;
   object-fit: cover;
 }
 
 .section-3-left-item:last-child img {
-  
+  width: 100%;
   height: 250px;
   object-fit: cover;
 }
 
 .section-3-right-item:first-child img {
-  
+  width: 100%;
   height: 280px;
   object-fit: cover;
 }
 
 .section-3-right-item:last-child img {
-  
+  width: 100%;
   height: 480px;
   object-fit: cover;
 }
@@ -409,7 +409,7 @@
   margin: 0 0 3.5% 0;
   cursor: pointer;
   overflow: hidden;
-  /* color: white; */
+  /* color: black; */
   background-color: transparent;
   transition: transform 0.3s ease;
   z-index: 1;

@@ -11,7 +11,7 @@ import useGetUser from "../useGetUser";
 
 function Header({ user }) {
   const history = useHistory();
-  const { userInfo } = useGetUser(user?.id);
+  const { userInfo } = useGetUser(user);
   const [avatar, setAvatar] = useState("");
 
   const dispatch = useDispatch();

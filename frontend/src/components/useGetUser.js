@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 import axiosUser from "./axios";
 
-const useGetUser = (userID) => {
+const useGetUser = (user) => {
   const [userInfo, setUserInfo] = useState({});
 
   useEffect(() => {
     const getUserInfor = async () => {
-      await axiosUser.get("/user/" + userID).then((res) => {
+      await axiosUser.get("/user/" + user?.id).then((res) => {
         setUserInfo(res.data);
       });
     };
     getUserInfor();
-  }, [userID]);
+  }, [user]);
   return { userInfo };
 };
 

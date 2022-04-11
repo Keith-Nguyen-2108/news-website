@@ -4,12 +4,16 @@ import Pagination from "../pagination/Pagination";
 import data from "../pagination/data.json";
 import Input from "../input/Input";
 import { useRef } from "react";
+import useFetch from "../useFetch";
 
 const ApproveUser = ({ style }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   // const [search, setSearch] = useState("");
   const [database, setData] = useState(data);
+  const [update, setUpdate] = useState(false);
+  const [id, setId] = useState("");
+  const [roles] = useFetch("/role");
 
   const search = useRef();
 
@@ -23,7 +27,7 @@ const ApproveUser = ({ style }) => {
     return rs;
   }, [currentPage, database, pageSize]);
 
-  const columns = data[0] && Object.keys(data[0]);
+  // const columns = data[0] && Object.keys(data[0]);
 
   const filterData = (rows) => {
     const newData = rows.filter(
@@ -52,25 +56,40 @@ const ApproveUser = ({ style }) => {
           </div>
           <div className="card-body table-user">
             <div className="d-flex justify-content-between">
-              <div>
-                Show
-                <select
-                  onChange={(e) => setPageSize(e.target.value)}
+              <div className="d-flex">
+                <div>
+                  Show
+                  <select
+                    onChange={(e) => setPageSize(e.target.value)}
+                    style={{
+                      margin: "0 5px 1.5rem",
+                      padding: "0 10px",
+                      border: "none",
+                      outline: "none",
+                      borderRadius: "6px",
+                      height: "30px",
+                      paddingBottom: "2px",
+                    }}
+                  >
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
+                    <option value={25}>25</option>
+                  </select>
+                  entries
+                </div>
+                <span
+                  className="ms-4 d-flex align-items-center justify-content-center border-0"
                   style={{
-                    margin: "0 5px 1.5rem",
-                    padding: "0 10px",
-                    border: "none",
-                    outline: "none",
-                    borderRadius: "6px",
-                    height: "30px",
-                    paddingBottom: "2px",
+                    padding: "0 20px",
+                    height: "40px",
+                    borderRadius: "10px",
+                    backgroundColor: "#6287e3",
+                    color: "white",
+                    cursor: "pointer",
                   }}
                 >
-                  <option value={10}>10</option>
-                  <option value={20}>20</option>
-                  <option value={25}>25</option>
-                </select>
-                entries
+                  Save
+                </span>
               </div>
               <div>
                 <Input
@@ -88,10 +107,15 @@ const ApproveUser = ({ style }) => {
                 <table>
                   <thead>
                     <tr>
-                      {columns &&
+                      {/* {columns &&
                         columns.map((item, index) => (
                           <th>{item.replace("_", " ")}</th>
-                        ))}
+                        ))} */}
+                      <th>Id</th>
+                      <th>name</th>
+                      <th>email</th>
+                      <th>phone</th>
+                      <th>role</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -101,11 +125,29 @@ const ApproveUser = ({ style }) => {
                         <td>{item.first_name + " " + item.last_name}</td>
                         <td>{item.email}</td>
                         <td>{item.phone}</td>
-                        <td>Author</td>
+                        <td>
+                          {update === true ? (
+                            <select>
+                              <option selected={true} disabled="disabled">
+                                Choose role
+                              </option>
+                              {roles &&
+                                roles.map((role) => (
+                                  <option>{role.roleName}</option>
+                                ))}
+                            </select>
+                          ) : (
+                            <span>Author</span>
+                          )}
+                        </td>
                         <td>
                           <i
                             className="far fa-edit"
                             style={{ cursor: "pointer" }}
+                            onClick={() => {
+                              setId(item.id);
+                              setUpdate(!update);
+                            }}
                           ></i>
                         </td>
                         <td>

@@ -21,7 +21,7 @@ axiosUser.interceptors.request.use(
       if (decodeToken.exp * 1000 < currentTime) {
         const newUserStore = await store.dispatch(refreshToken());
         // console.log(newUserStore);
-        if (config?.headers) {
+        if (newUserStore && config?.headers) {
           config.headers["authorization"] =
             "Bearer " + newUserStore?.payload.accessToken;
           // console.log("Bearer " + newUserStore?.payload.accessToken);

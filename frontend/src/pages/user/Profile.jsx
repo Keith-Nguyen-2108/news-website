@@ -9,7 +9,7 @@ const Profile = ({ user }) => {
   // console.log(user);
 
   const history = useHistory();
-  const { userInfo } = useGetUser(user?.id);
+  const { userInfo } = useGetUser(user);
   const [avatar, setAvatar] = useState("");
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const Profile = ({ user }) => {
   // }
 
   const element = () => {
-    switch (userInfo.role?.roleName) {
+    switch (userInfo?.role?.roleName) {
       case "Editor":
         return <ApproveArticles />;
       default:

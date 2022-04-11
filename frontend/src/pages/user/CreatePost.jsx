@@ -107,6 +107,8 @@ const CreatePost = ({ user }) => {
     let checkCate = category._id ? category._id : category;
     if (checkCate.length < 1) {
       alert("Please choose an main option again");
+    } else if (description.length < 1) {
+      alert("You can't submit with an empty value");
     } else {
       const post = {
         title: titleRef.current.value(),

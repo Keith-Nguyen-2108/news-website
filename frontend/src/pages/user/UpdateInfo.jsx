@@ -7,7 +7,7 @@ import { axiosGetData, linkAvt } from "../../components/axios";
 import useGetUser from "../../components/useGetUser";
 
 const UpdateInfo = ({ user }) => {
-  const { userInfo } = useGetUser(user.id);
+  const { userInfo } = useGetUser(user);
   // console.log(userInfo);
 
   const [{ currentComponentTheme }] = useContext(ThemeContext);

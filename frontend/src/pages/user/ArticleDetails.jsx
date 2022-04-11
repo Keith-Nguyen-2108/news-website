@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -7,7 +7,7 @@ import "./articledetail.css";
 
 const ArticleDetails = ({ user }) => {
   // Post elements
-  const [title, setTitle] = useState("");
+  const titleRef = useRef();
   const [description, setDesc] = useState("");
   const [shortDescription, setShortContentPost] = useState("");
   const [avatar, setAvatar] = useState("");
@@ -35,16 +35,15 @@ const ArticleDetails = ({ user }) => {
     });
   };
 
+  const [post, setPost] = useState({});
+
   useEffect(() => {
     getCategories();
     const getNew = async () => {
       const post = await axiosGetData.get("/post/" + path);
-      setTitle(post.data.title);
+      setPost(post.data);
       setCategory(post.data.categoriesID);
-      setDesc(post.data.description);
       setAvatar(post.data.avatar);
-      // setStatus(post.data.status)
-      setShortContentPost(post.data.shortDescription);
     };
     getNew();
   }, [path]);
@@ -79,11 +78,19 @@ const ArticleDetails = ({ user }) => {
     let checkCate = category._id ? category._id : category;
     if (checkCate.length < 1) {
       alert("Please choose an main option again");
+    } else if (
+      titleRef.current.value.length < 1 ||
+      shortDescription.length < 1 ||
+      description < 1
+    ) {
+      alert("You can't submit with an empty value");
     } else {
       const value = {
-        title,
+        // title,
+        title: titleRef.current.value,
         shortDescription,
         description,
+
         categoriesID: checkCate,
         authorID: user.id,
         status: "Updated",
@@ -146,25 +153,34 @@ const ArticleDetails = ({ user }) => {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    let value = {
-      title,
-      shortDescription,
-      description,
-      status: "Reject",
-    };
-    await axiosGetData
-      .patch("/post/" + path, value)
-      .then(() => {
-        window.location.replace("/profile");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (
+      titleRef.current.value.length < 1 ||
+      shortDescription.length < 1 ||
+      description < 1
+    ) {
+      alert("you can't submit with an empty value");
+    } else {
+      let value = {
+        title: titleRef.current.value,
+        shortDescription,
+        description,
+        status: "Reject",
+      };
+      // console.log(value);
+      await axiosGetData
+        .patch("/post/" + path, value)
+        .then(() => {
+          window.location.replace("/profile");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   return (
     <div className="container">
-      {title !== "" ? (
+      {post !== {} ? (
         <div className="bg-articleDetail">
           <p className="titlePage">Article Details</p>
           <form
@@ -250,12 +266,14 @@ const ArticleDetails = ({ user }) => {
                   type="text"
                   className="form-control"
                   id="txtTitlePost"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  required={true}
+                  defaultValue={post?.title}
+                  ref={titleRef}
+                  pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)"
+                  // onChange={(e) => setTitle(e.target.value)}
+                  minLength={1}
                 />
               ) : (
-                <p className="mt-2">{title}</p>
+                <p className="mt-2">{post?.title}</p>
               )}
             </div>
             <div className="mt-4">
@@ -279,7 +297,7 @@ const ArticleDetails = ({ user }) => {
                 <CKEditor
                   required={true}
                   editor={ClassicEditor}
-                  data={shortDescription}
+                  data={post?.shortDescription}
                   enterMode="CKEDITOR.ENTER_P"
                   onChange={(event, editor) => {
                     const data = editor.getData();
@@ -290,7 +308,7 @@ const ArticleDetails = ({ user }) => {
               ) : (
                 <div
                   className="mt-2"
-                  dangerouslySetInnerHTML={{ __html: shortDescription }}
+                  dangerouslySetInnerHTML={{ __html: post?.shortDescription }}
                 ></div>
               )}
             </div>
@@ -301,11 +319,11 @@ const ArticleDetails = ({ user }) => {
                 <CKEditor
                   required={true}
                   editor={ClassicEditor}
-                  data={description}
+                  data={post?.description}
                   enterMode="CKEDITOR.ENTER_P"
                   onChange={(event, editor) => {
                     const data = editor.getData();
-                    console.log({ event, editor, data });
+                    // console.log({ event, editor, data });
                     setDesc(data);
                   }}
                   config={
@@ -319,7 +337,7 @@ const ArticleDetails = ({ user }) => {
               ) : (
                 <div
                   className="mt-2"
-                  dangerouslySetInnerHTML={{ __html: description }}
+                  dangerouslySetInnerHTML={{ __html: post?.description }}
                 ></div>
               )}
             </div>

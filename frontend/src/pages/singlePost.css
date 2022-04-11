@@ -52,8 +52,9 @@
 }
 
 @media screen and (max-width: 1200px) {
-  .post {
+  .post, .right-bar__news {
     width: 90%;
+    margin: auto
   }
 }
 

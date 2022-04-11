@@ -69,12 +69,14 @@ const SinglePost = ({ user }) => {
                 </div>
               </div>
               <div className="col-sm-12 col-xl-3">
-                <RightBar
-                  line={true}
-                  quantity={4}
-                  leftOrder={1}
-                  rightOrder={2}
-                />
+                <div className="right-bar__news">
+                  <RightBar
+                    line={true}
+                    quantity={4}
+                    leftOrder={1}
+                    rightOrder={2}
+                  />
+                </div>
               </div>
             </div>
           </div>

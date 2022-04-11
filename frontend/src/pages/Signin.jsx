@@ -6,14 +6,17 @@ import { useDispatch } from "react-redux";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { login } from "../redux/slice/UserSlice";
 import "./signin.css";
+import { axiosGetData } from "../components/axios";
 
 const Signin = () => {
   const [isShow, setShow] = useState(false);
 
+  const emailGetPass = useRef(null);
+
   let history = useHistory();
 
-  const emailOrPhoneRef = useRef();
-  const passwordRef = useRef();
+  const emailOrPhoneRef = useRef(null);
+  const passwordRef = useRef(null);
 
   const dispatch = useDispatch();
 
@@ -44,6 +47,18 @@ const Signin = () => {
     }
   };
 
+  const handleSendEmail = async () => {
+    let email = emailGetPass.current.value();
+    await axiosGetData
+      .post("/user/sendMail?email=" + email)
+      .then(() => {
+        alert("Close the box modal. Wait a minutes and check your email!");
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  };
+
   return (
     <div className="container">
       <form
@@ -58,7 +73,7 @@ const Signin = () => {
             <div className="card-group">
               <div className="card p-4">
                 <div className="card-body">
-                  <h1 className="text-center">Sign In</h1>
+                  <h1 className="text-center text-dark">Sign In</h1>
                   <div className="form-group mt-4">
                     <div className="input-group">
                       <div className="input-group-prepend">
@@ -116,7 +131,7 @@ const Signin = () => {
                     </div>
                   </div>
                   <div className="row mt-4">
-                    <div className="col text-center">
+                    <div className="col-6 text-center">
                       <button
                         type="submit"
                         className="btn btnLogin px-4"
@@ -126,9 +141,16 @@ const Signin = () => {
                         Sign In
                       </button>
                     </div>
-                    {/* <div className="col-6 text-right">
-                                                    <a className="btn btn-link px-0 text-dark" href="#!">Forgot password?</a>
-                                                </div> */}
+                    <div className="col-6 text-right">
+                      <a
+                        className="btn btn-link px-0 text-dark"
+                        href="#!"
+                        data-bs-toggle="modal"
+                        data-bs-target="#myModal"
+                      >
+                        Forgot password?
+                      </a>
+                    </div>
                   </div>
                   {/* </div> */}
                 </div>
@@ -154,6 +176,41 @@ const Signin = () => {
           </div>
         </div>
       </form>
+      <div className="modal" id="myModal">
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h4 className="modal-title text-dark">Enter email:</h4>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+              ></button>
+            </div>
+
+            <div className="modal-body">
+              {/* <input type="text" ref={emailGetPass} /> */}
+              <Input
+                type="text"
+                ref={emailGetPass}
+                placeholder="Email"
+                className="form-control border"
+                required={true}
+              />
+            </div>
+
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={() => handleSendEmail()}
+              >
+                Send
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
