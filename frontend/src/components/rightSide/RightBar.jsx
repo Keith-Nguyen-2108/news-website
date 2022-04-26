@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./rightbar.css";
 import { axiosGetData, linkAvtPost } from "../axios";
+import { useHistory } from "react-router-dom";
 
 const RightBar = ({ line, quantity, leftOrder, rightOrder }) => {
   const [posts, setPosts] = useState([]);
@@ -18,7 +19,7 @@ const RightBar = ({ line, quantity, leftOrder, rightOrder }) => {
     getArticals();
   }, [quantity]);
 
-  // let history = useHistory() - onClick={ () => history.push(`/news/${item._id}`)}
+  let history = useHistory();
 
   return (
     // <div className="col-sm-12 col-xl-3">
@@ -41,6 +42,7 @@ const RightBar = ({ line, quantity, leftOrder, rightOrder }) => {
             className="d-flex rightbar pb-3"
             key={item._id}
             style={{ cursor: "pointer" }}
+            onClick={() => history.push(`/article/${item._id}`)}
           >
             <img
               className="image-rightbar"
