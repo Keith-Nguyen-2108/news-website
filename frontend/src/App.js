@@ -1,6 +1,6 @@
 import "./App.css";
 import React, { Suspense, useContext } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { ThemeContext } from "./context/Context";
 
@@ -31,7 +31,7 @@ const HomePage = React.lazy(() => {
 
 function App() {
   const user = useSelector((state) => state.user.user);
-  // const history = useHistory();
+  const history = useHistory();
   const [{ currentTheme }] = useContext(ThemeContext);
 
   return (
@@ -63,22 +63,22 @@ function App() {
             <Search />
           </Route>
           <Route path="/profile">
-            {user ? <Profile user={user} /> : <Signin />}
+            {user ? <Profile user={user} /> : history.push("/signin")}
           </Route>
           <Route path="/dashboard">
-            <SystemAdministrator />
+            {user ? <SystemAdministrator /> : history.push("/signin")}
           </Route>
           <Route path="/create-article">
-            {user ? <CreatePost user={user} /> : <Signin />}
+            {user ? <CreatePost user={user} /> : history.push("/signin")}
           </Route>
           <Route path="/update-profile">
-            {user ? <UpdateInfo user={user} /> : <Signin />}
+            {user ? <UpdateInfo user={user} /> : history.push("/signin")}
           </Route>
           <Route path="/articles-list">
-            {user ? <ArticlesList user={user} /> : <Signin />}
+            {user ? <ArticlesList user={user} /> : history.push("/signin")}
           </Route>
           <Route path="/article-detail/:id">
-            {user ? <ArticleDetails user={user} /> : <Signin />}
+            {user ? <ArticleDetails user={user} /> : history.push("/signin")}
           </Route>
           <Route path="*" component={NotFound} />
         </Switch>
@@ -89,3 +89,4 @@ function App() {
 }
 
 export default App;
+
