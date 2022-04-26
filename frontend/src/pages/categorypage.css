@@ -107,6 +107,7 @@
   margin-left: 7%;
   overflow: hidden;
   line-height: 1.4;
+  width: calc(100% - 500px);
 }
 
 .category__title__post {
@@ -204,5 +205,6 @@
 
   .category__content__post {
     margin: 10px 0px;
+    width: 100%;
   }
 }
