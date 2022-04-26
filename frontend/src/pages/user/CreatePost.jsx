@@ -35,6 +35,7 @@ const CreatePost = ({ user }) => {
       const bigCate = value.filter((item) => item.parentID === null);
       setBigCategories(bigCate);
       const smallCate = value.filter((item) => item.parentID !== null);
+      // console.log(smallCate);
       setSmallCategories(smallCate);
     });
   };
@@ -50,7 +51,10 @@ const CreatePost = ({ user }) => {
 
   const handleChangeBigCategory = (e) => {
     if (e.target.value) {
-      let arraySmallCate = [...smallCategories].splice(0, 14);
+      let arraySmallCate = [...smallCategories].splice(
+        0,
+        [...smallCategories].length - 1
+      );
       arraySmallCate = arraySmallCate.filter(
         (cate) => cate.parentID.cateName === e.target.value
       );
