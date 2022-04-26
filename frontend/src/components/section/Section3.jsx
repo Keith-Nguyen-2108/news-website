@@ -44,10 +44,7 @@ const Section3 = ({ posts }) => {
                   id={item.id}
                 >
                   <Link to={`/article/${item._id}`}>
-                    <img
-                      src="https://d2eohwa6gpdg50.cloudfront.net/wp-content/uploads/sites/6/2021/08/16115025/white-rabbit-2-2.jpeg"
-                      alt=""
-                    />
+                    <img src={linkAvtPost + item.avatar} alt="" />
                     <p>{item.categoriesID.cateName}</p>
                     <h6>{item.title}</h6>
                   </Link>
