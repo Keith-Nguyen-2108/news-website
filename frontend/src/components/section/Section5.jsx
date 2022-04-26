@@ -38,7 +38,7 @@ const Section5 = ({ posts }) => {
                 //   __html: item.description.substr(0, 80) + "....",
                 // }}
               >
-                {item.shortDescription}
+                {item.shortDescription.substring(0, 150)}
               </h5>
               <h5 className="card-date">
                 {new Date(item.createdAt).toDateString()}
