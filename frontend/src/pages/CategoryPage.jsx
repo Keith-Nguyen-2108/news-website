@@ -52,16 +52,15 @@ const CategoryPage = () => {
                     marginBottom: i % 2 === 0 ? "30px" : null,
                   }}
                 >
-                  <img
-                    src="https://d2eohwa6gpdg50.cloudfront.net/wp-content/uploads/sites/6/2021/08/16115025/white-rabbit-2-2.jpeg"
-                    alt="big-img"
-                  />
-                  <div className="category-page__short-desc">
-                    <span className="category__post">{path}</span>
-                    <p className="category-page__title__post">
-                      {item[0].title}
-                    </p>
-                  </div>
+                  <Link to={`/article/${item[0]._id}`}>
+                    <img src={linkAvtPost + item[0].avatar} alt="big-img" />
+                    <div className="category-page__short-desc">
+                      <span className="category__post">{path}</span>
+                      <p className="category-page__title__post">
+                        {item[0].title}
+                      </p>
+                    </div>
+                  </Link>
                 </div>
               )}
               <div
@@ -75,10 +74,7 @@ const CategoryPage = () => {
                   item.slice(1, 3).map((post) => (
                     <div className="category__small_image" key={post._id}>
                       <Link to={`/article/${post._id}`}>
-                        <img
-                          src="https://d2eohwa6gpdg50.cloudfront.net/wp-content/uploads/sites/6/2021/08/16115025/white-rabbit-2-2.jpeg"
-                          alt="small-img"
-                        />
+                        <img src={linkAvtPost + post.avatar} alt="small-img" />
                         <div className="category-page__short-desc">
                           <span className="category__post">{path}</span>
                           <p className="category-page__title__post">
@@ -104,7 +100,7 @@ const CategoryPage = () => {
                 >
                   <img
                     className="rounded float-left category__avatar__post"
-                    src="https://d2eohwa6gpdg50.cloudfront.net/wp-content/uploads/sites/6/2021/08/16115025/white-rabbit-2-2.jpeg"
+                    src={linkAvtPost + item.avatar}
                     alt="post-avatar"
                   />
                   <div className="category__content__post">
