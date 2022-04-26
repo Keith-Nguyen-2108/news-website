@@ -1,50 +1,76 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import "./approveuser.css";
 import Pagination from "../pagination/Pagination";
-import data from "../pagination/data.json";
+// import data from "../pagination/data.json";
 import Input from "../input/Input";
 import { useRef } from "react";
 import useFetch from "../useFetch";
+import axiosUser, { axiosGetData } from "../axios";
 
 const ApproveUser = ({ style }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   // const [search, setSearch] = useState("");
-  const [database, setData] = useState(data);
+  // const [database, setData] = useState(data);
   const [update, setUpdate] = useState(false);
   const [id, setId] = useState("");
   const [roles] = useFetch("/role");
+  const [user, setUser] = useState([]);
+  const [roleUpdate, setRoleUpdate] = useState("");
 
   const search = useRef();
+
+  const getUsers = async () => {
+    await axiosGetData
+      .get("/user")
+      .then((res) => setUser(res.data))
+      .catch((err) => console.log(err));
+  };
+  useEffect(() => {
+    getUsers();
+  }, []);
 
   const tableData = useMemo(() => {
     const firstPageIndex = (currentPage - 1) * pageSize;
     // console.log("firstPageIndex" + firstPageIndex);
     const lastPageIndex = parseInt(firstPageIndex) + parseInt(pageSize);
     // console.log("lastPageIndex" + lastPageIndex);
-    const rs = database.slice(firstPageIndex, lastPageIndex);
+    const rs = user?.slice(firstPageIndex, lastPageIndex);
     // console.log(rs);
     return rs;
-  }, [currentPage, database, pageSize]);
+  }, [currentPage, user, pageSize]);
 
   // const columns = data[0] && Object.keys(data[0]);
 
   const filterData = (rows) => {
     const newData = rows.filter(
       (row) =>
-        row.first_name.toLowerCase().indexOf(search.current?.value()) > -1 ||
-        row.last_name.toLowerCase().indexOf(search.current?.value()) > -1 ||
+        row.username.toLowerCase().indexOf(search.current?.value()) > -1 ||
         row.email.toLowerCase().indexOf(search.current?.value()) > -1 ||
         row.phone.toLowerCase().indexOf(search.current?.value()) > -1
     );
     // console.log(newData);
-    setData(newData);
+    setUser(newData);
   };
 
   const handleKeyUp = (e) => {
     if (e.keyCode === 13) {
-      filterData(data);
+      if (search.current?.value().length > 0) {
+        filterData(user);
+      } else getUsers();
     }
+  };
+
+  const handleSave = async () => {
+    // console.log(id, roleUpdate);
+    const value = {
+      role: roleUpdate,
+    };
+    await axiosUser
+      .patch("/user/" + id, value)
+      .then(() => alert("User has been updated!"))
+      .then(() => window.location.reload())
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -87,6 +113,7 @@ const ApproveUser = ({ style }) => {
                     color: "white",
                     cursor: "pointer",
                   }}
+                  onClick={handleSave}
                 >
                   Save
                 </span>
@@ -119,49 +146,59 @@ const ApproveUser = ({ style }) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {tableData.map((item) => (
-                      <tr key={item.id}>
-                        <td>{item.id}</td>
-                        <td>{item.first_name + " " + item.last_name}</td>
-                        <td>{item.email}</td>
-                        <td>{item.phone}</td>
-                        <td>
-                          {update === true ? (
-                            <select>
-                              <option selected={true} disabled="disabled">
-                                Choose role
-                              </option>
-                              {roles &&
-                                roles.map((role) => (
-                                  <option>{role.roleName}</option>
-                                ))}
-                            </select>
-                          ) : (
-                            <span>Author</span>
-                          )}
-                        </td>
-                        <td>
-                          <i
-                            className="far fa-edit"
-                            style={{ cursor: "pointer" }}
-                            onClick={() => {
-                              setId(item.id);
-                              setUpdate(!update);
-                            }}
-                          ></i>
-                        </td>
-                        <td>
-                          <i
-                            className="far fa-trash-alt"
-                            style={{ cursor: "pointer" }}
-                          ></i>
-                        </td>
-                      </tr>
-                    ))}
+                    {tableData &&
+                      tableData.map((item, index) => (
+                        <tr key={item._id}>
+                          <td>{index + 1}</td>
+                          <td>{item.username}</td>
+                          <td>{item.email}</td>
+                          <td>{item.phone}</td>
+                          <td>
+                            {update === true ? (
+                              item._id === id ? (
+                                <select
+                                  onClick={(e) => setRoleUpdate(e.target.value)}
+                                  defaultValue=""
+                                >
+                                  <option value="" disabled="disabled">
+                                    Choose role
+                                  </option>
+                                  {roles &&
+                                    roles.map((role) => (
+                                      <option value={role._id}>
+                                        {role.roleName}
+                                      </option>
+                                    ))}
+                                </select>
+                              ) : (
+                                <span>{item.role.roleName}</span>
+                              )
+                            ) : (
+                              <span>{item.role.roleName}</span>
+                            )}
+                          </td>
+                          <td>
+                            <i
+                              className="far fa-edit"
+                              style={{ cursor: "pointer" }}
+                              onClick={() => {
+                                setId(item._id);
+                                setUpdate(!update);
+                              }}
+                            ></i>
+                          </td>
+                          <td>
+                            <i
+                              className="far fa-trash-alt"
+                              style={{ cursor: "pointer" }}
+                            ></i>
+                          </td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
                 <Pagination
-                  totalCount={database.length}
+                  totalCount={user?.length}
                   pageSize={pageSize}
                   currentPage={currentPage}
                   onChangePage={(page) => setCurrentPage(page)}
